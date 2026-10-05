@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Player Records - DBA Megastats</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="layout.css">
+  <script src="shared.js"></script>
+  <script src="api.js"></script>
+</head>
+<body class="centered">
+  <div class="controls">
+    <div>
+      <label for="tableSel">Stat</label>
+      <select id="tableSel"><option>Loading...</option></select>
+    </div>
+  </div>
+  <div id="status">Loading...</div>
+  <div id="root"></div>
+
+  <script>
+    const sel = DBA.$('tableSel');
+    const statusEl = DBA.$('status');
+    const root = DBA.$('root');
+    let tables = [];
+
+    function show(i) {
+      root.innerHTML = '';
+      root.appendChild(DBA.sortableTable(tables[i], { search: false }));
+    }
+
+    DBA.call('srGetAll')
+      .then(data => {
+        tables = data;
+        sel.innerHTML = '';
+        tables.forEach((t, i) => {
+          const o = document.createElement('option');
+          o.value = i;
+          o.textContent = t.title;
+          sel.appendChild(o);
+        });
+        statusEl.textContent = '';
+        if (tables.length) show(0);
+      })
+      .catch(e => { statusEl.textContent = 'Error: ' + e.message; });
+
+    sel.addEventListener('change', () => show(Number(sel.value)));
+  </script>
+</body>
+</html>
