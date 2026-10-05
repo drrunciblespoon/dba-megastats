@@ -135,8 +135,8 @@ table.totals th:hover { filter: none; }
 /* Extra layout rules. Load this after styles.css. */
 
 /* Tables that should not be sortable (see sortableTable's sort: false option) */
-table.nosort th { cursor: default; }
-table.nosort th:hover { filter: none; }
+/* table.nosort th { cursor: default; }
+table.nosort th:hover { filter: none; } */
 
 /* Pages with <body class="centered">: controls, headings and tables sit in the middle */
 /* body.centered .controls { justify-content: center; }
