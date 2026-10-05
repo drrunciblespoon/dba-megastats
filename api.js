@@ -22,13 +22,14 @@ DBA.call = function (fn, ...args) {
 
 // [label, file] for every page on the site
 const DBA_NAV = [
-  ['Player Records', 'index.html'],
-  ['Pair Ups', 'pairups.html'],
+  ['Individual Records', 'individualrecords.html'],
+  ['Pairing Records', 'pairingrecords.html'],
   ['Gen 9 Stats', 'tables.html'],
-  ['Stat Records', 'statrecords.html'],
+  ['Player Records', 'playerrecords.html'],
   ['Pokemon Records', 'pokemonrecords.html'],
   ['Hall of Fame', 'halloffame.html']
 ];
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const header = document.createElement('header');
