@@ -1,4 +1,4 @@
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&display=swap" rel="stylesheet">
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&display=swap');
   /* ---------- Theme: change colours here ---------- */
   :root {
     --bg: #14151b;
