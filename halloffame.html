@@ -4,13 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hall of Fame - DBA Megastats</title>
+
   <link rel="stylesheet" href="styles.css">
+
   <script src="shared.js"></script>
   <script src="api.js"></script>
 </head>
+
 <body>
   <h2 id="title">Hall of Fame</h2>
+
   <div id="status">Loading...</div>
+
   <div id="root"></div>
 
   <script>
@@ -20,10 +25,60 @@
     DBA.call('hofGetData')
       .then(d => {
         DBA.$('title').textContent = d.title;
-        statusEl.textContent = d.rows.length ? '' : 'No entries yet.';
-        if (d.rows.length) root.appendChild(DBA.sortableTable(d, { search: false }));
+        statusEl.textContent = d.rows.length
+          ? ''
+          : 'No entries yet.';
+
+        if (d.rows.length) {
+          const box = document.createElement('div');
+          box.style.marginTop = '20px';
+
+          const wrap = document.createElement('div');
+          wrap.className = 'wrap';
+
+          const table = document.createElement('table');
+          wrap.appendChild(table);
+          box.appendChild(wrap);
+
+          // Header
+          const head = table.createTHead().insertRow();
+
+          d.headers.forEach(name => {
+            const th = document.createElement('th');
+            th.textContent = name;
+            head.appendChild(th);
+          });
+
+          // Rows
+          const body = table.createTBody();
+
+          d.rows.forEach(row => {
+            const tr = body.insertRow();
+
+            row.forEach(cell => {
+              const td = tr.insertCell();
+
+              if (cell.img) {
+                const img = document.createElement('img');
+                img.src = cell.img;
+                img.loading = 'lazy';
+                td.appendChild(img);
+              } else {
+                td.textContent = cell.t;
+
+                if (cell.n !== null && cell.n !== undefined) {
+                  td.className = 'num';
+                }
+              }
+            });
+          });
+
+          root.appendChild(box);
+        }
       })
-      .catch(e => { statusEl.textContent = 'Error: ' + e.message; });
+      .catch(e => {
+        statusEl.textContent = 'Error: ' + e.message;
+      });
   </script>
 </body>
 </html>
