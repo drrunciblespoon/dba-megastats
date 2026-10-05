@@ -17,13 +17,37 @@ body.centered #status {
   text-align: center;
 }
 
+
+/*
+ * All tables on centred pages use the same width.
+ *
+ * 900px is the desktop width.
+ * max-width keeps the tables from overflowing on smaller screens.
+ */
 body.centered table {
-  width: 800px;
+  width: 900px;
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
+
+/*
+ * Pokemon Records puts its tables inside .wrap elements.
+ * Give those wrappers the same width as the tables so that
+ * the flex layout doesn't make individual tables different sizes.
+ */
+body.centered .wrap {
+  width: 900px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/*
+ * Keep Pokemon Records' groups centred.
+ */
 body.centered #root > div {
   justify-content: center;
 }
