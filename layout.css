@@ -18,11 +18,23 @@ body.centered #status {
 }
 
 body.centered table {
-  width: auto;
+  width: 800px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
 body.centered #root > div {
   justify-content: center;
+}
+
+
+/* ---------- Non-sortable tables ---------- */
+
+table.nosort th {
+  cursor: default;
+}
+
+table.nosort th:hover {
+  filter: none;
 }
