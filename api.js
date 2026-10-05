@@ -15,7 +15,10 @@ DBA.call = function (fn, ...args) {
   return fetch(url)
     .then(r => r.json())
     .then(res => {
-      if (!res.ok) throw new Error(res.error);
+      if (!res.ok) {
+        throw new Error(res.error);
+      }
+
       return res.data;
     });
 };
@@ -30,7 +33,6 @@ const DBA_NAV = [
   ['Hall of Fame', 'halloffame.html']
 ];
 
-
 document.addEventListener('DOMContentLoaded', () => {
   const header = document.createElement('header');
   header.className = 'site-header';
@@ -39,10 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.createElement('nav');
   nav.className = 'site-nav';
 
-  const here = location.pathname.split('/').pop() || 'index.html';
+  const here = location.pathname.split('/').pop() || 'individualrecords.html';
 
   DBA_NAV.forEach(([label, href]) => {
     const a = document.createElement('a');
+
     a.href = href;
     a.textContent = label;
 
