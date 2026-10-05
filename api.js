@@ -44,3 +44,4 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.prepend(nav);
   document.body.prepend(header);
 });
+   document.head.appendChild(Object.assign(document.createElement('script'), { src: 'table-colours.js' }));
