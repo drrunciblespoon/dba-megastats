@@ -27,7 +27,7 @@ DBA.call = function (fn, ...args) {
 const DBA_NAV = [
   ['Individual Records', 'individualrecords.html'],
   ['Pairing Records', 'pairingrecords.html'],
-  ['Gen 9 Stats', 'tables.html'],
+  ['Gen 9 Stats', 'stats.html'],
   ['Player Records', 'playerrecords.html'],
   ['Pokemon Records', 'pokemonrecords.html'],
   ['Hall of Fame', 'halloffame.html']
