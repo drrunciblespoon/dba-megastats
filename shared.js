@@ -82,16 +82,36 @@ const DBA = {
       const shown = rows.filter(r => !q || r.some(c => c.t && c.t.toLowerCase().includes(q)));
       table.innerHTML = '';
       const head = table.createTHead().insertRow();
-      t.headers.forEach((name, i) => {
-        const th = document.createElement('th');
-        th.textContent = name + (i === sortCol ? (asc ? ' ▲' : ' ▼') : '');
-        th.onclick = () => {
-          if (sortCol === i) asc = !asc; else { sortCol = i; asc = true; }
-          sortRows();
-          draw();
-        };
-        head.appendChild(th);
-      });
+      const allowSort = !(opts && opts.sort === false);
+
+t.headers.forEach((name, i) => {
+  const th = document.createElement('th');
+
+  th.textContent = name + (
+    allowSort && i === sortCol
+      ? (asc ? ' ▲' : ' ▼')
+      : ''
+  );
+
+  if (allowSort) {
+    th.onclick = () => {
+      if (sortCol === i) {
+        asc = !asc;
+      } else {
+        sortCol = i;
+        asc = true;
+      }
+
+      sortRows();
+      draw();
+    };
+  } else {
+    th.className = 'nosort';
+  }
+
+  head.appendChild(th);
+});
+
       const body = table.createTBody();
       shown.forEach(r => {
         const tr = body.insertRow();
