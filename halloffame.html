@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hall of Fame - DBA Megastats</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="shared.js"></script>
+  <script src="api.js"></script>
+</head>
+<body>
+  <h2 id="title">Hall of Fame</h2>
+  <div id="status">Loading...</div>
+  <div id="root"></div>
+
+  <script>
+    const statusEl = DBA.$('status');
+    const root = DBA.$('root');
+
+    DBA.call('hofGetData')
+      .then(d => {
+        DBA.$('title').textContent = d.title;
+        statusEl.textContent = d.rows.length ? '' : 'No entries yet.';
+        if (d.rows.length) root.appendChild(DBA.sortableTable(d, { search: false }));
+      })
+      .catch(e => { statusEl.textContent = 'Error: ' + e.message; });
+  </script>
+</body>
+</html>
