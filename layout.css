@@ -1,14 +1,28 @@
 /* Extra layout rules. Load this after styles.css. */
 
-/* Tables that should not be sortable (see sortableTable's sort: false option) */
-table.nosort th { cursor: default; }
-table.nosort th:hover { filter: none; }
 
-/* Pages with <body class="centered">: controls, headings and tables sit in the middle */
-body.centered .controls { justify-content: center; }
-body.centered .controls > div { text-align: center; }
+/* ---------- Pages with centred content ---------- */
+
+body.centered .controls {
+  justify-content: center;
+}
+
+body.centered .controls > div {
+  text-align: center;
+}
+
 body.centered h2,
 body.centered h3,
-body.centered #status { text-align: center; }
-body.centered table { width: auto; margin-left: auto; margin-right: auto; }
-body.centered #root > div { justify-content: center; }   /* Pokemon Records: groups side by side */
+body.centered #status {
+  text-align: center;
+}
+
+body.centered table {
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.centered #root > div {
+  justify-content: center;
+}
