@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pair Ups - DBA Megastats</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="shared.js"></script>
+  <script src="api.js"></script>
+</head>
+<body>
+  <div class="controls">
+    <div><label for="coach">Coach</label><select id="coach"><option>Loading...</option></select></div>
+    <div><label for="battler">Battler</label><select id="battler"><option>Loading...</option></select></div>
+  </div>
+
+  <table id="totals" class="totals" style="display:none">
+    <thead><tr><th>Player</th><th class="num">Wins</th><th class="num">Losses</th><th class="num">Net</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="status"></div>
+  <table id="results" style="display:none">
+    <thead><tr><th>Pair</th><th class="num">Wins</th><th class="num">Losses</th><th class="num">Net</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const HINT = 'Choose a coach, a battler, or both. Choosing just one lists all of that player\'s pairings.';
+    const coachSel = DBA.$('coach');
+    const battlerSel = DBA.$('battler');
+    const statusEl = DBA.$('status');
+    const results = DBA.$('results');
+    const totals = DBA.$('totals');
+    let token = 0;
+
+    statusEl.textContent = HINT;
+
+    DBA.call('puGetOptions')
+      .then(o => {
+        DBA.fillSelect(coachSel, 'coach', o.coaches, true);      // tags hidden in the dropdown only
+        DBA.fillSelect(battlerSel, 'battler', o.battlers, true);
+      })
+      .catch(e => { statusEl.textContent = 'Error: ' + e.message; });
+
+    function lookup() {
+      if (!coachSel.value && !battlerSel.value) {
+        DBA.show(results, false);
+        DBA.show(totals, false);
+        statusEl.textContent = HINT;
+        return;
+      }
+      const mine = ++token;
+      statusEl.textContent = 'Loading...';
+      DBA.call('puGetPairData', coachSel.value, battlerSel.value)
+        .then(d => {
+          if (mine !== token) return;   // a newer lookup has started
+          DBA.fillTotals(totals, d.totals);
+          const n = DBA.fillTable(results, d.rows);
+          statusEl.textContent = n ? '' : 'No pairings found.';
+        })
+        .catch(e => { if (mine === token) statusEl.textContent = 'Error: ' + e.message; });
+    }
+
+    coachSel.addEventListener('change', lookup);
+    battlerSel.addEventListener('change', lookup);
+  </script>
+</body>
+</html>
