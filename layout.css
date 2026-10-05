@@ -7,6 +7,10 @@ body.centered .controls {
   justify-content: center;
 }
 
+body.centered .controls {
+  justify-content: center;
+}
+
 body.centered .controls > div {
   text-align: center;
 }
@@ -17,13 +21,6 @@ body.centered #status {
   text-align: center;
 }
 
-
-/*
- * All tables on centred pages use the same width.
- *
- * 900px is the desktop width.
- * max-width keeps the tables from overflowing on smaller screens.
- */
 body.centered table {
   width: 900px;
   max-width: 100%;
