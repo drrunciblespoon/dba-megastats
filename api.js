@@ -3,22 +3,37 @@
 // Your Apps Script web app address, ending in /exec
 const API_URL =
   'https://script.google.com/macros/s/AKfycbwgUEH88JFHEf145rWuRygxhTbDiXAsMK_k9n8ssxkLWPskL7aFqmZrknZak7DV5iwy7w/exec';
+const CLIENT_CACHE_MS = 60 * 60 * 1000;   // 1 hour; raise if you like
+const CLIENT_CACHE_VERSION = 'v1';        // change to v2 to discard everyone's saved data
 
 // Replaces google.script.run.
 // Usage: DBA.call('hofGetData').then(data => ...)
 DBA.call = function (fn, ...args) {
-  const url =
-    API_URL +
-    '?fn=' + encodeURIComponent(fn) +
-    '&args=' + encodeURIComponent(JSON.stringify(args));
+  const argJson = JSON.stringify(args);
+  const key = 'dba:' + CLIENT_CACHE_VERSION + ':' + fn + ':' + argJson;
+
+  // Add ?fresh to a page's address to skip the saved copy
+  if (!location.search.includes('fresh')) {
+    try {
+      const hit = JSON.parse(localStorage.getItem(key));
+      if (hit && Date.now() - hit.t < CLIENT_CACHE_MS) return Promise.resolve(hit.v);
+    } catch (e) {}
+  }
+
+  const url = API_URL + '?fn=' + encodeURIComponent(fn) + '&args=' + encodeURIComponent(argJson);
 
   return fetch(url)
     .then(r => r.json())
     .then(res => {
-      if (!res.ok) {
-        throw new Error(res.error);
+      if (!res.ok) throw new Error(res.error);
+      try {
+        localStorage.setItem(key, JSON.stringify({ t: Date.now(), v: res.data }));
+      } catch (e) {
+        // Storage full: clear our saved entries rather than failing
+        Object.keys(localStorage)
+          .filter(k => k.startsWith('dba:'))
+          .forEach(k => localStorage.removeItem(k));
       }
-
       return res.data;
     });
 };
