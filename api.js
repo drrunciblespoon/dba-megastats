@@ -88,6 +88,33 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.prepend(nav);
   document.body.prepend(header);
 
+    // Hover text for abbreviated column headings, on every table on every page
+  const TIPS = {
+    td: 'Times Drafted',
+    gp: 'Games Played',
+    diff: 'Differential',
+    wr: 'Win Rate',
+    kpg: 'Kills per Game',
+    sr: 'Survival Rate'
+  };
+
+  function addHeaderTips() {
+    document.querySelectorAll('th:not([title])').forEach(th => {
+      // Ignore the sort arrow, the trailing full stop and the case
+      const key = th.textContent.replace(/[▲▼]/g, '').trim().toLowerCase().replace(/\.$/, '');
+      if (TIPS[key]) th.title = TIPS[key];
+    });
+  }
+
+  let queued = false;
+  new MutationObserver(() => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; addHeaderTips(); });
+  }).observe(document.body, { childList: true, subtree: true });
+
+  addHeaderTips();
+
   document.head.appendChild(
     Object.assign(document.createElement('script'), {
       src: 'table-colours.js'
