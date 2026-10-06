@@ -38,7 +38,7 @@ DBA.call = function (fn, ...args) {
     });
 };
 
-// [label, file] for every page on the site
+// [label, file] for every page on the site except Home (Home is added separately, on its own row)
 const DBA_NAV = [
   ['Individual Records', 'individualrecords.html'],
   ['Pairing Records', 'pairingrecords.html'],
@@ -57,7 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.createElement('nav');
   nav.className = 'site-nav';
 
-  const here = location.pathname.split('/').pop() || 'individualrecords.html';
+  // The bare site address is now the landing page
+  const here = location.pathname.split('/').pop() || 'index.html';
+
+  // Home button, on its own row above the other links
+  const home = document.createElement('a');
+  home.href = 'index.html';
+  home.textContent = 'Home';
+  home.className = 'nav-home' + (here === 'index.html' ? ' active' : '');
+  nav.appendChild(home);
+
+  // Forces everything after Home onto the next row
+  const brk = document.createElement('span');
+  brk.className = 'nav-break';
+  nav.appendChild(brk);
 
   DBA_NAV.forEach(([label, href]) => {
     const a = document.createElement('a');
