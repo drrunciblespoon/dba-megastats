@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Oswald:wght@600&display=swap');
 
 /* ---------- Theme: change colours here ---------- */
 :root {
@@ -13,6 +14,8 @@
   --radius: 14px;
   --radius-sm: 12px;
   --sprite-height: 40px;
+  --header-bg: #274e13;
+  --header-text: #d9ead3;
 }
 
 /* ---------- Column colours (matches the Sheet) ----------
@@ -48,13 +51,21 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
 
 /* ---------- Header ---------- */
 .site-header {
-  margin: 0 -24px 0;
-  padding: 20px 24px;
+  margin: 0 -24px;              /* full-width band, ignoring the body padding */
+  padding: 14px 24px;
   text-align: center;
-  background: linear-gradient(180deg, #e9ebf0 0%, var(--bg) 100%);
-  border-bottom: 1px solid var(--border);
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
-.site-header img { max-width: 100%; max-height: 120px; height: auto; }
+.site-title {
+  margin: 0;
+  font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif;
+  font-size: clamp(26px, 5vw, 40px);   /* scales down on phones */
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  color: var(--header-text);
+}
 
 /* ---------- Navigation ---------- */
 .site-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px; padding: 14px 0 6px; }
