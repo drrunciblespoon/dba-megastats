@@ -131,3 +131,16 @@ table.totals { border-color: var(--accent); border-width: 2px; }
 table.totals td { font-weight: 700; }
 table.totals th { cursor: default; }
 table.totals th:hover { filter: none; }
+
+/* Links inside table cells */
+td a {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+td a:hover,
+td a:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+}
