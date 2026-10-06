@@ -4,7 +4,7 @@
 const API_URL =
   'https://script.google.com/macros/s/AKfycbwgUEH88JFHEf145rWuRygxhTbDiXAsMK_k9n8ssxkLWPskL7aFqmZrknZak7DV5iwy7w/exec';
 const CLIENT_CACHE_MS = 60 * 60 * 1000;   // 1 hour; raise if you like
-const CLIENT_CACHE_VERSION = 'v1';        // change to v2 to discard everyone's saved data
+const CLIENT_CACHE_VERSION = 'v2';        // change to v2 to discard everyone's saved data
 
 // Replaces google.script.run.
 // Usage: DBA.call('hofGetData').then(data => ...)
