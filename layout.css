@@ -64,16 +64,17 @@ body.centered td {
   text-overflow: ellipsis;
 }
 
-/* Gen 9 Stats: narrow rank column, wider Pokemon name column.
-   Fixed layout divides the leftover width equally among the other 11 columns. */
-body.page-stats th:nth-child(1) { width: 4%; }
-body.page-stats th:nth-child(3) { width: 11.4%; }
+/* Gen 9 Stats: Rank 6%, Sprite 6%, Pokemon 14.2%, remaining ten columns equal */
+body.page-stats th:nth-child(1) { width: 6%; }
+body.page-stats th:nth-child(2) { width: 6%; }
+body.page-stats th:nth-child(3) { width: 14.2%; }
+body.page-stats th:nth-child(n+4) { width: 7.38%; }
 
-/* Slimmer padding in the rank column so the header still fits */
-body.page-stats th:nth-child(1),
-body.page-stats td:nth-child(1) {
-  padding-left: 8px;
-  padding-right: 8px;
+/* Slimmer side padding so headers (plus the sort arrow) fit in narrower columns */
+body.page-stats th,
+body.page-stats td {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /* Individual Records: Player/Season/Opponent | Pseudonym/Wins | Wins/Record | Net */
