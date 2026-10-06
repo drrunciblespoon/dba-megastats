@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Season Sheets - DBA Megastats</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="layout.css">
+  <script src="shared.js"></script>
+</head>
+<body class="centered page-sheets">
+  <h2>Season Sheets</h2>
+  <div id="status">Each link opens that season's Google Sheet in a new tab.</div>
+
+  <table class="nosort">
+    <thead>
+      <tr>
+        <th data-c="0">Season</th>
+        <th data-c="4">Frontier</th>
+        <th data-c="8">Tower</th>
+      </tr>
+    </thead>
+    <tbody id="sheetRows"></tbody>
+  </table>
+
+  <script>
+    // Newest season first. For each season give a Frontier and Tower URL,
+    // or a single URL under "both" for seasons that had no divisions.
+    const SHEETS = [
+      { season: 9, frontier: 'https://docs.google.com/spreadsheets/d/1n8E9UdToMnevsw0ctQaOjNV_rxUl0ZvjDGsa2HGwSyY/edit?usp=sharing',
+                   tower:    'https://docs.google.com/spreadsheets/d/1y4AtqFJ2cEoVCvcyStw0s2e0sdPyJtV_ziAHCAsIyyY/edit?usp=sharing' },
+      { season: 8, frontier: 'https://docs.google.com/spreadsheets/d/10yCrIvCv0-7u2XrSdzyvjlrmA06uw5zCTdKRBNM6A7I/edit?usp=sharing',
+                   tower:    'https://docs.google.com/spreadsheets/d/1YBrJaRAvWK36-QS7H9QpUMX_INHk-SZps89az-fZ3dM/edit?usp=sharing' },
+      { season: 7, frontier: 'https://docs.google.com/spreadsheets/d/10k-27CkS-ofQLuyFeFU-dqFHnxKdWtfTHd62lqf0Kx0/edit?usp=sharing',
+                   tower:    'https://docs.google.com/spreadsheets/d/1K8AINhqV0FZ3Sb92PmMZrVWCzIp7_F2cFL65PwaRKRU/edit?usp=sharing' },
+      { season: 6, frontier: 'https://docs.google.com/spreadsheets/d/1oXQkqxBFpD_2SmcdzbigtMOTaZYJxThEY7yI7NoiXnU/edit?usp=sharing',
+                   tower:    'https://docs.google.com/spreadsheets/d/1MfLjMiegXJawC_rJ8C8hh99xCZorHVEehFyJeEZeNFc/edit?usp=sharing' },
+      { season: 5, frontier: 'https://docs.google.com/spreadsheets/d/11UjSNRkQxa_3Z5_VSEQ2FwX6tBe9UxrDUZ779fDI-7Y/edit?usp=sharing',
+                   tower:    'https://docs.google.com/spreadsheets/d/1S7pKAWW02PS_7R8kvk7PtQ0R_151r6rzyb0SdLDYVq8/edit?usp=sharing' },
+      { season: 4, frontier: 'https://docs.google.com/spreadsheets/d/1tGDu5HoxzauKlAssGEVqtXyhoEmMPdtO7soUFURpvRY/edit?usp=sharing',
+                   tower:    'https://docs.google.com/spreadsheets/d/1UGuwBFH6Ge_iJexKY1ITjEeiL9K7AVyVU2eXihApvzQ/edit?usp=sharing' },
+      { season: 3, frontier: 'https://docs.google.com/spreadsheets/d/1FvD8FTOFiQVxFFvARgrgRG48JSv4Whw7stG7NVtLb8o/edit?usp=sharing',
+                   tower:    'https://docs.google.com/spreadsheets/d/1-wEHWZ603z5g6Ka6maknjEX-YHP27dbd9-pwAl1DZEQ/edit?usp=sharing' },
+      { season: 2, frontier: 'https://docs.google.com/spreadsheets/d/1AL8T1WhSRHnHsepmMaDDQlE7Kv_3fqQfi5JscW7qGd4/edit?usp=sharing',
+                   tower:    'https://docs.google.com/spreadsheets/d/1thBqbkN0qflp_jT6ev7_R4RVCLd8EWSRaZ8jBMXKCNs/edit?usp=sharing' },
+      { season: 1, both: 'https://docs.google.com/spreadsheets/d/12jTcSSruFGEFq7fIDTSRVWZdGfQQeEvZHRgRRRn7H0g/edit?usp=sharing' }
+    ];
+
+    function cell(tr, colour, cls) {
+      const td = tr.insertCell();
+      td.dataset.c = colour;
+      if (cls) td.className = cls;
+      return td;
+    }
+
+    function link(td, url, label) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = label;
+      td.appendChild(a);
+    }
+
+    const body = document.getElementById('sheetRows');
+    SHEETS.forEach(s => {
+      const tr = body.insertRow();
+      cell(tr, 0, 'season').textContent = 'Season ' + s.season;
+      if (s.both) {
+        const td = cell(tr, 6);
+        td.colSpan = 2;
+        link(td, s.both, 'Open sheet');
+      } else {
+        link(cell(tr, 4), s.frontier, 'Open sheet');
+        link(cell(tr, 8), s.tower, 'Open sheet');
+      }
+    });
+  </script>
+</body>
+</html>
