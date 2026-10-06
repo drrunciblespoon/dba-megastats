@@ -170,6 +170,15 @@ body.page-hof td {
   overflow-wrap: anywhere;
 }
 
+/* Hover-over notes on tables */
+body.centered .page-note {
+  max-width: 720px;
+  margin: 12px auto 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
 /* ---------- Season Sheets page ---------- */
 body.page-sheets table {
   width: 640px;
