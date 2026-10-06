@@ -163,50 +163,43 @@
       pokemonSpriteEl.style.display =
         pokemon.sprite ? 'block' : 'none';
 
-      /*
-       * ------------------------------------------------------------
-       * Championships
-       * ------------------------------------------------------------
-       */
+     /*
+ * ------------------------------------------------------------
+ * Championships
+ * ------------------------------------------------------------
+ */
 
-      championshipsEl.innerHTML = '';
+championshipsEl.innerHTML = '';
 
 const championships = Array.isArray(pokemon.championships)
   ? pokemon.championships
   : [];
 
-championships.forEach(championship => {
-  const championshipEl = document.createElement('div');
+if (championships.length > 0) {
 
-  championshipEl.className = 'pokemon-championship';
+  championships.forEach(championship => {
 
-  const trophy = document.createElement('div');
-  trophy.textContent = '🏆';
-  trophy.className = 'pokemon-trophy';
-  trophy.setAttribute(
-    'aria-label',
-    'Championship'
-  );
+    const championshipEl = document.createElement('div');
+    championshipEl.className = 'pokemon-championship';
 
-  const details = document.createElement('div');
-  details.className = 'pokemon-championship-details';
+    const trophy = document.createElement('div');
+    trophy.className = 'pokemon-trophy';
+    trophy.textContent = '🏆';
 
-  const player = championship.player || 'Unknown Player';
-  const season = championship.season
-    ? `Season ${championship.season}`
-    : 'Unknown Season';
-  const division = championship.division
-    ? `(${championship.division})`
-    : '';
+    const details = document.createElement('div');
+    details.className = 'pokemon-championship-details';
 
-  details.textContent =
-    `${player} - ${season} ${division}`.trim();
+    details.textContent =
+      `${championship.player} - Season ${championship.season} (${championship.division})`;
 
-  championshipEl.appendChild(trophy);
-  championshipEl.appendChild(details);
+    championshipEl.appendChild(trophy);
+    championshipEl.appendChild(details);
 
-  championshipsEl.appendChild(championshipEl);
-});
+    championshipsEl.appendChild(championshipEl);
+  });
+
+}
+
 
 
       /*
