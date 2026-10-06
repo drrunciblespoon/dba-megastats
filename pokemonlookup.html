@@ -275,7 +275,13 @@ if (championships.length > 0) {
     DBA.call('pokemonLookupGetAll')
       .then(data => {
 
-        pokemonData = data.pokemon || [];
+        pokemonData = (data.pokemon || []).map(pokemon => ({
+      ...pokemon,
+
+      championships: Array.isArray(pokemon.championships)
+        ? pokemon.championships
+        : []
+    }));
 
         pokemonSel.innerHTML = '';
 
