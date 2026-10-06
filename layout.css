@@ -64,6 +64,18 @@ body.centered td {
   text-overflow: ellipsis;
 }
 
+/* Gen 9 Stats: narrow rank column, wider Pokemon name column.
+   Fixed layout divides the leftover width equally among the other 11 columns. */
+body.page-stats th:nth-child(1) { width: 4%; }
+body.page-stats th:nth-child(3) { width: 11.4%; }
+
+/* Slimmer padding in the rank column so the header still fits */
+body.page-stats th:nth-child(1),
+body.page-stats td:nth-child(1) {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 /* Individual Records: Player/Season/Opponent | Pseudonym/Wins | Wins/Record | Net */
 body.page-individual th:nth-child(1) { width: 30%; }
 body.page-individual th:nth-child(2) { width: 30%; }
