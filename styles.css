@@ -200,7 +200,7 @@ td a:focus-visible {
 
 .page-pokemon-lookup .pokemon-lookup-sprite {
   width: auto;
-  height: 80px;
+  height: 160px;
   image-rendering: pixelated;
   margin: 4px 0 8px;
 }
@@ -246,4 +246,28 @@ td a:focus-visible {
   }
 }
 
+.pokemon-championships {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.pokemon-championship {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.pokemon-trophy {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.pokemon-championship-details {
+  margin-top: 5px;
+  font-size: 0.95rem;
+}
 
