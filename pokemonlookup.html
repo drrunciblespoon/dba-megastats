@@ -300,19 +300,27 @@
      * ------------------------------------------------------------
      */
 
-    pokemonSel.addEventListener('change', () => {
+    function handlePokemonSelection() {
+  const value = pokemonSel.value;
 
-      const value = pokemonSel.value;
+  if (value === '') {
+    showPokemon(null);
+    return;
+  }
 
-      if (value === '') {
-        showPokemon(null);
-        return;
-      }
+  const pokemon = pokemonData[Number(value)];
 
-      showPokemon(
-        pokemonData[Number(value)]
-      );
-    });
+  if (!pokemon) {
+    showPokemon(null);
+    return;
+  }
+
+  showPokemon(pokemon);
+}
+
+pokemonSel.addEventListener('change', handlePokemonSelection);
+pokemonSel.addEventListener('input', handlePokemonSelection);
+
   </script>
 
 </body>
