@@ -175,32 +175,26 @@ const championships = Array.isArray(pokemon.championships)
   ? pokemon.championships
   : [];
 
-if (championships.length > 0) {
+championships.forEach(championship => {
 
-  championships.forEach(championship => {
+  const championshipEl = document.createElement('div');
+  championshipEl.className = 'pokemon-championship';
 
-    const championshipEl = document.createElement('div');
-    championshipEl.className = 'pokemon-championship';
+  const trophy = document.createElement('div');
+  trophy.className = 'pokemon-trophy';
+  trophy.textContent = '🏆';
 
-    const trophy = document.createElement('div');
-    trophy.className = 'pokemon-trophy';
-    trophy.textContent = '🏆';
+  const details = document.createElement('div');
+  details.className = 'pokemon-championship-details';
 
-    const details = document.createElement('div');
-    details.className = 'pokemon-championship-details';
+  details.textContent =
+    `${championship.player} - Season ${championship.season} (${championship.division})`;
 
-    details.textContent =
-      `${championship.player} - Season ${championship.season} (${championship.division})`;
+  championshipEl.appendChild(trophy);
+  championshipEl.appendChild(details);
 
-    championshipEl.appendChild(trophy);
-    championshipEl.appendChild(details);
-
-    championshipsEl.appendChild(championshipEl);
-  });
-
-}
-
-
+  championshipsEl.appendChild(championshipEl);
+});
 
       /*
        * ------------------------------------------------------------
