@@ -1,5 +1,21 @@
 /* Extra layout rules. Load this after styles.css. */
 
+/* ---------- Home page ---------- */
+body.page-home .intro {
+  max-width: 720px;
+  margin: 20px auto 0;
+  padding: 28px 32px;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.7;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+body.page-home .intro p { margin: 0 0 1em; }
+body.page-home .intro p:last-child { margin-bottom: 0; }
+body.page-home .intro a { color: var(--accent); font-weight: 600; text-decoration: none; }
+body.page-home .intro a:hover { text-decoration: underline; }
 
 /* ---------- Pages with centred content ---------- */
 
