@@ -171,8 +171,13 @@
 
       championshipsEl.innerHTML = '';
 
-pokemon.championships.forEach(championship => {
+const championships = Array.isArray(pokemon.championships)
+  ? pokemon.championships
+  : [];
+
+championships.forEach(championship => {
   const championshipEl = document.createElement('div');
+
   championshipEl.className = 'pokemon-championship';
 
   const trophy = document.createElement('div');
