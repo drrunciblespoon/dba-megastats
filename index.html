@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home - DBA Megastats</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="layout.css">
+  <script src="shared.js"></script>
+  <script src="api.js"></script>
+</head>
+<body class="centered page-home">
+  <h2>Welcome to the DBA Megastats Project.</h2>
+
+  <div class="intro">
+    <p>
+      Here you can view stats from
+      <span id="seasonsText">across all seasons</span>
+      of DBA to date.
+    </p>
+
+    <p>
+      You can search for any player's all time win / loss records and their
+      pairings records on the
+      <a href="individualrecords.html">Individual</a> and
+      <a href="pairingrecords.html">Pairings</a> pages.
+    </p>
+
+    <p>
+      All Time DBA Records for players appear on
+      <a href="playerrecords.html">Player Records</a>.
+    </p>
+
+    <p>
+      You can see tables for Pokémon statistics on the
+      <a href="stats.html">Gen 9 Stats</a> page, which can be filtered by tera
+      and division. There are also some interesting individual Pokémon stats on
+      the <a href="pokemonrecords.html">Pokémon Records</a> page.
+    </p>
+
+    <p>
+      You can find a table of all our division winners and runner-ups on
+      <a href="halloffame.html">Hall of Fame</a>.
+    </p>
+
+    <p>
+      Finally, all season docs are available on the
+      <a href="seasonsheets.html">Docs</a> tab.
+    </p>
+
+    <p>
+      If you have any suggestions for improvements to this site, or requests
+      for further statistics, please just ping or DM crème on Discord. If
+      you've got this far, you should know where to find them!
+    </p>
+  </div>
+
+  <script>
+    // Fills in the number of seasons from the Sheet. If the call fails or the
+    // value isn't a number, the sentence stays as "across all seasons".
+    DBA.call('siteGetSeasonCount')
+      .then(n => {
+        if (/^\d+$/.test(String(n).trim())) {
+          DBA.$('seasonsText').textContent = 'across all ' + String(n).trim() + ' seasons';
+        }
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>
