@@ -101,6 +101,7 @@
 
             <thead>
               <tr>
+                <th>Tera</th>
                 <th>TD.</th>
                 <th>GP.</th>
                 <th>Kills</th>
@@ -273,8 +274,14 @@
           'pokemon-championship-details';
 
 
+        const teraText =
+          championship.tera
+            ? ' — Tera'
+            : '';
+
+
         details.textContent =
-          `${championship.player} - Season ${championship.season} (${championship.division})`;
+          `${championship.player} - Season ${championship.season} (${championship.division})${teraText}`;
 
 
         championshipEl.appendChild(trophy);
@@ -295,35 +302,106 @@
       draftBody.innerHTML = '';
 
 
-     if (pokemon.drafts.length === 0) {
-  const row = draftBody.insertRow();
-  const cell = row.insertCell();
+      const drafts =
+        Array.isArray(pokemon.drafts)
+          ? pokemon.drafts
+          : [];
 
-  cell.colSpan = 6;
-  cell.textContent = 'No draft history found.';
-} else {
-  pokemon.drafts.forEach(draft => {
-    const row = draftBody.insertRow();
 
-    addCell(row, draft.player);
+      if (drafts.length === 0) {
 
-    const seasonText =
-      draft.season
-        ? `Season ${draft.season} (${draft.division})`
-        : `(${draft.division})`;
+        const row =
+          draftBody.insertRow();
 
-    addCell(row, seasonText);
-    addCell(row, draft.appearances, 'num');
-    addCell(row, draft.kd, 'num');
-    addCell(row, draft.wr, 'num');
+        const cell =
+          row.insertCell();
 
-    // Display "Tera" for Pokémon drafted in their Tera form.
-    const teraCell = document.createElement('td');
-teraCell.textContent = draft.tera ? 'Tera' : '';
-row.appendChild(teraCell);
+        cell.colSpan = 6;
 
-  });
-}
+        cell.textContent =
+          'No draft history found.';
+
+      } else {
+
+        drafts.forEach(draft => {
+
+          const row =
+            draftBody.insertRow();
+
+
+          /*
+           * Player
+           */
+
+          addCell(
+            row,
+            draft.player
+          );
+
+
+          /*
+           * Season
+           */
+
+          const seasonText =
+            draft.season
+              ? `Season ${draft.season} (${draft.division})`
+              : `(${draft.division})`;
+
+
+          addCell(
+            row,
+            seasonText
+          );
+
+
+          /*
+           * Appearances
+           */
+
+          addCell(
+            row,
+            draft.appearances,
+            'num'
+          );
+
+
+          /*
+           * K-D
+           */
+
+          addCell(
+            row,
+            draft.kd,
+            'num'
+          );
+
+
+          /*
+           * WR.
+           */
+
+          addCell(
+            row,
+            draft.wr,
+            'num'
+          );
+
+
+          /*
+           * Tera
+           */
+
+          addCell(
+            row,
+            draft.tera
+              ? 'Tera'
+              : ''
+          );
+
+        });
+
+      }
 
 
       /*
@@ -335,85 +413,156 @@ row.appendChild(teraCell);
       recordBody.innerHTML = '';
 
 
-      const row =
-        recordBody.insertRow();
+      /*
+       * Add one record row.
+       *
+       * teraLabel:
+       *
+       *   No  = normal Pokémon
+       *   Yes = Tera Pokémon
+       */
+
+      function addRecordRow(
+        teraLabel,
+        record
+      ) {
+
+        if (!record) {
+          return;
+        }
 
 
-      if (!pokemon.record) {
+        const row =
+          recordBody.insertRow();
+
+
+        addCell(
+          row,
+          teraLabel
+        );
+
+
+        addCell(
+          row,
+          record.td,
+          'num'
+        );
+
+
+        addCell(
+          row,
+          record.gp,
+          'num'
+        );
+
+
+        addCell(
+          row,
+          record.kills,
+          'num'
+        );
+
+
+        addCell(
+          row,
+          record.deaths,
+          'num'
+        );
+
+
+        addCell(
+          row,
+          record.diff,
+          'num'
+        );
+
+
+        addCell(
+          row,
+          record.wins,
+          'num'
+        );
+
+
+        addCell(
+          row,
+          record.losses,
+          'num'
+        );
+
+
+        addCell(
+          row,
+          record.wr,
+          'num'
+        );
+
+
+        addCell(
+          row,
+          record.kpg,
+          'num'
+        );
+
+
+        addCell(
+          row,
+          record.sr,
+          'num'
+        );
+
+      }
+
+
+      /*
+       * Normal Pokémon record.
+       */
+
+      if (pokemon.record) {
+
+        addRecordRow(
+          'No',
+          pokemon.record
+        );
+
+      }
+
+
+      /*
+       * Tera Pokémon record.
+       *
+       * Only appears when the API found a "(T)" record.
+       */
+
+      if (pokemon.teraRecord) {
+
+        addRecordRow(
+          'Yes',
+          pokemon.teraRecord
+        );
+
+      }
+
+
+      /*
+       * No records at all.
+       */
+
+      if (
+        !pokemon.record &&
+        !pokemon.teraRecord
+      ) {
+
+        const row =
+          recordBody.insertRow();
 
         const cell =
           row.insertCell();
 
-        cell.colSpan = 10;
+        cell.colSpan = 11;
 
         cell.textContent =
           'No overall record found.';
-
-      } else {
-
-        const r =
-          pokemon.record;
-
-
-        addCell(
-          row,
-          r.td,
-          'num'
-        );
-
-        addCell(
-          row,
-          r.gp,
-          'num'
-        );
-
-        addCell(
-          row,
-          r.kills,
-          'num'
-        );
-
-        addCell(
-          row,
-          r.deaths,
-          'num'
-        );
-
-        addCell(
-          row,
-          r.diff,
-          'num'
-        );
-
-        addCell(
-          row,
-          r.wins,
-          'num'
-        );
-
-        addCell(
-          row,
-          r.losses,
-          'num'
-        );
-
-        addCell(
-          row,
-          r.wr,
-          'num'
-        );
-
-        addCell(
-          row,
-          r.kpg,
-          'num'
-        );
-
-        addCell(
-          row,
-          r.sr,
-          'num'
-        );
 
       }
 
@@ -462,20 +611,22 @@ row.appendChild(teraCell);
         pokemonSel.appendChild(first);
 
 
-        pokemonData.forEach((pokemon, index) => {
+        pokemonData.forEach(
+          (pokemon, index) => {
 
-          const option =
-            document.createElement('option');
+            const option =
+              document.createElement('option');
 
-          option.value =
-            index;
+            option.value =
+              index;
 
-          option.textContent =
-            pokemon.name;
+            option.textContent =
+              pokemon.name;
 
-          pokemonSel.appendChild(option);
+            pokemonSel.appendChild(option);
 
-        });
+          }
+        );
 
 
         statusEl.textContent = '';
