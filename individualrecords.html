@@ -3,85 +3,42 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>Individual Records - DBA Megastats</title>
-
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="layout.css">
-
   <script src="shared.js"></script>
   <script src="api.js"></script>
 </head>
-
 <body class="centered page-individual">
-
   <h2>Individual Records</h2>
 
   <div class="controls">
     <div>
       <label for="player">Player</label>
-
-      <select id="player">
-        <option>Loading...</option>
-      </select>
+      <select id="player"><option>Loading...</option></select>
     </div>
   </div>
 
-  <table
-    id="totals"
-    class="totals"
-    style="display:none"
-  >
+  <table id="totals" class="totals" style="display:none">
     <thead>
-      <tr>
-        <th>Player</th>
-        <th class="num">Wins</th>
-        <th class="num">Losses</th>
-        <th class="num">Net</th>
-      </tr>
+      <tr><th>Player</th><th class="num">Wins</th><th class="num">Losses</th><th class="num">Net</th></tr>
     </thead>
-
     <tbody></tbody>
   </table>
 
-  <h3
-    id="seasonsHeading"
-    style="display:none"
-  >
-    Season Records
-  </h3>
-
-  <table
-    id="seasons"
-    style="display:none"
-  >
+  <h3 id="seasonsHeading" style="display:none">Season Records</h3>
+  <table id="seasons" style="display:none">
     <thead>
-      <tr>
-        <th>Season</th>
-        <th class="num">Pseudonym</th>
-        <th class="num">Record</th>
-        <th class="num">Play Off Status</th>
-      </tr>
+      <tr><th>Season</th><th class="num">Pseudonym</th><th class="num">Record</th><th class="num">Play Off Status</th></tr>
     </thead>
-
     <tbody></tbody>
   </table>
 
   <div id="status"></div>
-
-  <table
-    id="results"
-    style="display:none"
-  >
+  <table id="results" style="display:none">
     <thead>
-      <tr>
-        <th>Opponent</th>
-        <th class="num">Wins</th>
-        <th class="num">Losses</th>
-        <th class="num">Net</th>
-      </tr>
+      <tr><th>Opponent</th><th class="num">Wins</th><th class="num">Losses</th><th class="num">Net</th></tr>
     </thead>
-
     <tbody></tbody>
   </table>
 
@@ -93,90 +50,53 @@
     const seasonsTbl = DBA.$('seasons');
     const seasonsHeading = DBA.$('seasonsHeading');
 
-    DBA.call('vwGetPlayers')
-      .then(names => {
-        DBA.fillSelect(
-          sel,
-          'player',
-          names
-        );
+    // Every player's record, loaded once and looked up by name
+    const players = new Map();
+
+    function clear() {
+      DBA.show(results, false);
+      DBA.show(totals, false);
+      DBA.show(seasonsTbl, false);
+      DBA.show(seasonsHeading, false);
+      statusEl.textContent = '';
+    }
+
+    function render(name) {
+      const p = players.get(name);
+      if (!p) { clear(); return; }
+
+      const [w, l, found] = p.t;
+      DBA.fillTotals(totals, [{ label: p.n, wins: w, losses: l, net: w - l, found: !!found }]);
+
+      const sn = DBA.fillTable(
+        seasonsTbl,
+        p.s.map(([season, division, pseudonym, record, playoff]) => [
+          division ? season + ' (' + division + ')' : season,
+          pseudonym,
+          record,
+          playoff.toLowerCase() === 'champion' ? '⭐ ' + playoff : playoff
+        ])
+      );
+      DBA.show(seasonsHeading, sn > 0);
+
+      const n = DBA.fillTable(
+        results,
+        p.r.map(([opponent, wins, losses]) => [opponent, wins, losses, wins - losses])
+      );
+      statusEl.textContent = n ? '' : 'No records found.';
+    }
+
+    DBA.call('vwGetAll')
+      .then(list => {
+        list.forEach(p => players.set(p.n, p));
+        DBA.fillSelect(sel, 'player', list.map(p => p.n));
       })
-      .catch(e => {
-        statusEl.textContent =
-          'Error: ' + e.message;
-      });
+      .catch(e => { statusEl.textContent = 'Error: ' + e.message; });
 
     sel.addEventListener('change', () => {
-      const chosen = sel.value;
-
-      if (!chosen) {
-        DBA.show(results, false);
-        DBA.show(totals, false);
-        DBA.show(seasonsTbl, false);
-        DBA.show(seasonsHeading, false);
-
-        statusEl.textContent = '';
-
-        return;
-      }
-
-      statusEl.textContent = 'Loading...';
-
-      DBA.call(
-        'vwGetRecordData',
-        chosen
-      )
-        .then(d => {
-          if (sel.value !== chosen) {
-            return;
-          }
-
-          DBA.fillTotals(
-            totals,
-            [d.totals]
-          );
-
-          const sn = DBA.fillTable(
-            seasonsTbl,
-            d.seasons.map(s => [
-              s.division
-                ? s.season + ' (' + s.division + ')'
-                : s.season,
-              s.pseudonym,
-              s.record,
-              s.playoff.toLowerCase() === 'champion'
-                ? '⭐ ' + s.playoff
-                : s.playoff
-            ])
-          );
-
-          DBA.show(
-            seasonsHeading,
-            sn > 0
-          );
-
-          const n = DBA.fillTable(
-            results,
-            d.rows.map(r => [
-              r.opponent,
-              r.wins,
-              r.losses,
-              r.net
-            ])
-          );
-
-          statusEl.textContent = n
-            ? ''
-            : 'No records found.';
-        })
-        .catch(e => {
-          if (sel.value === chosen) {
-            statusEl.textContent =
-              'Error: ' + e.message;
-          }
-        });
+      if (!sel.value) { clear(); return; }
+      render(sel.value);
     });
   </script>
-
 </body>
 </html>
