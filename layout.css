@@ -67,8 +67,8 @@ body.centered td {
 /* Gen 9 Stats: Rank 6%, Sprite 6%, Pokemon 14.2%, remaining ten columns equal */
 body.page-stats th:nth-child(1) { width: 6%; }
 body.page-stats th:nth-child(2) { width: 6%; }
-body.page-stats th:nth-child(3) { width: 15.2%; }
-body.page-stats th:nth-child(n+4) { width: 7.28%; }
+body.page-stats th:nth-child(3) { width: 17.2%; }
+body.page-stats th:nth-child(n+4) { width: 7.08%; }
 
 /* Slimmer side padding so headers (plus the sort arrow) fit in narrower columns */
 body.page-stats th,
