@@ -52,7 +52,7 @@ const DBA_NAV = [
 document.addEventListener('DOMContentLoaded', () => {
   const header = document.createElement('header');
   header.className = 'site-header';
-  header.innerHTML = '<img src="dba.png" alt="DBA">';
+  header.innerHTML = '<h1 class="site-title">Draftholes Battle Association</h1>';
 
   const nav = document.createElement('nav');
   nav.className = 'site-nav';
