@@ -90,6 +90,22 @@ body.page-pairing th:nth-child(n+2) { width: 16.66%; }
 /* Pokemon Records (7 columns): 2nd column 30%, the other six share 70% */
 body.page-pokemon th { width: 11.6667%; }
 body.page-pokemon th:nth-child(2) { width: 30%; }
+body.page-pokemon #root > div {
+  max-width: 1250px;            /* same overall width as the other pages */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.page-pokemon #root > div > div {
+  flex: 1 1 calc(50% - 16px);   /* half the row, minus half the 32px gap */
+  min-width: 0;                 /* lets the group shrink instead of forcing a wrap */
+}
+
+body.page-pokemon .wrap,
+body.page-pokemon table {
+  width: 100%;
+  max-width: 100%;
+}
 
 
 /* Table wrapper used by sortableTable() and Pokemon Records */
