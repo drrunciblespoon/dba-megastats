@@ -105,3 +105,15 @@ table.nosort th {
 table.nosort th:hover {
   filter: none;
 }
+
+/* ---------- Season Sheets page ---------- */
+body.page-sheets table {
+  width: 640px;
+  table-layout: fixed;
+}
+
+body.page-sheets th:nth-child(1) { width: 28%; }
+body.page-sheets th:nth-child(2),
+body.page-sheets th:nth-child(3) { width: 36%; }
+
+body.page-sheets td.season { font-weight: 700; }
