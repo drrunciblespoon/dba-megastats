@@ -67,11 +67,22 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
   color: var(--header-text);
 }
 
+
+
 /* ---------- Navigation ---------- */
 .site-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px; padding: 14px 0 6px; }
 .site-nav a { color: var(--muted); text-decoration: none; font-weight: 600; }
 .site-nav a:hover { color: var(--text); }
 .site-nav a.active { color: var(--accent); }
+.site-nav .nav-break { flex-basis: 100%; height: 0; margin-top: -6px; }
+.site-nav a.nav-home {
+  padding: 3px 22px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.site-nav a.nav-home:hover,
+.site-nav a.nav-home.active { border-color: var(--accent); }
 
 /* ---------- Controls ---------- */
 .controls { display: flex; flex-wrap: wrap; gap: 20px; }
