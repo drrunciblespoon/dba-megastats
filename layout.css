@@ -106,6 +106,20 @@ table.nosort th:hover {
   filter: none;
 }
 
+/* Hall of Fame: wider columns where names pile up, and let cells wrap */
+body.page-hof th:nth-child(1) { width: 11%; }   /* Season */
+body.page-hof th:nth-child(2),
+body.page-hof th:nth-child(3),
+body.page-hof th:nth-child(4),
+body.page-hof th:nth-child(5) { width: 13%; }   /* Champions and runners-up */
+body.page-hof th:nth-child(6) { width: 17%; }   /* Pokemon MVP */
+body.page-hof th:nth-child(7) { width: 20%; }   /* Hercule Poirot */
+
+body.page-hof td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 /* ---------- Season Sheets page ---------- */
 body.page-sheets table {
   width: 640px;
