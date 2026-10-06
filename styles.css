@@ -271,3 +271,9 @@ td a:focus-visible {
   font-size: 0.95rem;
 }
 
+.pokemon-record-note {
+  margin: -8px 0 10px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
