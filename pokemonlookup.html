@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Pokémon Look Up - DBA Megastats</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="layout.css">
+
+  <script src="shared.js"></script>
+  <script src="api.js"></script>
+</head>
+
+<body class="centered page-pokemon-lookup">
+
+  <main class="pokemon-lookup">
+
+    <h2>Pokémon Look Up</h2>
+
+    <div class="controls pokemon-lookup-controls">
+      <div>
+        <label for="pokemonSel">Pokémon</label>
+        <select id="pokemonSel">
+          <option>Loading...</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="status">Loading...</div>
+
+    <section id="pokemonDetails" hidden>
+
+      <div class="pokemon-lookup-header">
+
+        <h1 id="pokemonName"></h1>
+
+        <img
+          id="pokemonSprite"
+          class="pokemon-lookup-sprite"
+          alt=""
+        >
+
+        <div
+          id="championships"
+          class="pokemon-championships"
+          aria-label="Championships"
+        ></div>
+
+      </div>
+
+      <section class="pokemon-section">
+
+        <h3>Draft History</h3>
+
+        <div class="wrap">
+          <table class="nosort pokemon-draft-table">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Season</th>
+                <th>Division</th>
+              </tr>
+            </thead>
+
+            <tbody id="draftBody"></tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <section class="pokemon-section">
+
+        <h3>Overall Record</h3>
+
+        <div class="wrap">
+          <table class="nosort totals pokemon-record-table">
+            <thead>
+              <tr>
+                <th>TD.</th>
+                <th>GP.</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+                <th>Diff.</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>WR.</th>
+                <th>KPG.</th>
+                <th>SR.</th>
+              </tr>
+            </thead>
+
+            <tbody id="recordBody"></tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+  <script>
+    const pokemonSel = DBA.$('pokemonSel');
+    const statusEl = DBA.$('status');
+    const detailsEl = DBA.$('pokemonDetails');
+
+    const pokemonNameEl = DBA.$('pokemonName');
+    const pokemonSpriteEl = DBA.$('pokemonSprite');
+    const championshipsEl = DBA.$('championships');
+
+    const draftBody = DBA.$('draftBody');
+    const recordBody = DBA.$('recordBody');
+
+    let pokemonData = [];
+
+    function addCell(row, value, className) {
+      const cell = document.createElement('td');
+
+      cell.textContent =
+        value === null ||
+        value === undefined ||
+        value === ''
+          ? '–'
+          : value;
+
+      if (className) {
+        cell.className = className;
+      }
+
+      row.appendChild(cell);
+
+      return cell;
+    }
+
+    function showPokemon(pokemon) {
+      if (!pokemon) {
+        detailsEl.hidden = true;
+        statusEl.textContent = 'Select a Pokémon.';
+        return;
+      }
+
+      detailsEl.hidden = false;
+      statusEl.textContent = '';
+
+      /*
+       * ------------------------------------------------------------
+       * Header
+       * ------------------------------------------------------------
+       */
+
+      pokemonNameEl.textContent = pokemon.name;
+
+      pokemonSpriteEl.src = pokemon.sprite || '';
+      pokemonSpriteEl.alt = pokemon.name;
+
+      pokemonSpriteEl.style.display =
+        pokemon.sprite ? 'block' : 'none';
+
+      /*
+       * ------------------------------------------------------------
+       * Championships
+       * ------------------------------------------------------------
+       */
+
+      championshipsEl.innerHTML = '';
+
+      for (let i = 0; i < pokemon.championships; i++) {
+        const trophy = document.createElement('span');
+
+        trophy.textContent = '🏆';
+        trophy.className = 'pokemon-trophy';
+        trophy.setAttribute(
+          'aria-label',
+          'Championship'
+        );
+
+        championshipsEl.appendChild(trophy);
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * Draft history
+       * ------------------------------------------------------------
+       */
+
+      draftBody.innerHTML = '';
+
+      if (pokemon.drafts.length === 0) {
+        const row = draftBody.insertRow();
+        const cell = row.insertCell();
+
+        cell.colSpan = 3;
+        cell.textContent = 'No draft history found.';
+      } else {
+        pokemon.drafts.forEach(draft => {
+          const row = draftBody.insertRow();
+
+          addCell(row, draft.player);
+          addCell(row, draft.season);
+          addCell(row, draft.division);
+        });
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * Overall record
+       * ------------------------------------------------------------
+       */
+
+      recordBody.innerHTML = '';
+
+      const row = recordBody.insertRow();
+
+      if (!pokemon.record) {
+        const cell = row.insertCell();
+
+        cell.colSpan = 10;
+        cell.textContent = 'No overall record found.';
+      } else {
+        const r = pokemon.record;
+
+        addCell(row, r.td, 'num');
+        addCell(row, r.gp, 'num');
+        addCell(row, r.kills, 'num');
+        addCell(row, r.deaths, 'num');
+        addCell(row, r.diff, 'num');
+        addCell(row, r.wins, 'num');
+        addCell(row, r.losses, 'num');
+        addCell(row, r.wr, 'num');
+        addCell(row, r.kpg, 'num');
+        addCell(row, r.sr, 'num');
+      }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     * Load all Pokémon lookup data
+     * ------------------------------------------------------------
+     */
+
+    DBA.call('pokemonLookupGetAll')
+      .then(data => {
+
+        pokemonData = data.pokemon || [];
+
+        pokemonSel.innerHTML = '';
+
+        const first = document.createElement('option');
+        first.value = '';
+        first.textContent = 'Select a Pokémon...';
+        pokemonSel.appendChild(first);
+
+        pokemonData.forEach((pokemon, index) => {
+          const option = document.createElement('option');
+
+          option.value = index;
+          option.textContent = pokemon.name;
+
+          pokemonSel.appendChild(option);
+        });
+
+        statusEl.textContent = '';
+
+        if (pokemonData.length === 0) {
+          statusEl.textContent =
+            'No Pokémon were found in PokemonInput.';
+          return;
+        }
+
+        /*
+         * Start with no Pokémon selected rather than automatically
+         * showing the first one.
+         */
+        detailsEl.hidden = true;
+      })
+      .catch(error => {
+        console.error(error);
+
+        statusEl.textContent =
+          'Error loading Pokémon data: ' + error.message;
+      });
+
+    /*
+     * ------------------------------------------------------------
+     * Pokémon selection
+     * ------------------------------------------------------------
+     */
+
+    pokemonSel.addEventListener('change', () => {
+
+      const value = pokemonSel.value;
+
+      if (value === '') {
+        showPokemon(null);
+        return;
+      }
+
+      showPokemon(
+        pokemonData[Number(value)]
+      );
+    });
+  </script>
+
+</body>
+</html>
