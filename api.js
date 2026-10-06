@@ -30,7 +30,8 @@ const DBA_NAV = [
   ['Gen 9 Stats', 'stats.html'],
   ['Player Records', 'playerrecords.html'],
   ['Pokemon Records', 'pokemonrecords.html'],
-  ['Hall of Fame', 'halloffame.html']
+  ['Hall of Fame', 'halloffame.html'],
+  ['League Docs', 'seasonsheets.html']
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
