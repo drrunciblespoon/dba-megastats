@@ -242,7 +242,8 @@ td a:focus-visible {
   }
 
   .page-pokemon-lookup .pokemon-draft-table {
-    min-width: 500px;
+    min-width: 650px;
   }
 }
+
 
