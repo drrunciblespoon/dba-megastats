@@ -50,38 +50,55 @@
 
       </div>
 
+
+      <!-- =========================================================
+           Draft History
+           ========================================================= -->
+
       <section class="pokemon-section">
 
-  <h3>Draft History</h3>
+        <h3>Draft History</h3>
 
-  <div class="wrap">
-    <table class="nosort pokemon-draft-table">
-      <thead>
-        <tr>
-          <th>Player Name</th>
-          <th>Season</th>
-          <th>Appearances</th>
-          <th>K-D</th>
-          <th>WR.</th>
-          <th>Tera</th>
-        </tr>
-      </thead>
+        <div class="wrap">
 
-      <tbody id="draftBody"></tbody>
-    </table>
-  </div>
+          <table class="nosort pokemon-draft-table">
 
-</section>
+            <thead>
+              <tr>
+                <th>Player Name</th>
+                <th>Season</th>
+                <th>Appearances</th>
+                <th>K-D</th>
+                <th>WR.</th>
+                <th>Tera</th>
+              </tr>
+            </thead>
 
+            <tbody id="draftBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================================================
+           Overall Record
+           ========================================================= -->
 
       <section class="pokemon-section">
 
         <h3>Overall Record</h3>
-          <p class="pokemon-record-note">Gen 9 Season Stats</p>
 
+        <p class="pokemon-record-note">
+          Gen 9 Season Stats
+        </p>
 
         <div class="wrap">
+
           <table class="nosort totals pokemon-record-table">
+
             <thead>
               <tr>
                 <th>TD.</th>
@@ -98,7 +115,9 @@
             </thead>
 
             <tbody id="recordBody"></tbody>
+
           </table>
+
         </div>
 
       </section>
@@ -107,22 +126,47 @@
 
   </main>
 
+
   <script>
-    const pokemonSel = DBA.$('pokemonSel');
-    const statusEl = DBA.$('status');
-    const detailsEl = DBA.$('pokemonDetails');
 
-    const pokemonNameEl = DBA.$('pokemonName');
-    const pokemonSpriteEl = DBA.$('pokemonSprite');
-    const championshipsEl = DBA.$('championships');
+    const pokemonSel =
+      DBA.$('pokemonSel');
 
-    const draftBody = DBA.$('draftBody');
-    const recordBody = DBA.$('recordBody');
+    const statusEl =
+      DBA.$('status');
+
+    const detailsEl =
+      DBA.$('pokemonDetails');
+
+    const pokemonNameEl =
+      DBA.$('pokemonName');
+
+    const pokemonSpriteEl =
+      DBA.$('pokemonSprite');
+
+    const championshipsEl =
+      DBA.$('championships');
+
+    const draftBody =
+      DBA.$('draftBody');
+
+    const recordBody =
+      DBA.$('recordBody');
+
 
     let pokemonData = [];
 
+
+    /*
+     * ------------------------------------------------------------
+     * Add a table cell
+     * ------------------------------------------------------------
+     */
+
     function addCell(row, value, className) {
-      const cell = document.createElement('td');
+
+      const cell =
+        document.createElement('td');
 
       cell.textContent =
         value === null ||
@@ -140,126 +184,331 @@
       return cell;
     }
 
+
+    /*
+     * ------------------------------------------------------------
+     * Display selected Pokémon
+     * ------------------------------------------------------------
+     */
+
     function showPokemon(pokemon) {
+
       if (!pokemon) {
+
         detailsEl.hidden = true;
-        statusEl.textContent = 'Select a Pokémon.';
+
+        statusEl.textContent =
+          'Select a Pokémon.';
+
         return;
       }
 
+
       detailsEl.hidden = false;
+
       statusEl.textContent = '';
 
+
       /*
-       * ------------------------------------------------------------
+       * ----------------------------------------------------------
        * Header
-       * ------------------------------------------------------------
+       * ----------------------------------------------------------
        */
 
-      pokemonNameEl.textContent = pokemon.name;
+      pokemonNameEl.textContent =
+        pokemon.name;
 
-      pokemonSpriteEl.src = pokemon.sprite || '';
-      pokemonSpriteEl.alt = pokemon.name;
+
+      pokemonSpriteEl.src =
+        pokemon.sprite || '';
+
+      pokemonSpriteEl.alt =
+        pokemon.name;
+
 
       pokemonSpriteEl.style.display =
-        pokemon.sprite ? 'block' : 'none';
+        pokemon.sprite
+          ? 'block'
+          : 'none';
 
-     /*
- * ------------------------------------------------------------
- * Championships
- * ------------------------------------------------------------
- */
-
-championshipsEl.innerHTML = '';
-
-const championships = Array.isArray(pokemon.championships)
-  ? pokemon.championships
-  : [];
-
-championships.forEach(championship => {
-
-  const championshipEl = document.createElement('div');
-  championshipEl.className = 'pokemon-championship';
-
-  const trophy = document.createElement('div');
-  trophy.className = 'pokemon-trophy';
-  trophy.textContent = '🏆';
-
-  const details = document.createElement('div');
-  details.className = 'pokemon-championship-details';
-
-  details.textContent =
-    `${championship.player} - Season ${championship.season} (${championship.division})`;
-
-  championshipEl.appendChild(trophy);
-  championshipEl.appendChild(details);
-
-  championshipsEl.appendChild(championshipEl);
-});
 
       /*
-       * ------------------------------------------------------------
-       * Draft history
-       * ------------------------------------------------------------
+       * ----------------------------------------------------------
+       * Championships
+       * ----------------------------------------------------------
+       */
+
+      championshipsEl.innerHTML = '';
+
+
+      const championships =
+        Array.isArray(pokemon.championships)
+          ? pokemon.championships
+          : [];
+
+
+      championships.forEach(championship => {
+
+        const championshipEl =
+          document.createElement('div');
+
+        championshipEl.className =
+          'pokemon-championship';
+
+
+        const trophy =
+          document.createElement('div');
+
+        trophy.className =
+          'pokemon-trophy';
+
+        trophy.textContent =
+          '🏆';
+
+
+        const details =
+          document.createElement('div');
+
+        details.className =
+          'pokemon-championship-details';
+
+
+        details.textContent =
+          `${championship.player} - Season ${championship.season} (${championship.division})`;
+
+
+        championshipEl.appendChild(trophy);
+
+        championshipEl.appendChild(details);
+
+        championshipsEl.appendChild(championshipEl);
+
+      });
+
+
+      /*
+       * ----------------------------------------------------------
+       * Draft History
+       * ----------------------------------------------------------
        */
 
       draftBody.innerHTML = '';
 
-      if (pokemon.drafts.length === 0) {
-  const row = draftBody.insertRow();
-  const cell = row.insertCell();
 
-  cell.colSpan = 5;
-  cell.textContent = 'No draft history found.';
-} else {
-  pokemon.drafts.forEach(draft => {
-    const row = draftBody.insertRow();
+      if (
+        !Array.isArray(pokemon.drafts) ||
+        pokemon.drafts.length === 0
+      ) {
 
-    addCell(row, draft.player);
+        const row =
+          draftBody.insertRow();
 
-    const seasonText =
-      draft.season
-        ? `Season ${draft.season} (${draft.division})`
-        : `(${draft.division})`;
+        const cell =
+          row.insertCell();
 
-    addCell(row, seasonText);
-    addCell(row, draft.appearances, 'num');
-    addCell(row, draft.kd, 'num');
-    addCell(row, draft.wr, 'num');
-  });
-}
+
+        /*
+         * There are now SIX columns:
+         *
+         * Player Name
+         * Season
+         * Appearances
+         * K-D
+         * WR.
+         * Tera
+         */
+
+        cell.colSpan = 6;
+
+        cell.textContent =
+          'No draft history found.';
+
+      } else {
+
+        pokemon.drafts.forEach(draft => {
+
+          const row =
+            draftBody.insertRow();
+
+
+          /*
+           * Player
+           */
+
+          addCell(
+            row,
+            draft.player
+          );
+
+
+          /*
+           * Season
+           */
+
+          const seasonText =
+            draft.season
+              ? `Season ${draft.season} (${draft.division})`
+              : `(${draft.division})`;
+
+
+          addCell(
+            row,
+            seasonText
+          );
+
+
+          /*
+           * Appearances
+           */
+
+          addCell(
+            row,
+            draft.appearances,
+            'num'
+          );
+
+
+          /*
+           * K-D
+           */
+
+          addCell(
+            row,
+            draft.kd,
+            'num'
+          );
+
+
+          /*
+           * WR.
+           */
+
+          addCell(
+            row,
+            draft.wr,
+            'num'
+          );
+
+
+          /*
+           * Tera
+           *
+           * The API supplies:
+           *
+           *   tera: true
+           *
+           * for Mew (T), etc.
+           *
+           * Normal Pokémon drafts have:
+           *
+           *   tera: false
+           */
+
+          addCell(
+            row,
+            draft.tera === true
+              ? 'Tera'
+              : '–'
+          );
+
+        });
+
+      }
 
 
       /*
-       * ------------------------------------------------------------
-       * Overall record
-       * ------------------------------------------------------------
+       * ----------------------------------------------------------
+       * Overall Record
+       * ----------------------------------------------------------
        */
 
       recordBody.innerHTML = '';
 
-      const row = recordBody.insertRow();
+
+      const row =
+        recordBody.insertRow();
+
 
       if (!pokemon.record) {
-        const cell = row.insertCell();
+
+        const cell =
+          row.insertCell();
 
         cell.colSpan = 10;
-        cell.textContent = 'No overall record found.';
-      } else {
-        const r = pokemon.record;
 
-        addCell(row, r.td, 'num');
-        addCell(row, r.gp, 'num');
-        addCell(row, r.kills, 'num');
-        addCell(row, r.deaths, 'num');
-        addCell(row, r.diff, 'num');
-        addCell(row, r.wins, 'num');
-        addCell(row, r.losses, 'num');
-        addCell(row, r.wr, 'num');
-        addCell(row, r.kpg, 'num');
-        addCell(row, r.sr, 'num');
+        cell.textContent =
+          'No overall record found.';
+
+      } else {
+
+        const r =
+          pokemon.record;
+
+
+        addCell(
+          row,
+          r.td,
+          'num'
+        );
+
+        addCell(
+          row,
+          r.gp,
+          'num'
+        );
+
+        addCell(
+          row,
+          r.kills,
+          'num'
+        );
+
+        addCell(
+          row,
+          r.deaths,
+          'num'
+        );
+
+        addCell(
+          row,
+          r.diff,
+          'num'
+        );
+
+        addCell(
+          row,
+          r.wins,
+          'num'
+        );
+
+        addCell(
+          row,
+          r.losses,
+          'num'
+        );
+
+        addCell(
+          row,
+          r.wr,
+          'num'
+        );
+
+        addCell(
+          row,
+          r.kpg,
+          'num'
+        );
+
+        addCell(
+          row,
+          r.sr,
+          'num'
+        );
+
       }
+
     }
+
 
     /*
      * ------------------------------------------------------------
@@ -268,52 +517,89 @@ championships.forEach(championship => {
      */
 
     DBA.call('pokemonLookupGetAll')
+
       .then(data => {
 
-        pokemonData = (data.pokemon || []).map(pokemon => ({
-      ...pokemon,
+        pokemonData =
+          (data.pokemon || []).map(pokemon => ({
 
-      championships: Array.isArray(pokemon.championships)
-        ? pokemon.championships
-        : []
-    }));
+            ...pokemon,
+
+            championships:
+              Array.isArray(pokemon.championships)
+                ? pokemon.championships
+                : [],
+
+            drafts:
+              Array.isArray(pokemon.drafts)
+                ? pokemon.drafts
+                : []
+
+          }));
+
 
         pokemonSel.innerHTML = '';
 
-        const first = document.createElement('option');
+
+        const first =
+          document.createElement('option');
+
         first.value = '';
-        first.textContent = 'Select a Pokémon...';
+
+        first.textContent =
+          'Select a Pokémon...';
+
         pokemonSel.appendChild(first);
 
-        pokemonData.forEach((pokemon, index) => {
-          const option = document.createElement('option');
 
-          option.value = index;
-          option.textContent = pokemon.name;
+        pokemonData.forEach((pokemon, index) => {
+
+          const option =
+            document.createElement('option');
+
+          option.value =
+            index;
+
+          option.textContent =
+            pokemon.name;
 
           pokemonSel.appendChild(option);
+
         });
+
 
         statusEl.textContent = '';
 
+
         if (pokemonData.length === 0) {
+
           statusEl.textContent =
             'No Pokémon were found in PokemonInput.';
+
           return;
+
         }
 
+
         /*
-         * Start with no Pokémon selected rather than automatically
-         * showing the first one.
+         * Start with no Pokémon selected.
          */
+
         detailsEl.hidden = true;
+
       })
+
+
       .catch(error => {
+
         console.error(error);
 
         statusEl.textContent =
-          'Error loading Pokémon data: ' + error.message;
+          'Error loading Pokémon data: ' +
+          error.message;
+
       });
+
 
     /*
      * ------------------------------------------------------------
@@ -322,25 +608,48 @@ championships.forEach(championship => {
      */
 
     function handlePokemonSelection() {
-  const value = pokemonSel.value;
 
-  if (value === '') {
-    showPokemon(null);
-    return;
-  }
+      const value =
+        pokemonSel.value;
 
-  const pokemon = pokemonData[Number(value)];
 
-  if (!pokemon) {
-    showPokemon(null);
-    return;
-  }
+      if (value === '') {
 
-  showPokemon(pokemon);
-}
+        showPokemon(null);
 
-pokemonSel.addEventListener('change', handlePokemonSelection);
-pokemonSel.addEventListener('input', handlePokemonSelection);
+        return;
+
+      }
+
+
+      const pokemon =
+        pokemonData[Number(value)];
+
+
+      if (!pokemon) {
+
+        showPokemon(null);
+
+        return;
+
+      }
+
+
+      showPokemon(pokemon);
+
+    }
+
+
+    pokemonSel.addEventListener(
+      'change',
+      handlePokemonSelection
+    );
+
+
+    pokemonSel.addEventListener(
+      'input',
+      handlePokemonSelection
+    );
 
   </script>
 
