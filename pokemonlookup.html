@@ -52,23 +52,26 @@
 
       <section class="pokemon-section">
 
-        <h3>Draft History</h3>
+  <h3>Draft History</h3>
 
-        <div class="wrap">
-          <table class="nosort pokemon-draft-table">
-            <thead>
-              <tr>
-                <th>Player</th>
-                <th>Season</th>
-                <th>Division</th>
-              </tr>
-            </thead>
+  <div class="wrap">
+    <table class="nosort pokemon-draft-table">
+      <thead>
+        <tr>
+          <th>Player Name</th>
+          <th>Season</th>
+          <th>Appearances</th>
+          <th>K-D</th>
+          <th>WR.</th>
+        </tr>
+      </thead>
 
-            <tbody id="draftBody"></tbody>
-          </table>
-        </div>
+      <tbody id="draftBody"></tbody>
+    </table>
+  </div>
 
-      </section>
+</section>
+
 
       <section class="pokemon-section">
 
@@ -188,20 +191,29 @@
       draftBody.innerHTML = '';
 
       if (pokemon.drafts.length === 0) {
-        const row = draftBody.insertRow();
-        const cell = row.insertCell();
+  const row = draftBody.insertRow();
+  const cell = row.insertCell();
 
-        cell.colSpan = 3;
-        cell.textContent = 'No draft history found.';
-      } else {
-        pokemon.drafts.forEach(draft => {
-          const row = draftBody.insertRow();
+  cell.colSpan = 5;
+  cell.textContent = 'No draft history found.';
+} else {
+  pokemon.drafts.forEach(draft => {
+    const row = draftBody.insertRow();
 
-          addCell(row, draft.player);
-          addCell(row, draft.season);
-          addCell(row, draft.division);
-        });
-      }
+    addCell(row, draft.player);
+
+    const seasonText =
+      draft.season
+        ? `Season ${draft.season} (${draft.division})`
+        : `(${draft.division})`;
+
+    addCell(row, seasonText);
+    addCell(row, draft.appearances, 'num');
+    addCell(row, draft.kd, 'num');
+    addCell(row, draft.wr, 'num');
+  });
+}
+
 
       /*
        * ------------------------------------------------------------
