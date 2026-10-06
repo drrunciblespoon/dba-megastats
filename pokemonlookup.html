@@ -295,125 +295,35 @@
       draftBody.innerHTML = '';
 
 
-      if (
-        !Array.isArray(pokemon.drafts) ||
-        pokemon.drafts.length === 0
-      ) {
+     if (pokemon.drafts.length === 0) {
+  const row = draftBody.insertRow();
+  const cell = row.insertCell();
 
-        const row =
-          draftBody.insertRow();
+  cell.colSpan = 6;
+  cell.textContent = 'No draft history found.';
+} else {
+  pokemon.drafts.forEach(draft => {
+    const row = draftBody.insertRow();
 
-        const cell =
-          row.insertCell();
+    addCell(row, draft.player);
 
+    const seasonText =
+      draft.season
+        ? `Season ${draft.season} (${draft.division})`
+        : `(${draft.division})`;
 
-        /*
-         * There are now SIX columns:
-         *
-         * Player Name
-         * Season
-         * Appearances
-         * K-D
-         * WR.
-         * Tera
-         */
+    addCell(row, seasonText);
+    addCell(row, draft.appearances, 'num');
+    addCell(row, draft.kd, 'num');
+    addCell(row, draft.wr, 'num');
 
-        cell.colSpan = 6;
+    // Display "Tera" for Pokémon drafted in their Tera form.
+    const teraCell = document.createElement('td');
+teraCell.textContent = draft.tera ? 'Tera' : '';
+row.appendChild(teraCell);
 
-        cell.textContent =
-          'No draft history found.';
-
-      } else {
-
-        pokemon.drafts.forEach(draft => {
-
-          const row =
-            draftBody.insertRow();
-
-
-          /*
-           * Player
-           */
-
-          addCell(
-            row,
-            draft.player
-          );
-
-
-          /*
-           * Season
-           */
-
-          const seasonText =
-            draft.season
-              ? `Season ${draft.season} (${draft.division})`
-              : `(${draft.division})`;
-
-
-          addCell(
-            row,
-            seasonText
-          );
-
-
-          /*
-           * Appearances
-           */
-
-          addCell(
-            row,
-            draft.appearances,
-            'num'
-          );
-
-
-          /*
-           * K-D
-           */
-
-          addCell(
-            row,
-            draft.kd,
-            'num'
-          );
-
-
-          /*
-           * WR.
-           */
-
-          addCell(
-            row,
-            draft.wr,
-            'num'
-          );
-
-
-          /*
-           * Tera
-           *
-           * The API supplies:
-           *
-           *   tera: true
-           *
-           * for Mew (T), etc.
-           *
-           * Normal Pokémon drafts have:
-           *
-           *   tera: false
-           */
-
-          addCell(
-            row,
-            draft.tera === true
-              ? 'Tera'
-              : '–'
-          );
-
-        });
-
-      }
+  });
+}
 
 
       /*
