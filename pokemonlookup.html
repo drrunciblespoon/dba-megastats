@@ -101,13 +101,32 @@
           Gen 9 Season Stats
         </p>
 
+        <div class="pokemon-record-tabs">
+
+          <button
+            type="button"
+            id="regularRecordTab"
+            class="pokemon-record-tab active"
+          >
+            Regular
+          </button>
+
+          <button
+            type="button"
+            id="teraRecordTab"
+            class="pokemon-record-tab"
+          >
+            Tera
+          </button>
+
+        </div>
+
         <div class="wrap">
 
           <table class="nosort totals pokemon-record-table">
 
             <thead>
               <tr>
-                <th>Tera</th>
                 <th>TD.</th>
                 <th>GP.</th>
                 <th>Kills</th>
@@ -163,7 +182,20 @@
     const recordBody =
       DBA.$('recordBody');
 
+    const regularRecordTab =
+      DBA.$('regularRecordTab');
+
+    const teraRecordTab =
+      DBA.$('teraRecordTab');
+
+
     let pokemonData = [];
+
+    let selectedRecordType =
+      'regular';
+
+    let selectedPokemon =
+      null;
 
 
     /*
@@ -185,13 +217,190 @@
           : value;
 
       if (className) {
-        cell.className = className;
+        cell.className =
+          className;
       }
 
       row.appendChild(cell);
 
       return cell;
+
     }
+
+
+    /*
+     * ------------------------------------------------------------
+     * Draw Overall Record
+     * ------------------------------------------------------------
+     */
+
+    function drawRecord(record) {
+
+      recordBody.innerHTML = '';
+
+
+      if (!record) {
+
+        const row =
+          recordBody.insertRow();
+
+        const cell =
+          row.insertCell();
+
+        cell.colSpan =
+          10;
+
+        cell.textContent =
+          'No overall record found.';
+
+        return;
+
+      }
+
+
+      const row =
+        recordBody.insertRow();
+
+
+      addCell(
+        row,
+        record.td,
+        'num'
+      );
+
+
+      addCell(
+        row,
+        record.gp,
+        'num'
+      );
+
+
+      addCell(
+        row,
+        record.kills,
+        'num'
+      );
+
+
+      addCell(
+        row,
+        record.deaths,
+        'num'
+      );
+
+
+      addCell(
+        row,
+        record.diff,
+        'num'
+      );
+
+
+      addCell(
+        row,
+        record.wins,
+        'num'
+      );
+
+
+      addCell(
+        row,
+        record.losses,
+        'num'
+      );
+
+
+      addCell(
+        row,
+        record.wr,
+        'num'
+      );
+
+
+      addCell(
+        row,
+        record.kpg,
+        'num'
+      );
+
+
+      addCell(
+        row,
+        record.sr,
+        'num'
+      );
+
+    }
+
+
+    /*
+     * ------------------------------------------------------------
+     * Update Overall Record Tab
+     * ------------------------------------------------------------
+     */
+
+    function updateRecordTab() {
+
+      if (!selectedPokemon) {
+
+        recordBody.innerHTML =
+          '';
+
+        return;
+
+      }
+
+
+      const record =
+        selectedRecordType === 'tera'
+          ? selectedPokemon.teraRecord
+          : selectedPokemon.record;
+
+
+      drawRecord(record);
+
+
+      regularRecordTab.classList.toggle(
+        'active',
+        selectedRecordType === 'regular'
+      );
+
+
+      teraRecordTab.classList.toggle(
+        'active',
+        selectedRecordType === 'tera'
+      );
+
+    }
+
+
+    /*
+     * ------------------------------------------------------------
+     * Record Tab Buttons
+     * ------------------------------------------------------------
+     */
+
+    regularRecordTab.onclick =
+      () => {
+
+        selectedRecordType =
+          'regular';
+
+        updateRecordTab();
+
+      };
+
+
+    teraRecordTab.onclick =
+      () => {
+
+        selectedRecordType =
+          'tera';
+
+        updateRecordTab();
+
+      };
 
 
     /*
@@ -202,23 +411,43 @@
 
     function showPokemon(pokemon) {
 
-      console.log('POKEMON OBJECT:', pokemon);
+      console.log(
+        'POKEMON OBJECT:',
+        pokemon
+      );
 
 
       if (!pokemon) {
 
-        detailsEl.hidden = true;
+        selectedPokemon =
+          null;
+
+        detailsEl.hidden =
+          true;
 
         statusEl.textContent =
           'Select a Pokémon.';
 
+        recordBody.innerHTML =
+          '';
+
         return;
+
       }
 
 
-      detailsEl.hidden = false;
+      selectedPokemon =
+        pokemon;
 
-      statusEl.textContent = '';
+      selectedRecordType =
+        'regular';
+
+
+      detailsEl.hidden =
+        false;
+
+      statusEl.textContent =
+        '';
 
 
       /*
@@ -233,6 +462,7 @@
 
       pokemonSpriteEl.src =
         pokemon.sprite || '';
+
 
       pokemonSpriteEl.alt =
         pokemon.name;
@@ -250,37 +480,44 @@
        * ----------------------------------------------------------
        */
 
-     legalityEl.innerHTML = '';
+      legalityEl.innerHTML =
+        '';
 
 
-const legalItem =
-  document.createElement('div');
-
-legalItem.textContent =
-  `Legal: ${pokemon.legal} of ${pokemon.totalSeasons} seasons`;
-
-legalityEl.appendChild(
-  legalItem
-);
+      const legalItem =
+        document.createElement('div');
 
 
-/*
- * Mega Pokémon do not need a Tera Banned line.
- */
+      legalItem.textContent =
+        `Legal: ${pokemon.legal} of ${pokemon.totalSeasons} seasons`;
 
-if (!pokemon.name.includes('-Mega')) {
 
-  const teraBannedItem =
-    document.createElement('div');
+      legalityEl.appendChild(
+        legalItem
+      );
 
-  teraBannedItem.textContent =
-    `Tera Banned: ${pokemon.teraBanned}`;
 
-  legalityEl.appendChild(
-    teraBannedItem
-  );
+      /*
+       * Mega Pokémon do not need a Tera Banned line.
+       */
 
-}
+      if (
+        !pokemon.name.includes('-Mega')
+      ) {
+
+        const teraBannedItem =
+          document.createElement('div');
+
+
+        teraBannedItem.textContent =
+          `Tera Banned: ${pokemon.teraBanned}`;
+
+
+        legalityEl.appendChild(
+          teraBannedItem
+        );
+
+      }
 
 
       /*
@@ -289,11 +526,14 @@ if (!pokemon.name.includes('-Mega')) {
        * ----------------------------------------------------------
        */
 
-      championshipsEl.innerHTML = '';
+      championshipsEl.innerHTML =
+        '';
 
 
       const championships =
-        Array.isArray(pokemon.championships)
+        Array.isArray(
+          pokemon.championships
+        )
           ? pokemon.championships
           : [];
 
@@ -301,9 +541,6 @@ if (!pokemon.name.includes('-Mega')) {
       /*
        * Only display the championship container when
        * the Pokémon actually has one or more trophies.
-       *
-       * This prevents the large empty area appearing
-       * underneath Pokémon with no championships.
        */
 
       championshipsEl.style.display =
@@ -318,6 +555,7 @@ if (!pokemon.name.includes('-Mega')) {
           const championshipEl =
             document.createElement('div');
 
+
           championshipEl.className =
             'pokemon-championship';
 
@@ -325,8 +563,10 @@ if (!pokemon.name.includes('-Mega')) {
           const trophy =
             document.createElement('div');
 
+
           trophy.className =
             'pokemon-trophy';
+
 
           trophy.textContent =
             '🏆';
@@ -334,6 +574,7 @@ if (!pokemon.name.includes('-Mega')) {
 
           const details =
             document.createElement('div');
+
 
           details.className =
             'pokemon-championship-details';
@@ -353,9 +594,11 @@ if (!pokemon.name.includes('-Mega')) {
             trophy
           );
 
+
           championshipEl.appendChild(
             details
           );
+
 
           championshipsEl.appendChild(
             championshipEl
@@ -371,24 +614,33 @@ if (!pokemon.name.includes('-Mega')) {
        * ----------------------------------------------------------
        */
 
-      draftBody.innerHTML = '';
+      draftBody.innerHTML =
+        '';
 
 
       const drafts =
-        Array.isArray(pokemon.drafts)
+        Array.isArray(
+          pokemon.drafts
+        )
           ? pokemon.drafts
           : [];
 
 
-      if (drafts.length === 0) {
+      if (
+        drafts.length === 0
+      ) {
 
         const row =
           draftBody.insertRow();
 
+
         const cell =
           row.insertCell();
 
-        cell.colSpan = 6;
+
+        cell.colSpan =
+          6;
+
 
         cell.textContent =
           'No draft history found.';
@@ -477,6 +729,35 @@ if (!pokemon.name.includes('-Mega')) {
 
       }
 
+      /*
+       * ----------------------------------------------------------
+       * Tera Record Tab
+       * ----------------------------------------------------------
+       *
+       * Only show the Tera tab when this Pokémon has actually
+       * been drafted as a Tera Pokémon.
+       */
+
+      const hasTeraDraft =
+        drafts.some(
+          draft => draft.tera === true
+        );
+
+
+      teraRecordTab.style.display =
+        hasTeraDraft
+          ? ''
+          : 'none';
+
+
+      /*
+       * Always start a newly selected Pokémon
+       * on the Regular tab.
+       */
+
+      selectedRecordType =
+        'regular';
+
 
       /*
        * ----------------------------------------------------------
@@ -484,161 +765,16 @@ if (!pokemon.name.includes('-Mega')) {
        * ----------------------------------------------------------
        */
 
-      recordBody.innerHTML = '';
+      updateRecordTab();
 
-
+      
       /*
-       * Add one record row.
-       *
-       * teraLabel:
-       *
-       *   No  = normal Pokémon
-       *   Yes = Tera Pokémon
+       * ----------------------------------------------------------
+       * Overall Record
+       * ----------------------------------------------------------
        */
 
-      function addRecordRow(
-        teraLabel,
-        record
-      ) {
-
-        if (!record) {
-          return;
-        }
-
-
-        const row =
-          recordBody.insertRow();
-
-
-        addCell(
-          row,
-          teraLabel
-        );
-
-
-        addCell(
-          row,
-          record.td,
-          'num'
-        );
-
-
-        addCell(
-          row,
-          record.gp,
-          'num'
-        );
-
-
-        addCell(
-          row,
-          record.kills,
-          'num'
-        );
-
-
-        addCell(
-          row,
-          record.deaths,
-          'num'
-        );
-
-
-        addCell(
-          row,
-          record.diff,
-          'num'
-        );
-
-
-        addCell(
-          row,
-          record.wins,
-          'num'
-        );
-
-
-        addCell(
-          row,
-          record.losses,
-          'num'
-        );
-
-
-        addCell(
-          row,
-          record.wr,
-          'num'
-        );
-
-
-        addCell(
-          row,
-          record.kpg,
-          'num'
-        );
-
-
-        addCell(
-          row,
-          record.sr,
-          'num'
-        );
-
-      }
-
-
-      /*
-       * Normal Pokémon record.
-       */
-
-      if (pokemon.record) {
-
-        addRecordRow(
-          'No',
-          pokemon.record
-        );
-
-      }
-
-
-      /*
-       * Tera Pokémon record.
-       *
-       * Only appears when the API found a "(T)" record.
-       */
-
-      if (pokemon.teraRecord) {
-
-        addRecordRow(
-          'Yes',
-          pokemon.teraRecord
-        );
-
-      }
-
-
-      /*
-       * No records at all.
-       */
-
-      if (
-        !pokemon.record &&
-        !pokemon.teraRecord
-      ) {
-
-        const row =
-          recordBody.insertRow();
-
-        const cell =
-          row.insertCell();
-
-        cell.colSpan = 11;
-
-        cell.textContent =
-          'No overall record found.';
-
-      }
+      updateRecordTab();
 
     }
 
@@ -649,7 +785,9 @@ if (!pokemon.name.includes('-Mega')) {
      * ------------------------------------------------------------
      */
 
-    DBA.call('pokemonLookupGetAll')
+    DBA.call(
+      'pokemonLookupGetAll'
+    )
 
       .then(
         data => {
@@ -678,16 +816,23 @@ if (!pokemon.name.includes('-Mega')) {
             );
 
 
-          pokemonSel.innerHTML = '';
+          pokemonSel.innerHTML =
+            '';
 
 
           const first =
-            document.createElement('option');
+            document.createElement(
+              'option'
+            );
 
-          first.value = '';
+
+          first.value =
+            '';
+
 
           first.textContent =
             'Select a Pokémon...';
+
 
           pokemonSel.appendChild(
             first
@@ -698,13 +843,18 @@ if (!pokemon.name.includes('-Mega')) {
             (pokemon, index) => {
 
               const option =
-                document.createElement('option');
+                document.createElement(
+                  'option'
+                );
+
 
               option.value =
                 index;
 
+
               option.textContent =
                 pokemon.name;
+
 
               pokemonSel.appendChild(
                 option
@@ -714,7 +864,8 @@ if (!pokemon.name.includes('-Mega')) {
           );
 
 
-          statusEl.textContent = '';
+          statusEl.textContent =
+            '';
 
 
           if (
@@ -733,7 +884,8 @@ if (!pokemon.name.includes('-Mega')) {
            * Start with no Pokémon selected.
            */
 
-          detailsEl.hidden = true;
+          detailsEl.hidden =
+            true;
 
         }
       )
@@ -742,7 +894,10 @@ if (!pokemon.name.includes('-Mega')) {
       .catch(
         error => {
 
-          console.error(error);
+          console.error(
+            error
+          );
+
 
           statusEl.textContent =
             'Error loading Pokémon data: ' +
@@ -764,9 +919,13 @@ if (!pokemon.name.includes('-Mega')) {
         pokemonSel.value;
 
 
-      if (value === '') {
+      if (
+        value === ''
+      ) {
 
-        showPokemon(null);
+        showPokemon(
+          null
+        );
 
         return;
 
@@ -781,7 +940,9 @@ if (!pokemon.name.includes('-Mega')) {
 
       if (!pokemon) {
 
-        showPokemon(null);
+        showPokemon(
+          null
+        );
 
         return;
 
