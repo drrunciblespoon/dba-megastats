@@ -37,23 +37,39 @@
         <h1 id="pokemonName"></h1>
 
         <img
-          id="pokemonSprite"
-          class="pokemon-lookup-sprite"
-          alt=""
-        >
+  id="pokemonSprite"
+  class="pokemon-lookup-sprite"
+  alt=""
+>
 
-        <div
-          id="championships"
-          class="pokemon-championships"
-          aria-label="Championships"
-        ></div>
+<div
+  id="legality"
+  class="pokemon-legality"
+  aria-label="Pokémon legality"
+>
+</div>
 
+<div
+  id="championships"
+  class="pokemon-championships"
+  aria-label="Championships"
+></div>
+
+
+      </div>
+
+
+      </div>
+
+      <div class="pokemon-legality">
+        Legal: <span id="pokemonLegal">–</span> of <span id="pokemonTotalSeasons">–</span> seasons
       </div>
 
 
       <!-- =========================================================
            Draft History
            ========================================================= -->
+
 
       <section class="pokemon-section">
 
@@ -148,12 +164,14 @@
     const championshipsEl =
       DBA.$('championships');
 
+    const legalityEl =
+      DBA.$('legality');
+    
     const draftBody =
       DBA.$('draftBody');
 
     const recordBody =
       DBA.$('recordBody');
-
 
     let pokemonData = [];
 
@@ -232,6 +250,33 @@
           ? 'block'
           : 'none';
 
+/*
+ * ----------------------------------------------------------
+ * Legality
+ * ----------------------------------------------------------
+ */
+
+legalityEl.innerHTML = '';
+
+
+const legalityItems = [
+  `Legal: ${pokemon.legal ?? '–'}`,
+  `Banned: ${pokemon.banned ?? '–'}`,
+  `Tera Banned: ${pokemon.teraBanned ?? '–'}`
+];
+
+
+legalityItems.forEach(text => {
+
+  const item =
+    document.createElement('div');
+
+  item.textContent =
+    text;
+
+  legalityEl.appendChild(item);
+
+});
 
       /*
        * ----------------------------------------------------------
