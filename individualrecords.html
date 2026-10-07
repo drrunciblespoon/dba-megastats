@@ -1047,6 +1047,11 @@
       tbody.innerHTML =
         '';
 
+      const isCoach =
+  /\(coach\)\s*$/i.test(
+    name
+  );
+
 
       if (
         !player ||
@@ -1201,20 +1206,24 @@
 
 
           /*
-           * Make the row clickable.
-           */
+ * Only Coaches have drafts, so only their rows are clickable.
+ */
 
-          row.title =
-            'Click to show draft';
+if (isCoach) {
+
+  row.title =
+    'Click to show draft';
 
 
-          row.addEventListener(
-            'click',
-            () =>
-              toggleSeasonRow(
-                row
-              )
-          );
+  row.addEventListener(
+    'click',
+    () =>
+      toggleSeasonRow(
+        row
+      )
+  );
+
+}
 
 
           tbody.appendChild(
