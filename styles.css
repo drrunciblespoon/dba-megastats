@@ -385,3 +385,21 @@ td a:focus-visible {
   font-size: 0.9rem;
   text-align: center;
 }
+
+/* Individual Records: Commonly Drafted */
+body.page-individual #repeatDrafts th:nth-child(1) { width: 25%; }
+body.page-individual #repeatDrafts th:nth-child(2) { width: 15%; }
+body.page-individual #repeatDrafts th:nth-child(3) { width: 20%; }
+body.page-individual #repeatDrafts th:nth-child(4) { width: 40%; }
+
+body.page-individual #repeatDrafts td:nth-child(2) img {
+  margin: 0 auto;
+}
+
+/* Long season lists wrap instead of being cut off */
+body.page-individual #repeatDrafts td:nth-child(4) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
