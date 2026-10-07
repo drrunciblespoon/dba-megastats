@@ -222,7 +222,7 @@ body.page-individual #seasons .season-draft-wrapper {
 
 body.page-individual #seasons .individual-draft-table {
   width: 100%;
-  min-width: 900px;          /* keeps all 10 columns readable; wrapper scrolls on small screens */
+  min-width: 800px;          /* keeps all 9 columns readable; wrapper scrolls on small screens */
   table-layout: auto;
   margin-top: 0;
   font-size: 0.9em;
