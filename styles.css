@@ -324,6 +324,7 @@ td a:focus-visible {
   width: 30%;
 }
 
+/* Sprite column */
 .page-pokemon-lookup .pokemon-partners-table td:nth-child(2) {
   text-align: center;
 }
@@ -331,6 +332,16 @@ td a:focus-visible {
 .page-pokemon-lookup .pokemon-partners-table td:nth-child(2) img {
   height: 45px;
   width: auto;
+  margin: 0 auto;          /* centres the sprite (global td img is display:block) */
+}
+
+/* Users column: wrap onto as many lines as needed */
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(4) {
+  white-space: normal;     /* overrides the global nowrap */
+  overflow: visible;       /* overrides body.centered td { overflow: hidden } */
+  text-overflow: clip;     /* overrides the ellipsis */
+  overflow-wrap: anywhere; /* breaks very long names if it has to */
+  line-height: 1.4;
 }
 
 
@@ -340,6 +351,10 @@ td a:focus-visible {
   }
 
   .page-pokemon-lookup .pokemon-draft-table {
+    min-width: 650px;
+  }
+
+  .page-pokemon-lookup .pokemon-partners-table {
     min-width: 650px;
   }
 }
