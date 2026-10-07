@@ -440,8 +440,7 @@
         'Diff.',
         'Wins',
         'Losses',
-        'WR.',
-        'Championship'
+        'WR.'
       ];
 
 
@@ -506,7 +505,7 @@
 
 
         cell.colSpan =
-          10;
+          9;
 
 
         cell.textContent =
@@ -784,31 +783,6 @@
           row.appendChild(
             wrCell
           );
-
-
-          /*
-           * Championship
-           *
-           * Backend converts Y to 🏆.
-           */
-
-          const championshipCell =
-            document.createElement('td');
-
-
-          championshipCell.textContent =
-            draft.championship === 'Y'
-              ? '🏆'
-              : (
-                  draft.championship ||
-                  '–'
-                );
-
-
-          row.appendChild(
-            championshipCell
-          );
-
 
           tbody.appendChild(
             row
