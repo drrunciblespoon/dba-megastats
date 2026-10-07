@@ -2,404 +2,150 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Individual Records - DBA Megastats</title>
 
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  >
-
-  <link
-    rel="stylesheet"
-    href="layout.css"
-  >
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="layout.css">
 
   <script src="shared.js"></script>
   <script src="api.js"></script>
-
 </head>
-
 
 <body class="centered page-individual">
 
   <h2>Individual Records</h2>
 
-
   <div class="controls">
-
     <div>
-
-      <label for="player">
-        Player
-      </label>
-
-      <select id="player">
-
-        <option>
-          Loading...
-        </option>
-
-      </select>
-
+      <label for="player">Player</label>
+      <select id="player"><option>Loading...</option></select>
     </div>
+  </div>
+
+  <!-- Role tabs + overall totals (Coach / Battler / Combined) -->
+  <div id="totalsBlock" class="totals-block" style="display:none">
+
+    <div id="roleTabs" class="role-tabs">
+      <button type="button" id="coachTab" class="role-tab">Coach</button>
+      <button type="button" id="battlerTab" class="role-tab">Battler</button>
+    </div>
+
+    <table id="totals" class="totals nosort">
+      <thead>
+        <tr>
+          <th id="totalsName">Player</th>
+          <th class="num">Wins</th>
+          <th class="num">Losses</th>
+          <th class="num">Net</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
   </div>
 
+  <h3 id="seasonsHeading" style="display:none">Season Records</h3>
 
-  <!-- =========================================================
-       Overall Player Totals
-       ========================================================= -->
-
-  <table
-    id="totals"
-    class="totals"
-    style="display:none"
-  >
-
+  <table id="seasons" style="display:none">
     <thead>
-
       <tr>
-
-        <th>Player</th>
-
-        <th class="num">
-          Wins
-        </th>
-
-        <th class="num">
-          Losses
-        </th>
-
-        <th class="num">
-          Net
-        </th>
-
+        <th>Season</th>
+        <th>Pseudonym</th>
+        <th class="num">Record</th>
+        <th class="num">Play Off Status</th>
       </tr>
-
     </thead>
-
     <tbody></tbody>
-
   </table>
-
-
-  <!-- =========================================================
-       Season Records
-       ========================================================= -->
-
-  <h3
-    id="seasonsHeading"
-    style="display:none"
-  >
-    Season Records
-  </h3>
-
-
-  <table
-    id="seasons"
-    style="display:none"
-  >
-
-    <thead>
-
-      <tr>
-
-        <th>
-          Season
-        </th>
-
-        <th>
-          Pseudonym
-        </th>
-
-        <th class="num">
-          Record
-        </th>
-
-        <th class="num">
-          Play Off Status
-        </th>
-
-      </tr>
-
-    </thead>
-
-    <tbody></tbody>
-
-  </table>
-
 
   <div id="status"></div>
 
-
-  <!-- =========================================================
-       Opponent Records
-       ========================================================= -->
-
-  <table
-    id="results"
-    style="display:none"
-  >
-
+  <table id="results" style="display:none">
     <thead>
-
       <tr>
-
-        <th>
-          Opponent
-        </th>
-
-        <th class="num">
-          Wins
-        </th>
-
-        <th class="num">
-          Losses
-        </th>
-
-        <th class="num">
-          Net
-        </th>
-
+        <th>Opponent</th>
+        <th class="num">Wins</th>
+        <th class="num">Losses</th>
+        <th class="num">Net</th>
       </tr>
-
     </thead>
-
     <tbody></tbody>
-
   </table>
 
+  <h3 id="repeatHeading" style="display:none">Commonly Drafted</h3>
 
-  <!-- =========================================================
-       Commonly Drafted
-       ========================================================= -->
-
-  <h3
-    id="repeatHeading"
-    style="display:none"
-  >
-    Commonly Drafted
-  </h3>
-
-
-  <table
-    id="repeatDrafts"
-    style="display:none"
-  >
-
+  <table id="repeatDrafts" style="display:none">
     <thead>
-
       <tr>
-
-        <th>
-          Pokémon
-        </th>
-
-        <th>
-          Spr.
-        </th>
-
-        <th class="num">
-          Times Drafted
-        </th>
-
-        <th>
-          Seasons
-        </th>
-
+        <th>Pokémon</th>
+        <th>Spr.</th>
+        <th class="num">Times Drafted</th>
+        <th>Seasons</th>
       </tr>
-
     </thead>
-
     <tbody></tbody>
-
   </table>
 
 
   <script>
 
-    /*
-     * ============================================================
+    /* ============================================================
      * Elements
-     * ============================================================
-     */
+     * ============================================================ */
 
-    const sel =
-      DBA.$('player');
-
-
-    const statusEl =
-      DBA.$('status');
-
-
-    const results =
-      DBA.$('results');
-
-
-    const totals =
-      DBA.$('totals');
+    const sel            = DBA.$('player');
+    const statusEl       = DBA.$('status');
+    const results        = DBA.$('results');
+    const totals         = DBA.$('totals');
+    const totalsBlock    = DBA.$('totalsBlock');
+    const totalsName     = DBA.$('totalsName');
+    const roleTabs       = DBA.$('roleTabs');
+    const coachTab       = DBA.$('coachTab');
+    const battlerTab     = DBA.$('battlerTab');
+    const seasonsTbl     = DBA.$('seasons');
+    const seasonsHeading = DBA.$('seasonsHeading');
+    const repeatTbl      = DBA.$('repeatDrafts');
+    const repeatHeading  = DBA.$('repeatHeading');
 
 
-    const seasonsTbl =
-      DBA.$('seasons');
-
-
-    const seasonsHeading =
-      DBA.$('seasonsHeading');
-
-
-    const repeatTbl =
-      DBA.$('repeatDrafts');
-
-
-    const repeatHeading =
-      DBA.$('repeatHeading');
-
-
-    /*
-     * ============================================================
+    /* ============================================================
      * Data
-     * ============================================================
-     */
+     * ============================================================ */
 
-    // Every player's record, loaded once and looked up by name.
-    const players =
-      new Map();
+    // displayName -> { name, coach, battler }
+    const groups = new Map();
 
+    let repeatDrafts = {};
+    let individualDrafts = {};
+    let individualDraftsLoaded = false;
 
-    // Repeat-draft data.
-    let repeatDrafts =
-      {};
-
-
-    /*
-     * Complete season-specific draft data.
-     *
-     * Structure:
-     *
-     * drafts[playerKey][teamKey][seasonKey]
-     *
-     * The data is supplied by individualDraftsGetAll().
-     */
-
-    let individualDrafts =
-      {};
+    let currentName = '';
+    let currentRole = 'coach';
 
 
-    /*
-     * ============================================================
-     * Hide all result sections
-     * ============================================================
-     */
-
-    function clear() {
-
-      DBA.show(
-        results,
-        false
-      );
-
-
-      DBA.show(
-        totals,
-        false
-      );
-
-
-      DBA.show(
-        seasonsTbl,
-        false
-      );
-
-
-      DBA.show(
-        seasonsHeading,
-        false
-      );
-
-
-      DBA.show(
-        repeatTbl,
-        false
-      );
-
-
-      DBA.show(
-        repeatHeading,
-        false
-      );
-
-
-      statusEl.textContent =
-        '';
-
-    }
-
-
-    /*
-     * ============================================================
-     * Normalise player name
-     * ============================================================
-     *
-     * Individual Records uses:
-     *
-     *   Player Name (Coach)
-     *
-     * PokemonInput uses:
-     *
-     *   Player Name
-     *
-     * Remove the role suffix before matching.
-     * ============================================================
-     */
+    /* ============================================================
+     * Normalisers (must match the backend keys)
+     * ============================================================ */
 
     function normalisePlayerName(name) {
-
       return String(name)
-        .replace(
-          /\s+\(Coach\)\s*$/i,
-          ''
-        )
+        .replace(/\s*\((coach|battler)\)\s*$/i, '')
         .trim()
         .toLowerCase();
-
     }
-
-
-    /*
-     * ============================================================
-     * Normalise team / pseudonym
-     * ============================================================
-     */
 
     function normaliseTeamName(name) {
-
       return String(name)
+        .normalize('NFKD')
+        .replace(/[\u2018\u2019]/g, "'")
+        .replace(/[\u201C\u201D]/g, '"')
+        .replace(/\s+/g, ' ')
         .trim()
         .toLowerCase();
-
     }
-
-
-    /*
-     * ============================================================
-     * Normalise season
-     * ============================================================
-     *
-     * The spreadsheet stores Season as a number, while vwGetAll()
-     * may return it as a string.
-     *
-     * Converting both sides to strings gives us a reliable match.
-     * ============================================================
-     */
 
     function normaliseSeason(season) {
       const m = String(season).match(/\d+/);
@@ -407,1350 +153,461 @@
     }
 
 
-    /*
-     * ============================================================
-     * Create expandable draft table
-     * ============================================================
-     */
+    /* ============================================================
+     * Hide everything
+     * ============================================================ */
+
+    function clear() {
+      DBA.show(totalsBlock, false);
+      DBA.show(results, false);
+      DBA.show(seasonsTbl, false);
+      DBA.show(seasonsHeading, false);
+      DBA.show(repeatTbl, false);
+      DBA.show(repeatHeading, false);
+      statusEl.textContent = '';
+    }
+
+
+    /* ============================================================
+     * Draft table (nested under a season row)
+     * ============================================================ */
 
     function createDraftTable(rows) {
 
-      const table =
-        document.createElement('table');
-
-
-      table.className =
-        'individual-draft-table';
-
-
-      const thead =
-        document.createElement('thead');
-
-
-      const headerRow =
-        document.createElement('tr');
-
+      const table = document.createElement('table');
+      table.className = 'individual-draft-table';
 
       const headers = [
-        'Pokémon',
-        'Sprite',
-        'Appearances',
-        'Kills',
-        'Deaths',
-        'Diff.',
-        'Wins',
-        'Losses',
-        'WR.'
+        'Pokémon', 'Sprite', 'Appearances', 'Kills',
+        'Deaths', 'Diff.', 'Wins', 'Losses', 'WR.'
       ];
 
+      const headRow = table.createTHead().insertRow();
 
-      headers.forEach(
-        (header, index) => {
+      headers.forEach((text, i) => {
+        const th = document.createElement('th');
+        th.textContent = text;
+        if (i >= 2) th.className = 'num';
+        headRow.appendChild(th);
+      });
 
-          const th =
-            document.createElement('th');
+      const tbody = table.createTBody();
 
-
-          th.textContent =
-            header;
-
-
-          if (
-            index >= 2
-          ) {
-
-            th.className =
-              'num';
-
-          }
-
-
-          headerRow.appendChild(
-            th
-          );
-
-        }
-      );
-
-
-      thead.appendChild(
-        headerRow
-      );
-
-
-      table.appendChild(
-        thead
-      );
-
-
-      const tbody =
-        document.createElement('tbody');
-
-
-      /*
-       * No draft rows found.
-       */
-
-      if (
-        !rows ||
-        rows.length === 0
-      ) {
-
-        const row =
-          document.createElement('tr');
-
-
-        const cell =
-          document.createElement('td');
-
-
-        cell.colSpan =
-          9;
-
-
-        cell.textContent =
-          'No draft data found.';
-
-
-        row.appendChild(
-          cell
-        );
-
-
-        tbody.appendChild(
-          row
-        );
-
-
-        table.appendChild(
-          tbody
-        );
-
-
+      if (!rows || rows.length === 0) {
+        const cell = tbody.insertRow().insertCell();
+        cell.colSpan = headers.length;
+        cell.textContent = 'No draft data found.';
         return table;
-
       }
 
+      const text = (v, fallback) =>
+        v === '' || v === null || v === undefined ? fallback : v;
 
-      /*
-       * ----------------------------------------------------------
-       * Add each Pokémon draft row.
-       * ----------------------------------------------------------
-       */
+      rows.forEach(draft => {
 
-      rows.forEach(
-        draft => {
+        const tr = tbody.insertRow();
 
-          const row =
-            document.createElement('tr');
+        tr.insertCell().textContent = text(draft.pokemon, '–');
 
-
-          /*
-           * Pokémon
-           */
-
-          const pokemonCell =
-            document.createElement('td');
-
-
-          pokemonCell.textContent =
-            draft.pokemon ||
-            '–';
-
-
-          row.appendChild(
-            pokemonCell
-          );
-
-
-          /*
-           * Sprite
-           */
-
-          const spriteCell =
-            document.createElement('td');
-
-
-          if (
-            draft.sprite
-          ) {
-
-            const img =
-              document.createElement('img');
-
-
-            img.src =
-              draft.sprite;
-
-
-            img.alt =
-              draft.pokemon ||
-              '';
-
-
-            img.loading =
-              'lazy';
-
-
-            spriteCell.appendChild(
-              img
-            );
-
-          }
-
-
-          row.appendChild(
-            spriteCell
-          );
-
-
-          /*
-           * Appearances
-           */
-
-          const appearancesCell =
-            document.createElement('td');
-
-
-          appearancesCell.className =
-            'num';
-
-
-          appearancesCell.textContent =
-            draft.appearances === '' ||
-            draft.appearances === null ||
-            draft.appearances === undefined
-              ? '–'
-              : draft.appearances;
-
-
-          row.appendChild(
-            appearancesCell
-          );
-
-
-          /*
-           * Kills
-           */
-
-          const killsCell =
-            document.createElement('td');
-
-
-          killsCell.className =
-            'num';
-
-
-          killsCell.textContent =
-            draft.kills === '' ||
-            draft.kills === null ||
-            draft.kills === undefined
-              ? '–'
-              : draft.kills;
-
-
-          row.appendChild(
-            killsCell
-          );
-
-
-          /*
-           * Deaths
-           */
-
-          const deathsCell =
-            document.createElement('td');
-
-
-          deathsCell.className =
-            'num';
-
-
-          deathsCell.textContent =
-            draft.deaths === '' ||
-            draft.deaths === null ||
-            draft.deaths === undefined
-              ? '–'
-              : draft.deaths;
-
-
-          row.appendChild(
-            deathsCell
-          );
-
-
-          /*
-           * Diff.
-           */
-
-          const diffCell =
-            document.createElement('td');
-
-
-          diffCell.className =
-            'num';
-
-
-          diffCell.textContent =
-            draft.diff === '' ||
-            draft.diff === null ||
-            draft.diff === undefined
-              ? '–'
-              : draft.diff;
-
-
-          row.appendChild(
-            diffCell
-          );
-
-
-          /*
-           * Wins
-           *
-           * Backend converts blank K to 0.
-           */
-
-          const winsCell =
-            document.createElement('td');
-
-
-          winsCell.className =
-            'num';
-
-
-          winsCell.textContent =
-            draft.wins === '' ||
-            draft.wins === null ||
-            draft.wins === undefined
-              ? '0'
-              : draft.wins;
-
-
-          row.appendChild(
-            winsCell
-          );
-
-
-          /*
-           * Losses
-           *
-           * Backend converts blank L to 0.
-           */
-
-          const lossesCell =
-            document.createElement('td');
-
-
-          lossesCell.className =
-            'num';
-
-
-          lossesCell.textContent =
-            draft.losses === '' ||
-            draft.losses === null ||
-            draft.losses === undefined
-              ? '0'
-              : draft.losses;
-
-
-          row.appendChild(
-            lossesCell
-          );
-
-
-          /*
-           * WR.
-           *
-           * Backend converts blank M to No Games.
-           */
-
-          const wrCell =
-            document.createElement('td');
-
-
-          wrCell.className =
-            'num';
-
-
-          wrCell.textContent =
-            draft.wr === '' ||
-            draft.wr === null ||
-            draft.wr === undefined
-              ? 'No Games'
-              : draft.wr;
-
-
-          row.appendChild(
-            wrCell
-          );
-
-          tbody.appendChild(
-            row
-          );
-
+        const spriteCell = tr.insertCell();
+        if (draft.sprite) {
+          const img = document.createElement('img');
+          img.src = draft.sprite;
+          img.alt = draft.pokemon || '';
+          img.loading = 'lazy';
+          spriteCell.appendChild(img);
         }
-      );
 
+        [
+          text(draft.appearances, '–'),
+          text(draft.kills, '–'),
+          text(draft.deaths, '–'),
+          text(draft.diff, '–'),
+          text(draft.wins, '0'),
+          text(draft.losses, '0'),
+          text(draft.wr, 'No Games')
+        ].forEach(v => {
+          const td = tr.insertCell();
+          td.className = 'num';
+          td.textContent = v;
+        });
 
-      table.appendChild(
-        tbody
-      );
-
+      });
 
       return table;
-
     }
 
 
-    /*
-     * ============================================================
-     * Remove any currently expanded draft row
-     * ============================================================
-     */
+    /* ============================================================
+     * Expand / collapse a season row
+     * ============================================================ */
 
     function collapseSeasonRow(row) {
-
-      const expandedRow =
-        row.nextElementSibling;
-
-
-      if (
-        expandedRow &&
-        expandedRow.classList.contains(
-          'season-draft-row'
-        )
-      ) {
-
-        expandedRow.remove();
-
-      }
-
-
-      row.classList.remove(
-        'expanded'
-      );
-
+      const next = row.nextElementSibling;
+      if (next && next.classList.contains('season-draft-row')) next.remove();
+      row.classList.remove('expanded');
     }
-
-
-    /*
-     * ============================================================
-     * Expand a season row
-     * ============================================================
-     */
 
     function toggleSeasonRow(row) {
 
-      const existing =
-        row.nextElementSibling;
+      const existing = row.nextElementSibling;
 
-
-      /*
-       * Clicking an already expanded row collapses it.
-       */
-
-      if (
-        existing &&
-        existing.classList.contains(
-          'season-draft-row'
-        )
-      ) {
-
-        collapseSeasonRow(
-          row
-        );
-
+      if (existing && existing.classList.contains('season-draft-row')) {
+        collapseSeasonRow(row);
         return;
-
       }
 
-
-      /*
-       * Collapse any other expanded row.
-       */
-
-      const allSeasonRows =
-        seasonsTbl.querySelectorAll(
-          'tbody tr.season-row'
-        );
-
-
-      allSeasonRows.forEach(
-        otherRow => {
-
-          if (
-            otherRow !== row
-          ) {
-
-            collapseSeasonRow(
-              otherRow
-            );
-
-          }
-
-        }
-      );
-
-
-      /*
-       * Read the matching information from the row.
-       */
-
-      const playerKey =
-        row.dataset.player;
-
-
-      const teamKey =
-        row.dataset.team;
-
-
-      const seasonKey =
-        row.dataset.season;
-
-
-      /*
-       * Find the player's draft for exactly:
-       *
-       * Player + Team + Season
-       */
-
-      const playerDrafts =
-        individualDrafts[
-          playerKey
-        ] || {};
-
-
-      const teamDrafts =
-        playerDrafts[
-          teamKey
-        ] || {};
-
+      seasonsTbl
+        .querySelectorAll('tbody tr.season-row')
+        .forEach(other => {
+          if (other !== row) collapseSeasonRow(other);
+        });
 
       const draftRows =
-        teamDrafts[
-          seasonKey
-        ] || [];
+        ((individualDrafts[row.dataset.player] || {})
+          [row.dataset.team] || {})
+          [row.dataset.season] || [];
 
+      const expandedRow = document.createElement('tr');
+      expandedRow.className = 'season-draft-row';
 
-      /*
-       * Create the expansion row.
-       */
+      const expandedCell = document.createElement('td');
+      expandedCell.colSpan = 4;
 
-      const expandedRow =
-        document.createElement('tr');
+      const wrapper = document.createElement('div');
+      wrapper.className = 'season-draft-wrapper';
 
-
-      expandedRow.className =
-        'season-draft-row';
-
-
-      const expandedCell =
-        document.createElement('td');
-
-
-      expandedCell.colSpan =
-        4;
-
-
-      const draftWrapper =
-        document.createElement('div');
-
-
-      draftWrapper.className =
-        'season-draft-wrapper';
-
-
-      /*
-       * If the API has not finished loading yet, make that clear.
-       */
-
-      if (
-  !individualDraftsLoaded
-) {
-
-  const loading =
-    document.createElement('div');
-
-
-  loading.className =
-    'season-draft-loading';
-
-
-  loading.textContent =
-    'Loading draft…';
-
-
-  draftWrapper.appendChild(
-    loading
-  );
-
+      if (!individualDraftsLoaded) {
+        const loading = document.createElement('div');
+        loading.className = 'season-draft-loading';
+        loading.textContent = 'Loading draft…';
+        wrapper.appendChild(loading);
       } else {
-
-        draftWrapper.appendChild(
-          createDraftTable(
-            draftRows
-          )
-        );
-
+        wrapper.appendChild(createDraftTable(draftRows));
       }
 
-
-      expandedCell.appendChild(
-        draftWrapper
-      );
-
-
-      expandedRow.appendChild(
-        expandedCell
-      );
-
-
-      row.after(
-        expandedRow
-      );
-
-
-      row.classList.add(
-        'expanded'
-      );
-
+      expandedCell.appendChild(wrapper);
+      expandedRow.appendChild(expandedCell);
+      row.after(expandedRow);
+      row.classList.add('expanded');
     }
 
 
-    /*
-     * ============================================================
-     * Draft API loading state
-     * ============================================================
-     */
+    /* ============================================================
+     * Season records (rows clickable for Coaches only)
+     * ============================================================ */
 
-    let individualDraftsLoaded =
-      false;
+    function renderSeasonRecords(name, player, isCoach) {
 
+      const tbody = seasonsTbl.querySelector('tbody');
+      tbody.innerHTML = '';
 
-    /*
-     * ============================================================
-     * Render selected player's season records
-     * ============================================================
-     */
-
-    function renderSeasonRecords(
-      name,
-      player
-    ) {
-
-      const tbody =
-        seasonsTbl.querySelector(
-          'tbody'
-        );
-
-
-      tbody.innerHTML =
-        '';
-
-      const isCoach =
-  /\(coach\)\s*$/i.test(
-    name
-  );
-
-
-      if (
-        !player ||
-        !player.s ||
-        player.s.length === 0
-      ) {
-
-        DBA.show(
-          seasonsHeading,
-          false
-        );
-
-
-        DBA.show(
-          seasonsTbl,
-          false
-        );
-
-
+      if (!player || !player.s || player.s.length === 0) {
+        DBA.show(seasonsHeading, false);
+        DBA.show(seasonsTbl, false);
         return;
-
       }
 
+      player.s.forEach(([season, division, pseudonym, record, playoff]) => {
 
-      player.s.forEach(
-        (
-          [
-            season,
-            division,
-            pseudonym,
-            record,
-            playoff
-          ]
-        ) => {
+        const row = document.createElement('tr');
+        row.className = 'season-row';
 
-          const row =
-            document.createElement('tr');
+        row.dataset.player = normalisePlayerName(name);
+        row.dataset.team = normaliseTeamName(pseudonym);
+        row.dataset.season = normaliseSeason(season);
 
+        const seasonCell = document.createElement('td');
+        seasonCell.textContent =
+          division ? season + ' (' + division + ')' : season;
+        row.appendChild(seasonCell);
 
-          row.className =
-            'season-row';
+        const pseudonymCell = document.createElement('td');
+        pseudonymCell.textContent = pseudonym || '–';
+        row.appendChild(pseudonymCell);
 
+        const recordCell = document.createElement('td');
+        recordCell.className = 'num';
+        recordCell.textContent = record || '–';
+        row.appendChild(recordCell);
 
-          /*
-           * Store the exact three-part matching key
-           * directly on the row.
-           */
+        const playoffCell = document.createElement('td');
+        playoffCell.className = 'num';
+        playoffCell.textContent =
+          playoff && playoff.toLowerCase() === 'champion'
+            ? '⭐ ' + playoff
+            : playoff || '–';
+        row.appendChild(playoffCell);
 
-          row.dataset.player =
-            normalisePlayerName(
-              name
-            );
-
-
-          row.dataset.team =
-            normaliseTeamName(
-              pseudonym
-            );
-
-
-          row.dataset.season =
-            normaliseSeason(
-              season
-            );
-
-
-          /*
-           * Season
-           */
-
-          const seasonCell =
-            document.createElement('td');
-
-
-          seasonCell.textContent =
-            division
-              ? season +
-                ' (' +
-                division +
-                ')'
-              : season;
-
-
-          row.appendChild(
-            seasonCell
-          );
-
-
-          /*
-           * Pseudonym / Team
-           */
-
-          const pseudonymCell =
-            document.createElement('td');
-
-
-          pseudonymCell.textContent =
-            pseudonym ||
-            '–';
-
-
-          row.appendChild(
-            pseudonymCell
-          );
-
-
-          /*
-           * Record
-           */
-
-          const recordCell =
-            document.createElement('td');
-
-
-          recordCell.className =
-            'num';
-
-
-          recordCell.textContent =
-            record ||
-            '–';
-
-
-          row.appendChild(
-            recordCell
-          );
-
-
-          /*
-           * Playoff status
-           */
-
-          const playoffCell =
-            document.createElement('td');
-
-
-          playoffCell.className =
-            'num';
-
-
-          playoffCell.textContent =
-            playoff &&
-            playoff.toLowerCase() ===
-              'champion'
-              ? '⭐ ' + playoff
-              : playoff || '–';
-
-
-          row.appendChild(
-            playoffCell
-          );
-
-
-          /*
- * Only Coaches have drafts, so only their rows are clickable.
- */
-
-if (isCoach) {
-
-  row.title =
-    'Click to show draft';
-
-
-  row.addEventListener(
-    'click',
-    () =>
-      toggleSeasonRow(
-        row
-      )
-  );
-
-}
-
-
-          tbody.appendChild(
-            row
-          );
-
+        if (isCoach) {
+          row.title = 'Click to show draft';
+          row.addEventListener('click', () => toggleSeasonRow(row));
         }
-      );
 
+        tbody.appendChild(row);
 
-      DBA.show(
-        seasonsHeading,
-        true
-      );
+      });
 
-
-      DBA.show(
-        seasonsTbl,
-        true
-      );
-
+      DBA.show(seasonsHeading, true);
+      DBA.show(seasonsTbl, true);
     }
 
 
-    /*
-     * ============================================================
-     * Render repeat drafts
-     * ============================================================
-     */
+    /* ============================================================
+     * Commonly Drafted (Coach tab only)
+     * ============================================================ */
 
-    function renderRepeatDrafts(name) {
+    function renderRepeatDrafts(name, isCoach) {
 
-      const body =
-        repeatTbl.querySelector(
-          'tbody'
-        );
+      const body = repeatTbl.querySelector('tbody');
+      body.innerHTML = '';
 
-
-      body.innerHTML =
-        '';
-
-
-      /*
-       * Only show this section for Coaches.
-       */
-
-      const isCoach =
-        /\(coach\)\s*$/i.test(
-          name
-        );
-
-
-      if (
-        !isCoach
-      ) {
-
-        DBA.show(
-          repeatHeading,
-          false
-        );
-
-
-        DBA.show(
-          repeatTbl,
-          false
-        );
-
-
+      if (!isCoach) {
+        DBA.show(repeatHeading, false);
+        DBA.show(repeatTbl, false);
         return;
-
       }
 
+      const list = repeatDrafts[normalisePlayerName(name)] || [];
 
-      const playerKey =
-        normalisePlayerName(
-          name
-        );
+      list.forEach(p => {
 
+        const tr = body.insertRow();
 
-      const list =
-        repeatDrafts[
-          playerKey
-        ] || [];
+        tr.insertCell().textContent = p.name;
 
-
-      list.forEach(
-        p => {
-
-          const tr =
-            body.insertRow();
-
-
-          /*
-           * Pokémon
-           */
-
-          tr.insertCell()
-            .textContent =
-              p.name;
-
-
-          /*
-           * Sprite
-           */
-
-          const spriteCell =
-            tr.insertCell();
-
-
-          if (
-            p.sprite
-          ) {
-
-            const img =
-              document.createElement('img');
-
-
-            img.src =
-              p.sprite;
-
-
-            img.alt =
-              p.name;
-
-
-            img.loading =
-              'lazy';
-
-
-            spriteCell.appendChild(
-              img
-            );
-
-          }
-
-
-          /*
-           * Times drafted
-           */
-
-          const countCell =
-            tr.insertCell();
-
-
-          countCell.textContent =
-            p.count;
-
-
-          countCell.className =
-            'num';
-
-
-          /*
-           * Seasons
-           */
-
-          tr.insertCell()
-            .textContent =
-              p.seasons.join(
-                ', '
-              );
-
+        const spriteCell = tr.insertCell();
+        if (p.sprite) {
+          const img = document.createElement('img');
+          img.src = p.sprite;
+          img.alt = p.name;
+          img.loading = 'lazy';
+          spriteCell.appendChild(img);
         }
-      );
 
+        const countCell = tr.insertCell();
+        countCell.textContent = p.count;
+        countCell.className = 'num';
 
-      const hasRows =
-        list.length > 0;
+        tr.insertCell().textContent = p.seasons.join(', ');
 
+      });
 
-      DBA.show(
-        repeatHeading,
-        hasRows
-      );
-
-
-      DBA.show(
-        repeatTbl,
-        hasRows
-      );
-
+      DBA.show(repeatHeading, list.length > 0);
+      DBA.show(repeatTbl, list.length > 0);
     }
 
 
-    /*
-     * ============================================================
-     * Render selected player
-     * ============================================================
-     */
+    /* ============================================================
+     * Render the selected player in the selected role
+     * ============================================================ */
 
     function render(name) {
 
-      const p =
-        players.get(
-          name
-        );
+      const group = groups.get(name);
 
-
-      if (
-        !p
-      ) {
-
+      if (!group) {
         clear();
-
         return;
-
       }
 
+      currentName = name;
 
-      const [
-        w,
-        l,
-        found
-      ] =
-        p.t;
+      const hasCoach = !!group.coach;
+      const hasBattler = !!group.battler;
+      const hasBoth = hasCoach && hasBattler;
 
+      // Keep the current tab if this player has it; otherwise fall back.
+      if (!group[currentRole]) {
+        currentRole = hasCoach ? 'coach' : 'battler';
+      }
 
-      DBA.fillTotals(
-        totals,
-        [{
-          label:
-            p.n,
+      const p = group[currentRole];
+      const isCoach = currentRole === 'coach';
 
-          wins:
-            w,
+      /* ---- Tabs ---- */
 
-          losses:
-            l,
+      roleTabs.style.display = hasBoth ? '' : 'none';
+      totalsBlock.classList.toggle('has-tabs', hasBoth);
+      coachTab.classList.toggle('active', isCoach);
+      battlerTab.classList.toggle('active', !isCoach);
 
-          net:
-            w - l,
+      /* ---- Totals: Coach / Battler / Combined ---- */
 
-          found:
-            !!found
+      totalsName.textContent = group.name;
 
-        }]
-      );
+      const toItem = (label, rec) => {
+        const [w, l, found] = rec.t;
+        return { label, wins: w, losses: l, net: w - l, found: !!found };
+      };
 
+      const items = [];
 
-      /*
-       * Render season records manually so the rows can
-       * become expandable.
-       */
+      if (hasCoach) items.push(toItem('Coach', group.coach));
+      if (hasBattler) items.push(toItem('Battler', group.battler));
 
-      renderSeasonRecords(
-        name,
-        p
-      );
+      if (hasBoth) {
+        const cw = group.coach.t[0], cl = group.coach.t[1];
+        const bw = group.battler.t[0], bl = group.battler.t[1];
+        items.push({
+          label: 'Combined',
+          wins: cw + bw,
+          losses: cl + bl,
+          net: (cw + bw) - (cl + bl),
+          found: !!(group.coach.t[2] || group.battler.t[2])
+        });
+      }
 
+      DBA.fillTotals(totals, items);
+      DBA.show(totalsBlock, true);
 
-      /*
-       * Opponent records.
-       */
+      /* ---- Season records ---- */
 
-      const n =
-        DBA.fillTable(
-          results,
-          p.r.map(
-            (
-              [
-                opponent,
-                wins,
-                losses
-              ]
-            ) => [
-              opponent,
-              wins,
-              losses,
-              wins - losses
-            ]
-          )
-        );
+      renderSeasonRecords(name, p, isCoach);
 
+      /* ---- Opponent records ---- */
 
-      statusEl.textContent =
-        n
-          ? ''
-          : 'No records found.';
-
-
-      /*
-       * Show totals.
-       */
-
-      DBA.show(
-        totals,
-        true
-      );
-
-
-      /*
-       * Show opponent records.
-       */
-
-      DBA.show(
+      const n = DBA.fillTable(
         results,
-        n > 0
+        p.r.map(([opponent, wins, losses]) =>
+          [opponent, wins, losses, wins - losses])
       );
 
+      statusEl.textContent = n ? '' : 'No records found.';
+      DBA.show(results, n > 0);
 
-      /*
-       * Repeat-draft table.
-       */
+      /* ---- Commonly drafted ---- */
 
-      renderRepeatDrafts(
-        name
-      );
-
+      renderRepeatDrafts(name, isCoach);
     }
 
 
-    /*
-     * ============================================================
-     * Load player records
-     * ============================================================
-     */
+    /* ============================================================
+     * Tab buttons
+     * ============================================================ */
 
-    DBA.call(
-      'vwGetAll'
-    )
+    coachTab.onclick = () => {
+      currentRole = 'coach';
+      render(currentName);
+    };
 
-      .then(
-        list => {
-
-          list.forEach(
-            player =>
-              players.set(
-                player.n,
-                player
-              )
-          );
+    battlerTab.onclick = () => {
+      currentRole = 'battler';
+      render(currentName);
+    };
 
 
-          DBA.fillSelect(
-            sel,
-            'player',
-            list.map(
-              player =>
-                player.n
-            )
-          );
+    /* ============================================================
+     * Load player records and group Coach / Battler entries
+     * ============================================================ */
 
-        }
-      )
+    DBA.call('vwGetAll')
 
-      .catch(
-        error => {
+      .then(list => {
 
-          statusEl.textContent =
-            'Error: ' +
-            error.message;
+        const byKey = new Map();
 
-        }
-      );
+        list.forEach(player => {
 
+          const key = normalisePlayerName(player.n);
 
-    /*
-     * ============================================================
-     * Load repeat-draft data separately.
-     *
-     * A failure here does not break the rest of the page.
-     * ============================================================
-     */
-
-    DBA.call(
-      'repeatDraftsGetAll'
-    )
-
-      .then(
-        data => {
-
-          repeatDrafts =
-            data &&
-            data.players
-              ? data.players
-              : {};
-
-
-          /*
-           * The player may already have been selected before
-           * this request completed.
-           */
-
-          if (
-            sel.value
-          ) {
-
-            renderRepeatDrafts(
-              sel.value
-            );
-
+          if (!byKey.has(key)) {
+            byKey.set(key, {
+              name: DBA.strip(player.n),
+              coach: null,
+              battler: null
+            });
           }
 
-        }
-      )
+          const group = byKey.get(key);
 
-      .catch(
-        error => {
-
-          console.error(
-            'Repeat drafts failed:',
-            error
-          );
-
-        }
-      );
-
-
-    /*
-     * ============================================================
-     * Load season-specific draft data separately.
-     *
-     * A failure here does not break the rest of the page.
-     * ============================================================
-     */
-
-    DBA.call(
-      'individualDraftsGetAll'
-    )
-
-      .then(
-        data => {
-
-          individualDrafts =
-            data &&
-            data.drafts
-              ? data.drafts
-              : {};
-
-
-          individualDraftsLoaded =
-            true;
-
-
-          /*
-           * If the user already has an expanded season row,
-           * replace its loading message with the actual draft.
-           */
-
-          const expandedRow =
-            seasonsTbl.querySelector(
-              'tbody tr.season-draft-row'
-            );
-
-
-          if (
-            expandedRow
-          ) {
-
-            const seasonRow =
-              expandedRow.previousElementSibling;
-
-
-            if (
-              seasonRow &&
-              seasonRow.classList.contains(
-                'season-row'
-              )
-            ) {
-
-              collapseSeasonRow(
-                seasonRow
-              );
-
-
-              toggleSeasonRow(
-                seasonRow
-              );
-
-            }
-
+          if (/\(coach\)\s*$/i.test(player.n)) {
+            group.coach = player;
+          } else {
+            // "(Battler)" or untagged
+            group.battler = player;
           }
 
+        });
+
+        byKey.forEach(group => groups.set(group.name, group));
+
+        DBA.fillSelect(sel, 'player', Array.from(groups.keys()));
+
+      })
+
+      .catch(error => {
+        statusEl.textContent = 'Error: ' + error.message;
+      });
+
+
+    /* ============================================================
+     * Load repeat-draft data (failure doesn't break the page)
+     * ============================================================ */
+
+    DBA.call('repeatDraftsGetAll')
+
+      .then(data => {
+
+        repeatDrafts = data && data.players ? data.players : {};
+
+        if (sel.value && currentName) render(currentName);
+
+      })
+
+      .catch(error => {
+        console.error('Repeat drafts failed:', error);
+      });
+
+
+    /* ============================================================
+     * Load season-specific drafts (failure doesn't break the page)
+     * ============================================================ */
+
+    DBA.call('individualDraftsGetAll')
+
+      .then(data => {
+
+        individualDrafts = data && data.drafts ? data.drafts : {};
+        individualDraftsLoaded = true;
+
+        // Swap any open "Loading draft…" for the real table.
+        const expandedRow =
+          seasonsTbl.querySelector('tbody tr.season-draft-row');
+
+        if (expandedRow) {
+          const seasonRow = expandedRow.previousElementSibling;
+          if (seasonRow && seasonRow.classList.contains('season-row')) {
+            collapseSeasonRow(seasonRow);
+            toggleSeasonRow(seasonRow);
+          }
         }
-      )
 
-      .catch(
-        error => {
+      })
 
-          console.error(
-            'Individual drafts failed:',
-            error
-          );
+      .catch(error => {
+        console.error('Individual drafts failed:', error);
+        individualDraftsLoaded = true;
+      });
 
 
-          /*
-           * Mark the request as completed so the UI doesn't
-           * remain permanently in a loading state.
-           */
-
-          individualDraftsLoaded =
-            true;
-
-        }
-      );
-
-
-    /*
-     * ============================================================
+    /* ============================================================
      * Player changed
-     * ============================================================
-     */
+     * ============================================================ */
 
-    sel.addEventListener(
-      'change',
-      () => {
+    sel.addEventListener('change', () => {
 
-        if (
-          !sel.value
-        ) {
-
-          clear();
-
-          return;
-
-        }
-
-
-        render(
-          sel.value
-        );
-
+      if (!sel.value) {
+        currentName = '';
+        clear();
+        return;
       }
-    );
+
+      render(sel.value);
+
+    });
 
   </script>
 
 </body>
-
 </html>
