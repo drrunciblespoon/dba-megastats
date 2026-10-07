@@ -524,33 +524,38 @@
       );
 
 
-      /*
+            /*
        * Mega Pokémon do not need a Tera Banned line.
        */
 
-     if (
-!pokemon.name.includes('-Mega')
-) {
+      if (
+        !pokemon.name.includes('-Mega')
+      ) {
 
-const teraBannedItem =
-document.createElement('div');
+        const teraBannedItem =
+          document.createElement('div');
 
-const teraBanned =
-Number(pokemon.teraBanned) || 0;
+        const teraBanned =
+          Number(pokemon.teraBanned) || 0;
 
-const teraBannedText =
-teraBanned === 0
-? 'Never'
-: ${teraBanned} ${teraBanned === 1 ? 'time' : 'times'};
+        const teraBannedText =
+          teraBanned === 0
+            ? 'Never Tera banned'
+            : `Tera banned ${teraBanned} ${
+                teraBanned === 1
+                  ? 'time'
+                  : 'times'
+              }`;
 
-teraBannedItem.textContent =
-Tera Banned: ${teraBannedText};
+        teraBannedItem.textContent =
+          teraBannedText;
 
-legalityEl.appendChild(
-teraBannedItem
-);
+        legalityEl.appendChild(
+          teraBannedItem
+        );
 
-}
+      }
+
 
 
       /*
