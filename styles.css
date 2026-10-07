@@ -246,31 +246,62 @@ td a:focus-visible {
 
 .pokemon-record-tabs {
   display: flex;
+  justify-content: center;
   gap: 0;
-  margin-bottom: 12px;
+  margin: 0 auto 12px;
 }
 
 .pokemon-record-tab {
-  padding: 8px 18px;
-  border: 1px solid #ccc;
-  background: #eee;
-  color: #333;
+  padding: 8px 22px;
+  border: 1px solid var(--border);
+  background: var(--bc);
+  color: var(--text);
   cursor: pointer;
   font: inherit;
+  font-weight: 700;
+  transition: filter 0.15s, background 0.15s;
 }
 
-.pokemon-record-tab:first-child {
-  border-radius: 6px 0 0 6px;
+/*
+ * Regular tab:
+ * Uses the same blue/pale-blue palette as a table column.
+ */
+
+#regularRecordTab {
+  --hc: #6fa8dc;
+  --bc: #9fc5e8;
 }
 
-.pokemon-record-tab:last-child {
-  border-radius: 0 6px 6px 0;
+/*
+ * Tera tab:
+ * Uses the same purple/pale-purple palette as a table column.
+ */
+
+#teraRecordTab {
+  --hc: #8e7cc3;
+  --bc: #b4a7d6;
+}
+
+.pokemon-record-tab:hover {
+  filter: brightness(1.08);
 }
 
 .pokemon-record-tab.active {
-  background: #333;
-  color: #fff;
-  border-color: #333;
+  background: var(--hc);
+  color: var(--text);
+  border-color: var(--hc);
+}
+
+.pokemon-record-tab:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.pokemon-record-tab:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.pokemon-record-tab + .pokemon-record-tab {
+  border-left: none;
 }
 
 @media (max-width: 700px) {
