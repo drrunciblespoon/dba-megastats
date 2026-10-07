@@ -221,7 +221,7 @@ body.page-individual .totals-block table {
 }
 
 /* Square the table's top-left corner so the tabs attach cleanly */
-body.page-individual .totals-block.has-tabs table.totals {
+body.page-individual .totals-block.has-tabs table {
   border-top-left-radius: 0;
 }
 
