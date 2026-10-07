@@ -1,6 +1,10 @@
 /* Extra layout rules. Load this after styles.css. */
 
-/* ---------- Home page ---------- */
+
+/* ============================================================
+   HOME PAGE
+   ============================================================ */
+
 body.page-home .intro {
   max-width: 720px;
   margin: 20px auto 0;
@@ -12,12 +16,29 @@ body.page-home .intro {
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
-body.page-home .intro p { margin: 0 0 1em; }
-body.page-home .intro p:last-child { margin-bottom: 0; }
-body.page-home .intro a { color: var(--accent); font-weight: 600; text-decoration: none; }
-body.page-home .intro a:hover { text-decoration: underline; }
 
-/* ---------- Pages with centred content ---------- */
+body.page-home .intro p {
+  margin: 0 0 1em;
+}
+
+body.page-home .intro p:last-child {
+  margin-bottom: 0;
+}
+
+body.page-home .intro a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+body.page-home .intro a:hover {
+  text-decoration: underline;
+}
+
+
+/* ============================================================
+   CENTRED PAGES
+   ============================================================ */
 
 body.centered .controls {
   justify-content: center;
@@ -34,7 +55,9 @@ body.centered #status {
 }
 
 
-/* ---------- Search box ---------- */
+/* ============================================================
+   SEARCH BOX
+   ============================================================ */
 
 /*
  * sortableTable() creates a div containing:
@@ -44,82 +67,78 @@ body.centered #status {
  *
  * Centre the contents of that container.
  */
+
 body.centered #root > div {
   text-align: center;
 }
 
-
-/* Keep the search box inline so text-align can centre it. */
 body.centered #root > div > input {
   display: inline-block;
   margin-bottom: 10px;
 }
 
 
-/* ---------- Consistent table width ---------- */
+/* ============================================================
+   CONSISTENT TABLE WIDTH
+   ============================================================ */
 
 body.centered table {
   width: 1250px;
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
-}
-
-/* ---------- Fixed, per-page column widths ---------- */
-
-/* Fixed layout: widths come from the header row, not from cell content.
-   Since every table on a page gets the same percentages, columns line up. */
-body.centered table {
   table-layout: fixed;
 }
 
-/* Cells are nowrap (styles.css), so clip anything too long. */
+
+/* ============================================================
+   GENERAL TABLE CELL BEHAVIOUR
+   ============================================================ */
+
 body.centered th,
 body.centered td {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* 3-column tables (Most and Best / Least and Worst): sprite | Pokemon | value */
-body.page-pokemon th:first-child:nth-last-child(3)           { width: 22%; }
-body.page-pokemon th:first-child:nth-last-child(3) + th      { width: 48%; }
-body.page-pokemon th:first-child:nth-last-child(3) + th + th { width: 30%; }
 
-/* Gen 9 Stats: Rank 6%, Sprite 6%, Pokemon 14.2%, remaining ten columns equal */
-body.page-stats th:nth-child(1) { width: 6%; }
-body.page-stats th:nth-child(2) { width: 6%; }
-body.page-stats th:nth-child(3) { width: 19.2%; }
-body.page-stats th:nth-child(n+4) { width: 6.88%; }
+/* ============================================================
+   POKÉMON RECORDS
+   ============================================================ */
 
-/* Slimmer side padding so headers (plus the sort arrow) fit in narrower columns */
-body.page-stats th,
-body.page-stats td {
-  padding-left: 10px;
-  padding-right: 10px;
+/*
+ * Three-column tables:
+ *
+ * Sprite | Pokémon | Value
+ */
+
+body.page-pokemon th:first-child:nth-last-child(3) {
+  width: 22%;
 }
 
-/* Individual Records: Player/Season/Opponent | Pseudonym/Wins | Wins/Record | Net */
-body.page-individual th:nth-child(1) { width: 30%; }
-body.page-individual th:nth-child(2) { width: 30%; }
-body.page-individual th:nth-child(3) { width: 20%; }
-body.page-individual th:nth-child(4) { width: 20%; }
+body.page-pokemon th:first-child:nth-last-child(3) + th {
+  width: 48%;
+}
 
-/* Pairing Records */
-body.page-pairing th:nth-child(1) { width: 50%; }
-body.page-pairing th:nth-child(n+2) { width: 16.66%; }
+body.page-pokemon th:first-child:nth-last-child(3) + th + th {
+  width: 30%;
+}
 
-/* Pokemon Records (7 columns): 2nd column 30%, the other six share 70% */
-body.page-pokemon th { width: 11.6667%; }
-body.page-pokemon th:nth-child(2) { width: 30%; }
+
+/*
+ * Pokémon Records has two groups of tables side-by-side
+ * on desktop.
+ */
+
 body.page-pokemon #root > div {
-  max-width: 1250px;            /* same overall width as the other pages */
+  max-width: 1250px;
   margin-left: auto;
   margin-right: auto;
 }
 
 body.page-pokemon #root > div > div {
-  flex: 1 1 calc(50% - 16px);   /* half the row, minus half the 32px gap */
-  min-width: 0;                 /* lets the group shrink instead of forcing a wrap */
+  flex: 1 1 calc(50% - 16px);
+  min-width: 0;
 }
 
 body.page-pokemon .wrap,
@@ -129,7 +148,98 @@ body.page-pokemon table {
 }
 
 
-/* Table wrapper used by sortableTable() and Pokemon Records */
+/* ============================================================
+   GEN 9 STATS
+   ============================================================ */
+
+/*
+ * Rank 6%, Sprite 6%, Pokémon 19.2%,
+ * remaining columns share the rest.
+ */
+
+body.page-stats th:nth-child(1) {
+  width: 6%;
+}
+
+body.page-stats th:nth-child(2) {
+  width: 6%;
+}
+
+body.page-stats th:nth-child(3) {
+  width: 19.2%;
+}
+
+body.page-stats th:nth-child(n+4) {
+  width: 6.88%;
+}
+
+
+/*
+ * Slimmer padding so Stats headings fit more comfortably.
+ */
+
+body.page-stats th,
+body.page-stats td {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+/* ============================================================
+   INDIVIDUAL RECORDS
+   ============================================================ */
+
+body.page-individual th:nth-child(1) {
+  width: 30%;
+}
+
+body.page-individual th:nth-child(2) {
+  width: 30%;
+}
+
+body.page-individual th:nth-child(3) {
+  width: 20%;
+}
+
+body.page-individual th:nth-child(4) {
+  width: 20%;
+}
+
+
+/* ============================================================
+   PAIRING RECORDS
+   ============================================================ */
+
+body.page-pairing th:nth-child(1) {
+  width: 50%;
+}
+
+body.page-pairing th:nth-child(n+2) {
+  width: 16.66%;
+}
+
+
+/* ============================================================
+   POKÉMON LOOKUP / RECORDS
+   ============================================================ */
+
+/*
+ * Seven-column Pokémon tables:
+ * second column gets 30%, remaining six share 70%.
+ */
+
+body.page-pokemon th {
+  width: 11.6667%;
+}
+
+body.page-pokemon th:nth-child(2) {
+  width: 30%;
+}
+
+
+/* ============================================================
+   TABLE WRAPPERS
+   ============================================================ */
 
 body.centered .wrap {
   width: 1250px;
@@ -139,14 +249,18 @@ body.centered .wrap {
 }
 
 
-/* Keep generated groups centred */
+/*
+ * Keep generated groups centred.
+ */
 
 body.centered #root > div {
   justify-content: center;
 }
 
 
-/* ---------- Non-sortable tables ---------- */
+/* ============================================================
+   NON-SORTABLE TABLES
+   ============================================================ */
 
 table.nosort th {
   cursor: default;
@@ -156,21 +270,40 @@ table.nosort th:hover {
   filter: none;
 }
 
-/* Hall of Fame: wider columns where names pile up, and let cells wrap */
-body.page-hof th:nth-child(1) { width: 11%; }   /* Season */
+
+/* ============================================================
+   HALL OF FAME
+   ============================================================ */
+
+body.page-hof th:nth-child(1) {
+  width: 11%;
+}
+
 body.page-hof th:nth-child(2),
 body.page-hof th:nth-child(3),
 body.page-hof th:nth-child(4),
-body.page-hof th:nth-child(5) { width: 13%; }   /* Champions and runners-up */
-body.page-hof th:nth-child(6) { width: 17%; }   /* Pokemon MVP */
-body.page-hof th:nth-child(7) { width: 20%; }   /* Hercule Poirot */
+body.page-hof th:nth-child(5) {
+  width: 13%;
+}
+
+body.page-hof th:nth-child(6) {
+  width: 17%;
+}
+
+body.page-hof th:nth-child(7) {
+  width: 20%;
+}
 
 body.page-hof td {
   white-space: normal;
   overflow-wrap: anywhere;
 }
 
-/* Hover-over notes on tables */
+
+/* ============================================================
+   PAGE NOTES
+   ============================================================ */
+
 body.centered .page-note {
   max-width: 720px;
   margin: 12px auto 0;
@@ -179,17 +312,29 @@ body.centered .page-note {
   color: var(--muted);
 }
 
-/* ---------- Season Sheets page ---------- */
+
+/* ============================================================
+   SEASON SHEETS
+   ============================================================ */
+
 body.page-sheets table {
   width: 640px;
   table-layout: fixed;
 }
 
-body.page-sheets th:nth-child(1) { width: 28%; }
-body.page-sheets th:nth-child(2),
-body.page-sheets th:nth-child(3) { width: 36%; }
+body.page-sheets th:nth-child(1) {
+  width: 28%;
+}
 
-body.page-sheets td.season { font-weight: 700; }
+body.page-sheets th:nth-child(2),
+body.page-sheets th:nth-child(3) {
+  width: 36%;
+}
+
+body.page-sheets td.season {
+  font-weight: 700;
+}
+
 
 /* ============================================================
    MOBILE RESPONSIVE FOUNDATION
@@ -209,7 +354,9 @@ body.page-sheets td.season { font-weight: 700; }
   }
 
 
-  /* ---------- Controls ---------- */
+  /* ----------------------------------------------------------
+     Controls
+     ---------------------------------------------------------- */
 
   .controls {
     width: 100%;
@@ -229,7 +376,9 @@ body.page-sheets td.season { font-weight: 700; }
   }
 
 
-  /* ---------- General tables ---------- */
+  /* ----------------------------------------------------------
+     General tables
+     ---------------------------------------------------------- */
 
   body.centered table {
     width: 100%;
@@ -255,7 +404,9 @@ body.page-sheets td.season { font-weight: 700; }
   }
 
 
-  /* ---------- Pairing Records ---------- */
+  /* ==========================================================
+     PAIRING RECORDS
+     ========================================================== */
 
   .pairing-totals-wrap {
     margin-top: 1.5rem;
@@ -266,16 +417,12 @@ body.page-sheets td.season { font-weight: 700; }
   }
 
 
-  /* ---------- Gen 9 Stats ---------- */
+  /* ==========================================================
+     GEN 9 STATS
+     ========================================================== */
 
   /*
-   * The Stats table is generated dynamically by
-   * DBA.sortableTable().
-   *
-   * On mobile we deliberately make the table wider than
-   * the screen so the columns remain readable.
-   *
-   * The #root container provides the horizontal scrolling.
+   * #root is the horizontal scrolling area.
    */
 
   .page-stats #root {
@@ -289,9 +436,8 @@ body.page-sheets td.season { font-weight: 700; }
 
 
   /*
-   * sortableTable() creates a wrapper <div> inside #root.
-   * Make that wrapper wide enough for the table and allow
-   * the outer #root to provide the horizontal scroll.
+   * sortableTable() creates a wrapper div inside #root.
+   * Make that wrapper wide enough for the table.
    */
 
   .page-stats #root > div {
@@ -302,10 +448,8 @@ body.page-sheets td.season { font-weight: 700; }
 
 
   /*
-   * The actual generated Stats table.
-   *
-   * 1250px gives the columns enough room for their headings
-   * instead of squeezing all 13 columns into a phone screen.
+   * Keep the Stats table deliberately wide.
+   * This prevents 13 columns from being crushed together.
    */
 
   .page-stats #root table {
@@ -317,7 +461,7 @@ body.page-sheets td.season { font-weight: 700; }
 
 
   /*
-   * Keep the Pokémon name column reasonably wide.
+   * Pokémon name column.
    */
 
   .page-stats #root table th:nth-child(3),
@@ -327,7 +471,7 @@ body.page-sheets td.season { font-weight: 700; }
 
 
   /*
-   * Smaller sprite size on mobile.
+   * Smaller sprites on mobile.
    */
 
   .page-stats #root table td img {
@@ -337,8 +481,7 @@ body.page-sheets td.season { font-weight: 700; }
 
 
   /*
-   * Give Stats cells slightly more room than the generic
-   * mobile table rule.
+   * Stats cells get enough room for their headings.
    */
 
   .page-stats #root table th,
@@ -356,6 +499,87 @@ body.page-sheets td.season { font-weight: 700; }
   .page-stats .page-note {
     margin-top: 1rem;
     margin-bottom: 1rem;
+  }
+
+
+  /* ==========================================================
+     HALL OF FAME
+     ========================================================== */
+
+  /*
+   * The entire Hall of Fame table remains intact.
+   * On mobile, the user can swipe horizontally.
+   */
+
+  body.page-hof .wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.page-hof table {
+    width: 850px;
+    min-width: 850px;
+    max-width: none;
+  }
+
+  body.page-hof th,
+  body.page-hof td {
+    white-space: nowrap;
+  }
+
+
+  /* ==========================================================
+     POKÉMON RECORDS
+     ========================================================== */
+
+  /*
+   * Desktop uses two columns of tables.
+   *
+   * Mobile changes this to one table group per row:
+   *
+   *   Most
+   *   Best
+   *   Least
+   *   Worst
+   *
+   * This makes each table much easier to use.
+   */
+
+  body.page-pokemon #root > div {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  body.page-pokemon #root > div > div {
+    width: 100%;
+    max-width: 100%;
+    flex: none;
+  }
+
+
+  /*
+   * Each Pokémon Records table can still scroll horizontally
+   * if its columns need more room than the phone provides.
+   */
+
+  body.page-pokemon .wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.page-pokemon table {
+    width: 600px;
+    min-width: 600px;
+    max-width: none;
   }
 
 }
