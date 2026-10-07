@@ -211,7 +211,7 @@ body.page-individual th:nth-child(4) {
 
 body.page-individual #seasons .season-draft-row > td {
   padding: 8px;
-  background: var(--surface);
+  background: #dfe2e9;
   overflow: visible;
 }
 
@@ -235,6 +235,32 @@ body.page-individual #seasons .individual-draft-table td {
   text-overflow: clip;
   white-space: nowrap;
   padding: 6px 10px;
+}
+
+body.page-individual #seasons .season-draft-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 0;
+  font-size: 0.9em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+body.page-individual #seasons .season-draft-loading::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: season-draft-spin 0.8s linear infinite;
+}
+
+@keyframes season-draft-spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ============================================================
