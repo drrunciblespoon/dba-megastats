@@ -565,87 +565,53 @@
        * ----------------------------------------------------------
        */
 
-      championshipsEl.innerHTML =
-        '';
+    championshipsEl.innerHTML = '';
 
+const championships =
+  Array.isArray(pokemon.championships)
+    ? pokemon.championships
+    : [];
 
-      const championships =
-        Array.isArray(
-          pokemon.championships
-        )
-          ? pokemon.championships
-          : [];
+/*
+ * Only display the championship container when
+ * the Pokémon actually has one or more trophies.
+ */
+championshipsEl.style.display =
+  championships.length
+    ? 'flex'
+    : 'none';
 
+if (championships.length) {
 
-      /*
-       * Only display the championship container when
-       * the Pokémon actually has one or more trophies.
-       */
+  // One row containing every trophy
+  const trophyRow = document.createElement('div');
+  trophyRow.className = 'pokemon-trophy-row';
 
-      championshipsEl.style.display =
-        championships.length
-          ? 'flex'
-          : 'none';
+  // One line per winner underneath
+  const winnerList = document.createElement('div');
+  winnerList.className = 'pokemon-winner-list';
 
+  championships.forEach(championship => {
 
-      championships.forEach(
-        championship => {
+    const trophy = document.createElement('span');
+    trophy.className = 'pokemon-trophy';
+    trophy.textContent = '🏆';
+    trophyRow.appendChild(trophy);
 
-          const championshipEl =
-            document.createElement('div');
+    const teraText = championship.tera ? ' — Tera' : '';
 
+    const winner = document.createElement('div');
+    winner.className = 'pokemon-winner';
+    winner.textContent =
+      `${championship.player} - Season ${championship.season} (${championship.division})${teraText}`;
+    winnerList.appendChild(winner);
 
-          championshipEl.className =
-            'pokemon-championship';
+  });
 
+  championshipsEl.appendChild(trophyRow);
+  championshipsEl.appendChild(winnerList);
 
-          const trophy =
-            document.createElement('div');
-
-
-          trophy.className =
-            'pokemon-trophy';
-
-
-          trophy.textContent =
-            '🏆';
-
-
-          const details =
-            document.createElement('div');
-
-
-          details.className =
-            'pokemon-championship-details';
-
-
-          const teraText =
-            championship.tera
-              ? ' — Tera'
-              : '';
-
-
-          details.textContent =
-            `${championship.player} - Season ${championship.season} (${championship.division})${teraText}`;
-
-
-          championshipEl.appendChild(
-            trophy
-          );
-
-
-          championshipEl.appendChild(
-            details
-          );
-
-
-          championshipsEl.appendChild(
-            championshipEl
-          );
-
-        }
-      );
-
+}
 
       /*
        * ----------------------------------------------------------
