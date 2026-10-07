@@ -261,6 +261,23 @@ body.page-individual .role-tabs .role-tab.active {
   filter: none;
 }
 
+/* ============================================================
+   INACTIVE TABS (light purple)
+   ============================================================ */
+
+body.page-individual .role-tabs .role-tab:not(.active),
+.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active) {
+  background: #d9d0f0;      /* light pastel purple */
+  color: var(--muted);
+}
+
+body.page-individual .role-tabs .role-tab:not(.active):hover,
+.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active):hover {
+  background: #e4ddf6;      /* slightly lighter on hover */
+  filter: none;
+  color: var(--text);
+}
+
 /* ===========================================================
    NESTED DRAFTS WITHIN INDIVIDUAL RECORDS
    =========================================================== */
