@@ -97,148 +97,142 @@
 
   function renderRepeatDrafts(name) {
 
-    const body =
-      repeatTbl.querySelector('tbody');
+  const body =
+    repeatTbl.querySelector('tbody');
 
-    body.innerHTML = '';
-
-
-    /*
-     * Only Coaches should see this table.
-     *
-     * FT Morgan (Coach) -> yes
-     * FT Morgan (Battler) -> no
-     */
-
-    const isCoach =
-      /\(coach\)\s*$/i.test(name);
+  body.innerHTML = '';
 
 
-    if (!isCoach) {
+  /*
+   * Only show this section for Coaches.
+   */
 
-      DBA.show(
-        repeatHeading,
-        false
-      );
-
-      DBA.show(
-        repeatTbl,
-        false
-      );
-
-      return;
-
-    }
+  const isCoach =
+    /\(coach\)\s*$/i.test(name);
 
 
-    /*
-     * IMPORTANT:
-     *
-     * Do not use DBA.strip(name) here.
-     *
-     * The backend deliberately keeps "(Coach)" and "(Battler)"
-     * in the key so they remain separate players.
-     */
-
-    const playerKey =
-      String(name)
-        .trim()
-        .toLowerCase();
-
-
-    const list =
-      repeatDrafts[playerKey] || [];
-
-
-    list.forEach(
-      pokemon => {
-
-        const tr =
-          body.insertRow();
-
-
-        /*
-         * Pokémon
-         */
-
-        tr.insertCell()
-          .textContent =
-            pokemon.name;
-
-
-        /*
-         * Sprite
-         */
-
-        const spriteCell =
-          tr.insertCell();
-
-
-        if (pokemon.sprite) {
-
-          const img =
-            document.createElement('img');
-
-          img.src =
-            pokemon.sprite;
-
-          img.alt =
-            pokemon.name;
-
-          img.loading =
-            'lazy';
-
-          spriteCell.appendChild(img);
-
-        }
-
-
-        /*
-         * Number of drafts
-         */
-
-        const countCell =
-          tr.insertCell();
-
-        countCell.textContent =
-          pokemon.count;
-
-        countCell.className =
-          'num';
-
-
-        /*
-         * Seasons
-         */
-
-        tr.insertCell()
-          .textContent =
-            pokemon.seasons.join(', ');
-
-      }
-    );
-
-
-    /*
-     * If the Coach has no Pokémon drafted 3+ times,
-     * don't show an empty table.
-     */
-
-    const hasRows =
-      list.length > 0;
-
+  if (!isCoach) {
 
     DBA.show(
       repeatHeading,
-      hasRows
+      false
     );
 
     DBA.show(
       repeatTbl,
-      hasRows
+      false
     );
 
+    return;
+
   }
+
+
+  /*
+   * PokemonInput contains:
+   *
+   *   FT Morgan
+   *
+   * Individual Records contains:
+   *
+   *   FT Morgan (Coach)
+   *
+   * DBA.strip() removes the role suffix.
+   */
+
+  const playerKey =
+    DBA.strip(name)
+      .toLowerCase();
+
+
+  const list =
+    repeatDrafts[playerKey] || [];
+
+
+  list.forEach(
+    p => {
+
+      const tr =
+        body.insertRow();
+
+
+      /*
+       * Pokémon
+       */
+
+      tr.insertCell()
+        .textContent =
+          p.name;
+
+
+      /*
+       * Sprite
+       */
+
+      const spriteCell =
+        tr.insertCell();
+
+
+      if (p.sprite) {
+
+        const img =
+          document.createElement('img');
+
+        img.src =
+          p.sprite;
+
+        img.alt =
+          p.name;
+
+        img.loading =
+          'lazy';
+
+        spriteCell.appendChild(img);
+
+      }
+
+
+      /*
+       * Times drafted
+       */
+
+      const countCell =
+        tr.insertCell();
+
+      countCell.textContent =
+        p.count;
+
+      countCell.className =
+        'num';
+
+
+      /*
+       * Seasons
+       */
+
+      tr.insertCell()
+        .textContent =
+          p.seasons.join(', ');
+
+    }
+  );
+
+
+  const hasRows =
+    list.length > 0;
+
+
+  DBA.show(
+    repeatHeading,
+    hasRows
+  );
+
+  DBA.show(
+    repeatTbl,
+    hasRows
+  );
+
+}
 
 
   /*
