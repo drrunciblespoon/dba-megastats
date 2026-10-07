@@ -190,3 +190,63 @@ body.page-sheets th:nth-child(2),
 body.page-sheets th:nth-child(3) { width: 36%; }
 
 body.page-sheets td.season { font-weight: 700; }
+
+/* ============================================================
+   MOBILE RESPONSIVE FOUNDATION
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .controls {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .controls > div {
+    width: 100%;
+  }
+
+  select,
+  input {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.centered table {
+    width: 100%;
+    max-width: none;
+  }
+
+  body.centered .wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.centered th,
+  body.centered td {
+    padding: 8px 9px;
+    font-size: 12px;
+  }
+
+  body.centered th {
+    font-size: 10px;
+  }
+
+}
+
