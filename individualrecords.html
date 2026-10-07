@@ -402,10 +402,8 @@
      */
 
     function normaliseSeason(season) {
-
-      return String(season)
-        .trim();
-
+      const m = String(season).match(/\d+/);
+      return m ? m[0] : String(season).trim();
     }
 
 
