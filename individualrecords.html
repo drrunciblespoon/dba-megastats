@@ -965,20 +965,24 @@
        */
 
       if (
-        !individualDraftsLoaded
-      ) {
+  !individualDraftsLoaded
+) {
 
-        const loading =
-          document.createElement('div');
-
-
-        loading.textContent =
-          'Loading draft...';
+  const loading =
+    document.createElement('div');
 
 
-        draftWrapper.appendChild(
-          loading
-        );
+  loading.className =
+    'season-draft-loading';
+
+
+  loading.textContent =
+    'Loading draft…';
+
+
+  draftWrapper.appendChild(
+    loading
+  );
 
       } else {
 
