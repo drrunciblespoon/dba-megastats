@@ -25,13 +25,8 @@
     </div>
   </div>
 
-  <!-- Role tabs + overall totals (Coach / Battler / Combined) -->
+  <!-- Overall totals (Coach / Battler / Combined) -->
   <div id="totalsBlock" class="totals-block" style="display:none">
-
-    <div id="roleTabs" class="role-tabs">
-      <button type="button" id="coachTab" class="role-tab">Coach</button>
-      <button type="button" id="battlerTab" class="role-tab">Battler</button>
-    </div>
 
     <table id="totals" class="totals nosort">
       <thead>
@@ -49,17 +44,27 @@
 
   <h3 id="seasonsHeading" style="display:none">Season Records</h3>
 
-  <table id="seasons" style="display:none">
-    <thead>
-      <tr>
-        <th>Season</th>
-        <th>Pseudonym</th>
-        <th class="num">Record</th>
-        <th class="num">Play Off Status</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <!-- Role tabs + season records -->
+  <div id="seasonsBlock" class="totals-block">
+
+    <div id="roleTabs" class="role-tabs" style="display:none">
+      <button type="button" id="coachTab" class="role-tab">Coach</button>
+      <button type="button" id="battlerTab" class="role-tab">Battler</button>
+    </div>
+
+    <table id="seasons" style="display:none">
+      <thead>
+        <tr>
+          <th>Season</th>
+          <th>Pseudonym</th>
+          <th class="num">Record</th>
+          <th class="num">Play Off Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+  </div>
 
   <div id="status"></div>
 
@@ -105,6 +110,7 @@
     const roleTabs       = DBA.$('roleTabs');
     const coachTab       = DBA.$('coachTab');
     const battlerTab     = DBA.$('battlerTab');
+    const seasonsBlock   = DBA.$('seasonsBlock');
     const seasonsTbl     = DBA.$('seasons');
     const seasonsHeading = DBA.$('seasonsHeading');
     const repeatTbl      = DBA.$('repeatDrafts');
@@ -164,6 +170,7 @@
       DBA.show(seasonsHeading, false);
       DBA.show(repeatTbl, false);
       DBA.show(repeatHeading, false);
+      roleTabs.style.display = 'none';
       statusEl.textContent = '';
     }
 
@@ -428,7 +435,7 @@
       /* ---- Tabs ---- */
 
       roleTabs.style.display = hasBoth ? '' : 'none';
-      totalsBlock.classList.toggle('has-tabs', hasBoth);
+      seasonsBlock.classList.toggle('has-tabs', hasBoth);
       coachTab.classList.toggle('active', isCoach);
       battlerTab.classList.toggle('active', !isCoach);
 
@@ -464,6 +471,10 @@
       /* ---- Season records ---- */
 
       renderSeasonRecords(name, p, isCoach);
+
+      // Keep the heading visible when there are tabs, even if this
+      // role has no seasons, so the user can still switch back.
+      if (hasBoth) DBA.show(seasonsHeading, true);
 
       /* ---- Opponent records ---- */
 
@@ -533,10 +544,10 @@
         byKey.forEach(group => groups.set(group.name, group));
 
         DBA.fillSelect(
-  sel,
-  'player',
-  Array.from(groups.keys()).sort((a, b) => a.localeCompare(b))
-);
+          sel,
+          'player',
+          Array.from(groups.keys()).sort((a, b) => a.localeCompare(b))
+        );
 
       })
 
