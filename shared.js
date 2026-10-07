@@ -206,3 +206,157 @@ const DBA = {
     return box;
   }
 };
+
+/*
+ * Turns a <select> into a searchable dropdown.
+ * The original select stays in the DOM (hidden) and keeps its value,
+ * so existing code that reads sel.value or listens for 'change' still works.
+ */
+function makeSearchableSelect(sel) {
+
+  if (sel.dataset.enhanced) return;
+  sel.dataset.enhanced = '1';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'combo';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'combo-input';
+  input.autocomplete = 'off';
+  input.spellcheck = false;
+  input.setAttribute('role', 'combobox');
+  input.setAttribute('aria-label', 'Search');
+
+  const list = document.createElement('ul');
+  list.className = 'combo-list';
+  list.hidden = true;
+
+  sel.after(wrap);
+  wrap.append(input, list);
+  sel.style.display = 'none';
+
+  // Clicking the <label for="..."> focuses the new box
+  if (sel.id) {
+    input.id = sel.id + '-combo';
+    const label = document.querySelector('label[for="' + sel.id + '"]');
+    if (label) label.htmlFor = input.id;
+  }
+
+  let items = [];       // [{ value, label }]
+  let shown = [];       // currently filtered items
+  let active = -1;      // highlighted index
+
+  const norm = s =>
+    String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+  function readOptions() {
+    const all = Array.from(sel.options);
+
+    const placeholder = all.find(o => o.value === '');
+    input.placeholder = placeholder
+      ? placeholder.textContent.trim()
+      : 'Type to search…';
+
+    items = all
+      .filter(o => o.value !== '')
+      .map(o => ({ value: o.value, label: o.textContent.trim() }));
+
+    syncInput();
+  }
+
+  function syncInput() {
+    const o = sel.options[sel.selectedIndex];
+    input.value = o && o.value !== '' ? o.textContent.trim() : '';
+  }
+
+  function render(filter) {
+    const q = norm(filter || '');
+    shown = q ? items.filter(i => norm(i.label).includes(q)) : items.slice();
+    list.innerHTML = '';
+
+    shown.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item.label;
+      li.setAttribute('role', 'option');
+      // pointerdown fires before the input's blur, so the pick isn't lost
+      li.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        pick(item);
+      });
+      list.appendChild(li);
+    });
+
+    if (!shown.length) {
+      const li = document.createElement('li');
+      li.className = 'combo-empty';
+      li.textContent = 'No matches';
+      list.appendChild(li);
+    }
+
+    setActive(shown.length && q ? 0 : -1);
+  }
+
+  function setActive(i) {
+    active = i;
+    Array.from(list.children).forEach((li, idx) =>
+      li.classList.toggle('active', idx === i));
+    const el = list.children[i];
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest' });
+  }
+
+  function open(filter) {
+    render(filter);
+    list.hidden = false;
+  }
+
+  function close() {
+    list.hidden = true;
+    syncInput();   // discard half-typed text
+  }
+
+  function pick(item) {
+    sel.value = item.value;
+    input.value = item.label;
+    list.hidden = true;
+    input.blur();
+    sel.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  input.addEventListener('focus', () => {
+    input.select();
+    open('');                  // show the full list on focus
+  });
+
+  input.addEventListener('input', () => open(input.value));
+
+  input.addEventListener('blur', close);
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (list.hidden) open(input.value);
+      else setActive(Math.min(active + 1, shown.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActive(Math.max(active - 1, 0));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (shown[active]) pick(shown[active]);
+      else if (shown.length === 1) pick(shown[0]);
+    } else if (e.key === 'Escape') {
+      input.blur();
+    }
+  });
+
+  // Options are filled in after the API call returns, so watch for that.
+  new MutationObserver(readOptions).observe(sel, { childList: true });
+
+  readOptions();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document
+    .querySelectorAll('select:not([data-plain])')
+    .forEach(makeSearchableSelect);
+});
