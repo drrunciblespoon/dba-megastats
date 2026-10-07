@@ -3,68 +3,258 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Pairing Records - DBA Megastats</title>
+
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="layout.css">
+
   <script src="shared.js"></script>
   <script src="api.js"></script>
 </head>
+
 <body class="centered page-pairing">
+
   <div class="controls">
-    <div><label for="coach">Coach</label><select id="coach"><option>Loading...</option></select></div>
-    <div><label for="battler">Battler</label><select id="battler"><option>Loading...</option></select></div>
+
+    <div>
+      <label for="coach">Coach</label>
+
+      <select id="coach">
+        <option>Loading...</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="battler">Battler</label>
+
+      <select id="battler">
+        <option>Loading...</option>
+      </select>
+    </div>
+
   </div>
 
-  <table id="totals" class="totals" style="display:none">
-    <thead><tr><th>Player</th><th class="num">Wins</th><th class="num">Losses</th><th class="num">Net</th></tr></thead>
-    <tbody></tbody>
-  </table>
+
+  <div class="wrap">
+
+    <table
+      id="totals"
+      class="totals"
+      style="display:none"
+    >
+
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th class="num">Wins</th>
+          <th class="num">Losses</th>
+          <th class="num">Net</th>
+        </tr>
+      </thead>
+
+      <tbody></tbody>
+
+    </table>
+
+  </div>
+
 
   <div id="status"></div>
-  <table id="results" style="display:none">
-    <thead><tr><th>Pair</th><th class="num">Wins</th><th class="num">Losses</th><th class="num">Net</th></tr></thead>
-    <tbody></tbody>
-  </table>
+
+
+  <div class="wrap">
+
+    <table
+      id="results"
+      style="display:none"
+    >
+
+      <thead>
+        <tr>
+          <th>Pair</th>
+          <th class="num">Wins</th>
+          <th class="num">Losses</th>
+          <th class="num">Net</th>
+        </tr>
+      </thead>
+
+      <tbody></tbody>
+
+    </table>
+
+  </div>
+
 
   <script>
-    const HINT = 'Choose a coach, a battler, or both. Choosing just one lists all of that player\'s pairings.';
-    const coachSel = DBA.$('coach');
-    const battlerSel = DBA.$('battler');
-    const statusEl = DBA.$('status');
-    const results = DBA.$('results');
-    const totals = DBA.$('totals');
+
+    const HINT =
+      'Choose a coach, a battler, or both. Choosing just one lists all of that player\'s pairings.';
+
+    const coachSel =
+      DBA.$('coach');
+
+    const battlerSel =
+      DBA.$('battler');
+
+    const statusEl =
+      DBA.$('status');
+
+    const results =
+      DBA.$('results');
+
+    const totals =
+      DBA.$('totals');
+
     let token = 0;
+
+
+    /*
+     * ------------------------------------------------------------
+     * Initial status
+     * ------------------------------------------------------------
+     */
 
     statusEl.textContent = HINT;
 
+
+    /*
+     * ------------------------------------------------------------
+     * Load coach and battler options
+     * ------------------------------------------------------------
+     */
+
     DBA.call('puGetOptions')
+
       .then(o => {
-        DBA.fillSelect(coachSel, 'coach', o.coaches, true);      // tags hidden in the dropdown only
-        DBA.fillSelect(battlerSel, 'battler', o.battlers, true);
+
+        DBA.fillSelect(
+          coachSel,
+          'coach',
+          o.coaches,
+          true
+        );
+
+        DBA.fillSelect(
+          battlerSel,
+          'battler',
+          o.battlers,
+          true
+        );
+
       })
-      .catch(e => { statusEl.textContent = 'Error: ' + e.message; });
+
+      .catch(e => {
+
+        statusEl.textContent =
+          'Error: ' + e.message;
+
+      });
+
+
+    /*
+     * ------------------------------------------------------------
+     * Perform lookup
+     * ------------------------------------------------------------
+     */
 
     function lookup() {
-      if (!coachSel.value && !battlerSel.value) {
-        DBA.show(results, false);
-        DBA.show(totals, false);
-        statusEl.textContent = HINT;
+
+      if (
+        !coachSel.value &&
+        !battlerSel.value
+      ) {
+
+        DBA.show(
+          results,
+          false
+        );
+
+        DBA.show(
+          totals,
+          false
+        );
+
+        statusEl.textContent =
+          HINT;
+
         return;
       }
-      const mine = ++token;
-      statusEl.textContent = 'Loading...';
-      DBA.call('puGetPairData', coachSel.value, battlerSel.value)
+
+
+      const mine =
+        ++token;
+
+
+      statusEl.textContent =
+        'Loading...';
+
+
+      DBA.call(
+        'puGetPairData',
+        coachSel.value,
+        battlerSel.value
+      )
+
         .then(d => {
-          if (mine !== token) return;   // a newer lookup has started
-          DBA.fillTotals(totals, d.totals);
-          const n = DBA.fillTable(results, d.rows);
-          statusEl.textContent = n ? '' : 'No pairings found.';
+
+          if (mine !== token) {
+            return;
+          }
+
+
+          DBA.fillTotals(
+            totals,
+            d.totals
+          );
+
+
+          const n =
+            DBA.fillTable(
+              results,
+              d.rows
+            );
+
+
+          statusEl.textContent =
+            n
+              ? ''
+              : 'No pairings found.';
+
         })
-        .catch(e => { if (mine === token) statusEl.textContent = 'Error: ' + e.message; });
+
+        .catch(e => {
+
+          if (mine === token) {
+
+            statusEl.textContent =
+              'Error: ' + e.message;
+
+          }
+
+        });
+
     }
 
-    coachSel.addEventListener('change', lookup);
-    battlerSel.addEventListener('change', lookup);
+
+    /*
+     * ------------------------------------------------------------
+     * Selection handlers
+     * ------------------------------------------------------------
+     */
+
+    coachSel.addEventListener(
+      'change',
+      lookup
+    );
+
+
+    battlerSel.addEventListener(
+      'change',
+      lookup
+    );
+
   </script>
+
 </body>
 </html>
