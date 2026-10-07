@@ -214,7 +214,6 @@ td a:focus-visible {
 }
 
 .page-pokemon-lookup .pokemon-championships {
-  min-height: 34px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -222,6 +221,7 @@ td a:focus-visible {
   font-size: 26px;
   margin-bottom: 8px;
 }
+
 
 .page-pokemon-lookup .pokemon-trophy {
   display: inline-block;
