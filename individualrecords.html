@@ -532,7 +532,11 @@
 
         byKey.forEach(group => groups.set(group.name, group));
 
-        DBA.fillSelect(sel, 'player', Array.from(groups.keys()));
+        DBA.fillSelect(
+  sel,
+  'player',
+  Array.from(groups.keys()).sort((a, b) => a.localeCompare(b))
+);
 
       })
 
