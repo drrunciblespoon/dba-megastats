@@ -250,50 +250,37 @@
        * ----------------------------------------------------------
        */
 
-      legalityEl.innerHTML = '';
+     legalityEl.innerHTML = '';
 
 
-      const legalItem =
-        document.createElement('div');
+const legalItem =
+  document.createElement('div');
 
-      legalItem.textContent =
-        `Legal: ${pokemon.legal} of ${pokemon.totalSeasons} seasons`;
+legalItem.textContent =
+  `Legal: ${pokemon.legal} of ${pokemon.totalSeasons} seasons`;
 
-      legalityEl.appendChild(
-        legalItem
-      );
-
-
-      const bannedItem =
-        document.createElement('div');
-
-      bannedItem.textContent =
-        `Banned: ${pokemon.banned}`;
-
-      legalityEl.appendChild(
-        bannedItem
-      );
+legalityEl.appendChild(
+  legalItem
+);
 
 
-      /*
-       * Mega Pokémon do not need a Tera Banned line.
-       */
+/*
+ * Mega Pokémon do not need a Tera Banned line.
+ */
 
-      if (
-        !pokemon.name.includes('-Mega')
-      ) {
+if (!pokemon.name.includes('-Mega')) {
 
-        const teraBannedItem =
-          document.createElement('div');
+  const teraBannedItem =
+    document.createElement('div');
 
-        teraBannedItem.textContent =
-          `Tera Banned: ${pokemon.teraBanned}`;
+  teraBannedItem.textContent =
+    `Tera Banned: ${pokemon.teraBanned}`;
 
-        legalityEl.appendChild(
-          teraBannedItem
-        );
+  legalityEl.appendChild(
+    teraBannedItem
+  );
 
-      }
+}
 
 
       /*
