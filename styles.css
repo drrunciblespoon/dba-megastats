@@ -67,6 +67,26 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
   color: var(--header-text);
 }
 
+/* Sprites either side of the title */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 20px);
+}
+
+.header-sprite {
+  flex-shrink: 0;
+  height: clamp(36px, 7vw, 56px);   /* shrinks on phones */
+  width: auto;
+  image-rendering: pixelated;
+}
+
+/* Right sprite is as-is; left one is mirrored */
+.header-sprite-left {
+  transform: scaleX(-1);
+}
+
 
 
 /* ---------- Navigation ---------- */
