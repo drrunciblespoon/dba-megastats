@@ -37,39 +37,29 @@
         <h1 id="pokemonName"></h1>
 
         <img
-  id="pokemonSprite"
-  class="pokemon-lookup-sprite"
-  alt=""
->
+          id="pokemonSprite"
+          class="pokemon-lookup-sprite"
+          alt=""
+        >
 
-<div
-  id="legality"
-  class="pokemon-legality"
-  aria-label="Pokémon legality"
->
-</div>
+        <div
+          id="legality"
+          class="pokemon-legality"
+          aria-label="Pokémon legality"
+        ></div>
 
-<div
-  id="championships"
-  class="pokemon-championships"
-  aria-label="Championships"
-></div>
+        <div
+          id="championships"
+          class="pokemon-championships"
+          aria-label="Championships"
+        ></div>
 
-
-      </div>
-
-
-      </div>
-
-      <div class="pokemon-legality">
-        Legal: <span id="pokemonLegal">–</span> of <span id="pokemonTotalSeasons">–</span> seasons
       </div>
 
 
       <!-- =========================================================
            Draft History
            ========================================================= -->
-
 
       <section class="pokemon-section">
 
@@ -166,7 +156,7 @@
 
     const legalityEl =
       DBA.$('legality');
-    
+
     const draftBody =
       DBA.$('draftBody');
 
@@ -212,10 +202,10 @@
 
     function showPokemon(pokemon) {
 
-  console.log('POKEMON OBJECT:', pokemon);
+      console.log('POKEMON OBJECT:', pokemon);
 
-  if (!pokemon) {
 
+      if (!pokemon) {
 
         detailsEl.hidden = true;
 
@@ -253,53 +243,57 @@
           ? 'block'
           : 'none';
 
-/*
- * ----------------------------------------------------------
- * Legality
- * ----------------------------------------------------------
- */
 
-legalityEl.innerHTML = '';
+      /*
+       * ----------------------------------------------------------
+       * Legality
+       * ----------------------------------------------------------
+       */
 
-const legalItem =
-  document.createElement('div');
-
-legalItem.textContent =
-  `Legal: ${pokemon.legal}`;
-
-legalityEl.appendChild(
-  legalItem
-);
+      legalityEl.innerHTML = '';
 
 
-const bannedItem =
-  document.createElement('div');
+      const legalItem =
+        document.createElement('div');
 
-bannedItem.textContent =
-  `Banned: ${pokemon.banned}`;
+      legalItem.textContent =
+        `Legal: ${pokemon.legal} of ${pokemon.totalSeasons} seasons`;
 
-legalityEl.appendChild(
-  bannedItem
-);
+      legalityEl.appendChild(
+        legalItem
+      );
 
 
-/*
- * Mega Pokémon do not need a Tera Banned line.
- */
+      const bannedItem =
+        document.createElement('div');
 
-if (!pokemon.name.includes('-Mega')) {
+      bannedItem.textContent =
+        `Banned: ${pokemon.banned}`;
 
-  const teraBannedItem =
-    document.createElement('div');
+      legalityEl.appendChild(
+        bannedItem
+      );
 
-  teraBannedItem.textContent =
-    `Tera Banned: ${pokemon.teraBanned}`;
 
-  legalityEl.appendChild(
-    teraBannedItem
-  );
+      /*
+       * Mega Pokémon do not need a Tera Banned line.
+       */
 
-}
+      if (
+        !pokemon.name.includes('-Mega')
+      ) {
+
+        const teraBannedItem =
+          document.createElement('div');
+
+        teraBannedItem.textContent =
+          `Tera Banned: ${pokemon.teraBanned}`;
+
+        legalityEl.appendChild(
+          teraBannedItem
+        );
+
+      }
 
 
       /*
@@ -310,10 +304,6 @@ if (!pokemon.name.includes('-Mega')) {
 
       championshipsEl.innerHTML = '';
 
-championshipsEl.style.display =
-  championships.length
-    ? 'flex'
-    : 'none';
 
       const championships =
         Array.isArray(pokemon.championships)
@@ -321,49 +311,71 @@ championshipsEl.style.display =
           : [];
 
 
-      championships.forEach(championship => {
+      /*
+       * Only display the championship container when
+       * the Pokémon actually has one or more trophies.
+       *
+       * This prevents the large empty area appearing
+       * underneath Pokémon with no championships.
+       */
 
-        const championshipEl =
-          document.createElement('div');
-
-        championshipEl.className =
-          'pokemon-championship';
-
-
-        const trophy =
-          document.createElement('div');
-
-        trophy.className =
-          'pokemon-trophy';
-
-        trophy.textContent =
-          '🏆';
+      championshipsEl.style.display =
+        championships.length
+          ? 'flex'
+          : 'none';
 
 
-        const details =
-          document.createElement('div');
+      championships.forEach(
+        championship => {
 
-        details.className =
-          'pokemon-championship-details';
+          const championshipEl =
+            document.createElement('div');
 
-
-        const teraText =
-          championship.tera
-            ? ' — Tera'
-            : '';
+          championshipEl.className =
+            'pokemon-championship';
 
 
-        details.textContent =
-          `${championship.player} - Season ${championship.season} (${championship.division})${teraText}`;
+          const trophy =
+            document.createElement('div');
+
+          trophy.className =
+            'pokemon-trophy';
+
+          trophy.textContent =
+            '🏆';
 
 
-        championshipEl.appendChild(trophy);
+          const details =
+            document.createElement('div');
 
-        championshipEl.appendChild(details);
+          details.className =
+            'pokemon-championship-details';
 
-        championshipsEl.appendChild(championshipEl);
 
-      });
+          const teraText =
+            championship.tera
+              ? ' — Tera'
+              : '';
+
+
+          details.textContent =
+            `${championship.player} - Season ${championship.season} (${championship.division})${teraText}`;
+
+
+          championshipEl.appendChild(
+            trophy
+          );
+
+          championshipEl.appendChild(
+            details
+          );
+
+          championshipsEl.appendChild(
+            championshipEl
+          );
+
+        }
+      );
 
 
       /*
@@ -396,83 +408,85 @@ championshipsEl.style.display =
 
       } else {
 
-        drafts.forEach(draft => {
+        drafts.forEach(
+          draft => {
 
-          const row =
-            draftBody.insertRow();
-
-
-          /*
-           * Player
-           */
-
-          addCell(
-            row,
-            draft.player
-          );
+            const row =
+              draftBody.insertRow();
 
 
-          /*
-           * Season
-           */
+            /*
+             * Player
+             */
 
-          const seasonText =
-            draft.season
-              ? `Season ${draft.season} (${draft.division})`
-              : `(${draft.division})`;
-
-
-          addCell(
-            row,
-            seasonText
-          );
+            addCell(
+              row,
+              draft.player
+            );
 
 
-          /*
-           * Appearances
-           */
+            /*
+             * Season
+             */
 
-          addCell(
-            row,
-            draft.appearances,
-            'num'
-          );
-
-
-          /*
-           * K-D
-           */
-
-          addCell(
-            row,
-            draft.kd,
-            'num'
-          );
+            const seasonText =
+              draft.season
+                ? `Season ${draft.season} (${draft.division})`
+                : `(${draft.division})`;
 
 
-          /*
-           * WR.
-           */
-
-          addCell(
-            row,
-            draft.wr,
-            'num'
-          );
+            addCell(
+              row,
+              seasonText
+            );
 
 
-          /*
-           * Tera
-           */
+            /*
+             * Appearances
+             */
 
-          addCell(
-            row,
-            draft.tera
-              ? 'Tera'
-              : ''
-          );
+            addCell(
+              row,
+              draft.appearances,
+              'num'
+            );
 
-        });
+
+            /*
+             * K-D
+             */
+
+            addCell(
+              row,
+              draft.kd,
+              'num'
+            );
+
+
+            /*
+             * WR.
+             */
+
+            addCell(
+              row,
+              draft.wr,
+              'num'
+            );
+
+
+            /*
+             * Tera
+             */
+
+            addCell(
+              row,
+              draft.tera
+                ? 'Tera'
+                : ''
+            );
+
+          }
+        );
 
       }
 
@@ -650,89 +664,105 @@ championshipsEl.style.display =
 
     DBA.call('pokemonLookupGetAll')
 
-      .then(data => {
+      .then(
+        data => {
 
-        pokemonData =
-          (data.pokemon || []).map(pokemon => ({
+          pokemonData =
+            (data.pokemon || []).map(
+              pokemon => ({
 
-            ...pokemon,
+                ...pokemon,
 
-            championships:
-              Array.isArray(pokemon.championships)
-                ? pokemon.championships
-                : [],
+                championships:
+                  Array.isArray(
+                    pokemon.championships
+                  )
+                    ? pokemon.championships
+                    : [],
 
-            drafts:
-              Array.isArray(pokemon.drafts)
-                ? pokemon.drafts
-                : []
+                drafts:
+                  Array.isArray(
+                    pokemon.drafts
+                  )
+                    ? pokemon.drafts
+                    : []
 
-          }));
-
-
-        pokemonSel.innerHTML = '';
-
-
-        const first =
-          document.createElement('option');
-
-        first.value = '';
-
-        first.textContent =
-          'Select a Pokémon...';
-
-        pokemonSel.appendChild(first);
+              })
+            );
 
 
-        pokemonData.forEach(
-          (pokemon, index) => {
+          pokemonSel.innerHTML = '';
 
-            const option =
-              document.createElement('option');
 
-            option.value =
-              index;
+          const first =
+            document.createElement('option');
 
-            option.textContent =
-              pokemon.name;
+          first.value = '';
 
-            pokemonSel.appendChild(option);
+          first.textContent =
+            'Select a Pokémon...';
+
+          pokemonSel.appendChild(
+            first
+          );
+
+
+          pokemonData.forEach(
+            (pokemon, index) => {
+
+              const option =
+                document.createElement('option');
+
+              option.value =
+                index;
+
+              option.textContent =
+                pokemon.name;
+
+              pokemonSel.appendChild(
+                option
+              );
+
+            }
+          );
+
+
+          statusEl.textContent = '';
+
+
+          if (
+            pokemonData.length === 0
+          ) {
+
+            statusEl.textContent =
+              'No Pokémon were found in PokemonInput.';
+
+            return;
 
           }
-        );
 
 
-        statusEl.textContent = '';
+          /*
+           * Start with no Pokémon selected.
+           */
 
-
-        if (pokemonData.length === 0) {
-
-          statusEl.textContent =
-            'No Pokémon were found in PokemonInput.';
-
-          return;
+          detailsEl.hidden = true;
 
         }
+      )
 
 
-        /*
-         * Start with no Pokémon selected.
-         */
+      .catch(
+        error => {
 
-        detailsEl.hidden = true;
+          console.error(error);
 
-      })
+          statusEl.textContent =
+            'Error loading Pokémon data: ' +
+            error.message;
 
-
-      .catch(error => {
-
-        console.error(error);
-
-        statusEl.textContent =
-          'Error loading Pokémon data: ' +
-          error.message;
-
-      });
+        }
+      );
 
 
     /*
@@ -757,7 +787,9 @@ championshipsEl.style.display =
 
 
       const pokemon =
-        pokemonData[Number(value)];
+        pokemonData[
+          Number(value)
+        ];
 
 
       if (!pokemon) {
@@ -769,7 +801,9 @@ championshipsEl.style.display =
       }
 
 
-      showPokemon(pokemon);
+      showPokemon(
+        pokemon
+      );
 
     }
 
