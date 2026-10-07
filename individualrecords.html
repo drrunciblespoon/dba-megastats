@@ -141,8 +141,11 @@
    */
 
   const playerKey =
-    DBA.strip(name)
-      .toLowerCase();
+  String(name)
+    .replace(/\s+\(Coach\)\s*$/i, '')
+    .trim()
+    .toLowerCase();
+
 
 
   const list =
