@@ -205,6 +205,14 @@ td a:focus-visible {
   margin: 4px 0 8px;
 }
 
+.page-pokemon-lookup .pokemon-legality {
+  margin: 4px 0 12px;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
 .page-pokemon-lookup .pokemon-championships {
   min-height: 34px;
   display: flex;
