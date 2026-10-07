@@ -42,6 +42,15 @@
     <tbody></tbody>
   </table>
 
+  <!-- NEW: Commonly Drafted -->
+  <h3 id="repeatHeading" style="display:none">Commonly Drafted</h3>
+  <table id="repeatDrafts" style="display:none">
+    <thead>
+      <tr><th>Pokémon</th><th>Spr.</th><th class="num">Times Drafted</th><th>Seasons</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
   <script>
     const sel = DBA.$('player');
     const statusEl = DBA.$('status');
@@ -50,15 +59,55 @@
     const seasonsTbl = DBA.$('seasons');
     const seasonsHeading = DBA.$('seasonsHeading');
 
+    // NEW
+    const repeatTbl = DBA.$('repeatDrafts');
+    const repeatHeading = DBA.$('repeatHeading');
+
     // Every player's record, loaded once and looked up by name
     const players = new Map();
+
+    // NEW: repeat drafts, keyed by tag-stripped lower-case player name
+    let repeatDrafts = {};
 
     function clear() {
       DBA.show(results, false);
       DBA.show(totals, false);
       DBA.show(seasonsTbl, false);
       DBA.show(seasonsHeading, false);
+      DBA.show(repeatTbl, false);        // NEW
+      DBA.show(repeatHeading, false);    // NEW
       statusEl.textContent = '';
+    }
+
+    // NEW
+    function renderRepeatDrafts(name) {
+      const list = repeatDrafts[DBA.strip(name).toLowerCase()] || [];
+      const body = repeatTbl.querySelector('tbody');
+      body.innerHTML = '';
+
+      list.forEach(p => {
+        const tr = body.insertRow();
+
+        tr.insertCell().textContent = p.name;
+
+        const spriteCell = tr.insertCell();
+        if (p.sprite) {
+          const img = document.createElement('img');
+          img.src = p.sprite;
+          img.alt = p.name;
+          img.loading = 'lazy';
+          spriteCell.appendChild(img);
+        }
+
+        const count = tr.insertCell();
+        count.textContent = p.count;
+        count.className = 'num';
+
+        tr.insertCell().textContent = p.seasons.join(', ');
+      });
+
+      DBA.show(repeatHeading, list.length > 0);
+      DBA.show(repeatTbl, list.length > 0);
     }
 
     function render(name) {
@@ -84,6 +133,8 @@
         p.r.map(([opponent, wins, losses]) => [opponent, wins, losses, wins - losses])
       );
       statusEl.textContent = n ? '' : 'No records found.';
+
+      renderRepeatDrafts(name);          // NEW
     }
 
     DBA.call('vwGetAll')
@@ -92,6 +143,14 @@
         DBA.fillSelect(sel, 'player', list.map(p => p.n));
       })
       .catch(e => { statusEl.textContent = 'Error: ' + e.message; });
+
+    // NEW: loaded separately, so a failure here can't break the rest of the page
+    DBA.call('repeatDraftsGetAll')
+      .then(data => {
+        repeatDrafts = (data && data.players) || {};
+        if (sel.value) renderRepeatDrafts(sel.value);   // player picked before this finished loading
+      })
+      .catch(e => console.error('Repeat drafts failed:', e));
 
     sel.addEventListener('change', () => {
       if (!sel.value) { clear(); return; }
