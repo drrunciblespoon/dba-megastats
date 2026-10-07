@@ -27,6 +27,8 @@
       </div>
     </div>
 
+    <div id="status"></div>
+
     <section id="pokemonDetails" hidden>
 
       <div class="pokemon-lookup-header">
@@ -85,39 +87,39 @@
 
       </section>
 
+
       <!-- =========================================================
-     Commonly Drafted With
-     ========================================================= -->
+           Commonly Drafted With
+           ========================================================= -->
 
-<section
-  class="pokemon-section"
-  id="commonPartnersSection"
-  hidden
->
+      <section
+        class="pokemon-section"
+        id="commonPartnersSection"
+        hidden
+      >
 
-  <h3>Commonly Drafted With</h3>
+        <h3>Commonly Drafted With</h3>
 
-  <div class="wrap">
+        <div class="wrap">
 
-    <table class="nosort pokemon-partners-table">
+          <table class="nosort pokemon-partners-table">
 
-      <thead>
-        <tr>
-          <th>Pokémon</th>
-          <th>Sprite</th>
-          <th>Partnered</th>
-          <th>Users</th>
-        </tr>
-      </thead>
+            <thead>
+              <tr>
+                <th>Pokémon</th>
+                <th>Sprite</th>
+                <th>Partnered</th>
+                <th>Users</th>
+              </tr>
+            </thead>
 
-      <tbody id="commonPartnersBody"></tbody>
+            <tbody id="commonPartnersBody"></tbody>
 
-    </table>
+          </table>
 
-  </div>
+        </div>
 
-</section>
-
+      </section>
 
 
       <!-- =========================================================
@@ -136,23 +138,23 @@
 
           <div class="pokemon-record-tabs">
 
-          <button
-            type="button"
-            id="regularRecordTab"
-            class="pokemon-record-tab active"
-          >
-            Regular
-          </button>
+            <button
+              type="button"
+              id="regularRecordTab"
+              class="pokemon-record-tab active"
+            >
+              Regular
+            </button>
 
-          <button
-            type="button"
-            id="teraRecordTab"
-            class="pokemon-record-tab"
-          >
-            Tera
-          </button>
+            <button
+              type="button"
+              id="teraRecordTab"
+              class="pokemon-record-tab"
+            >
+              Tera
+            </button>
 
-        </div>
+          </div>
 
           <table class="nosort totals pokemon-record-table">
 
@@ -186,49 +188,36 @@
 
   <script>
 
-    const pokemonSel =
-      DBA.$('pokemonSel');
+    /*
+     * ============================================================
+     * Elements
+     * ============================================================
+     */
 
-        const detailsEl =
-      DBA.$('pokemonDetails');
+    const pokemonSel = DBA.$('pokemonSel');
+    const statusEl = DBA.$('status');
+    const detailsEl = DBA.$('pokemonDetails');
+    const pokemonNameEl = DBA.$('pokemonName');
+    const pokemonSpriteEl = DBA.$('pokemonSprite');
+    const championshipsEl = DBA.$('championships');
+    const legalityEl = DBA.$('legality');
+    const draftBody = DBA.$('draftBody');
+    const recordBody = DBA.$('recordBody');
+    const regularRecordTab = DBA.$('regularRecordTab');
+    const teraRecordTab = DBA.$('teraRecordTab');
+    const commonPartnersSection = DBA.$('commonPartnersSection');
+    const commonPartnersBody = DBA.$('commonPartnersBody');
 
-    const pokemonNameEl =
-      DBA.$('pokemonName');
 
-    const pokemonSpriteEl =
-      DBA.$('pokemonSprite');
-
-    const championshipsEl =
-      DBA.$('championships');
-
-    const legalityEl =
-      DBA.$('legality');
-
-    const draftBody =
-      DBA.$('draftBody');
-
-    const recordBody =
-      DBA.$('recordBody');
-
-    const regularRecordTab =
-      DBA.$('regularRecordTab');
-
-    const teraRecordTab =
-      DBA.$('teraRecordTab');
-
-    const commonPartnersSection =
-      DBA.$('commonPartnersSection');
-
-    const commonPartnersBody =
-      DBA.$('commonPartnersBody');
+    /*
+     * ============================================================
+     * State
+     * ============================================================
+     */
 
     let pokemonData = [];
-
-    let selectedRecordType =
-      'regular';
-
-    let selectedPokemon =
-      null;
+    let selectedRecordType = 'regular';
+    let selectedPokemon = null;
 
 
     /*
@@ -239,8 +228,7 @@
 
     function addCell(row, value, className) {
 
-      const cell =
-        document.createElement('td');
+      const cell = document.createElement('td');
 
       cell.textContent =
         value === null ||
@@ -250,8 +238,7 @@
           : value;
 
       if (className) {
-        cell.className =
-          className;
+        cell.className = className;
       }
 
       row.appendChild(cell);
@@ -271,98 +258,30 @@
 
       recordBody.innerHTML = '';
 
-
       if (!record) {
 
-        const row =
-          recordBody.insertRow();
+        const row = recordBody.insertRow();
+        const cell = row.insertCell();
 
-        const cell =
-          row.insertCell();
-
-        cell.colSpan =
-          10;
-
-        cell.textContent =
-          'No overall record found.';
+        cell.colSpan = 10;
+        cell.textContent = 'No overall record found.';
 
         return;
 
       }
 
+      const row = recordBody.insertRow();
 
-      const row =
-        recordBody.insertRow();
-
-
-      addCell(
-        row,
-        record.td,
-        'num'
-      );
-
-
-      addCell(
-        row,
-        record.gp,
-        'num'
-      );
-
-
-      addCell(
-        row,
-        record.kills,
-        'num'
-      );
-
-
-      addCell(
-        row,
-        record.deaths,
-        'num'
-      );
-
-
-      addCell(
-        row,
-        record.diff,
-        'num'
-      );
-
-
-      addCell(
-        row,
-        record.wins,
-        'num'
-      );
-
-
-      addCell(
-        row,
-        record.losses,
-        'num'
-      );
-
-
-      addCell(
-        row,
-        record.wr,
-        'num'
-      );
-
-
-      addCell(
-        row,
-        record.kpg,
-        'num'
-      );
-
-
-      addCell(
-        row,
-        record.sr,
-        'num'
-      );
+      addCell(row, record.td, 'num');
+      addCell(row, record.gp, 'num');
+      addCell(row, record.kills, 'num');
+      addCell(row, record.deaths, 'num');
+      addCell(row, record.diff, 'num');
+      addCell(row, record.wins, 'num');
+      addCell(row, record.losses, 'num');
+      addCell(row, record.wr, 'num');
+      addCell(row, record.kpg, 'num');
+      addCell(row, record.sr, 'num');
 
     }
 
@@ -376,29 +295,21 @@
     function updateRecordTab() {
 
       if (!selectedPokemon) {
-
-        recordBody.innerHTML =
-          '';
-
+        recordBody.innerHTML = '';
         return;
-
       }
-
 
       const record =
         selectedRecordType === 'tera'
           ? selectedPokemon.teraRecord
           : selectedPokemon.record;
 
-
       drawRecord(record);
-
 
       regularRecordTab.classList.toggle(
         'active',
         selectedRecordType === 'regular'
       );
-
 
       teraRecordTab.classList.toggle(
         'active',
@@ -414,26 +325,15 @@
      * ------------------------------------------------------------
      */
 
-    regularRecordTab.onclick =
-      () => {
+    regularRecordTab.onclick = () => {
+      selectedRecordType = 'regular';
+      updateRecordTab();
+    };
 
-        selectedRecordType =
-          'regular';
-
-        updateRecordTab();
-
-      };
-
-
-    teraRecordTab.onclick =
-      () => {
-
-        selectedRecordType =
-          'tera';
-
-        updateRecordTab();
-
-      };
+    teraRecordTab.onclick = () => {
+      selectedRecordType = 'tera';
+      updateRecordTab();
+    };
 
 
     /*
@@ -444,61 +344,33 @@
 
     function showPokemon(pokemon) {
 
-      console.log(
-        'POKEMON OBJECT:',
-        pokemon
-      );
-
-
       if (!pokemon) {
 
-        selectedPokemon =
-          null;
-
-        detailsEl.hidden =
-          true;
-
-        recordBody.innerHTML =
-          '';
+        selectedPokemon = null;
+        detailsEl.hidden = true;
+        recordBody.innerHTML = '';
 
         return;
 
       }
 
+      selectedPokemon = pokemon;
+      selectedRecordType = 'regular';
 
-      selectedPokemon =
-        pokemon;
-
-      selectedRecordType =
-        'regular';
+      detailsEl.hidden = false;
 
 
-      detailsEl.hidden =
-        false;
-
-      
       /*
        * ----------------------------------------------------------
        * Header
        * ----------------------------------------------------------
        */
 
-      pokemonNameEl.textContent =
-        pokemon.name;
+      pokemonNameEl.textContent = pokemon.name;
 
-
-      pokemonSpriteEl.src =
-        pokemon.sprite || '';
-
-
-      pokemonSpriteEl.alt =
-        pokemon.name;
-
-
-      pokemonSpriteEl.style.display =
-        pokemon.sprite
-          ? 'block'
-          : 'none';
+      pokemonSpriteEl.src = pokemon.sprite || '';
+      pokemonSpriteEl.alt = pokemon.name;
+      pokemonSpriteEl.style.display = pokemon.sprite ? 'block' : 'none';
 
 
       /*
@@ -507,55 +379,35 @@
        * ----------------------------------------------------------
        */
 
-      legalityEl.innerHTML =
-        '';
+      legalityEl.innerHTML = '';
 
-
-      const legalItem =
-        document.createElement('div');
-
+      const legalItem = document.createElement('div');
 
       legalItem.textContent =
         `Legal: ${pokemon.legal} of ${pokemon.totalSeasons} seasons`;
 
+      legalityEl.appendChild(legalItem);
 
-      legalityEl.appendChild(
-        legalItem
-      );
-
-
-            /*
+      /*
        * Mega Pokémon do not need a Tera Banned line.
        */
 
-      if (
-        !pokemon.name.includes('-Mega')
-      ) {
+      if (!pokemon.name.includes('-Mega')) {
 
-        const teraBannedItem =
-          document.createElement('div');
+        const teraBannedItem = document.createElement('div');
 
-        const teraBanned =
-          Number(pokemon.teraBanned) || 0;
+        const teraBanned = Number(pokemon.teraBanned) || 0;
 
-        const teraBannedText =
+        teraBannedItem.textContent =
           teraBanned === 0
             ? 'Never Tera banned'
             : `Tera banned ${teraBanned} ${
-                teraBanned === 1
-                  ? 'season'
-                  : 'seasons'
+                teraBanned === 1 ? 'season' : 'seasons'
               }`;
 
-        teraBannedItem.textContent =
-          teraBannedText;
-
-        legalityEl.appendChild(
-          teraBannedItem
-        );
+        legalityEl.appendChild(teraBannedItem);
 
       }
-
 
 
       /*
@@ -564,53 +416,53 @@
        * ----------------------------------------------------------
        */
 
-    championshipsEl.innerHTML = '';
+      championshipsEl.innerHTML = '';
 
-const championships =
-  Array.isArray(pokemon.championships)
-    ? pokemon.championships
-    : [];
+      const championships =
+        Array.isArray(pokemon.championships)
+          ? pokemon.championships
+          : [];
 
-/*
- * Only display the championship container when
- * the Pokémon actually has one or more trophies.
- */
-championshipsEl.style.display =
-  championships.length
-    ? 'flex'
-    : 'none';
+      /*
+       * Only display the championship container when
+       * the Pokémon actually has one or more trophies.
+       */
 
-if (championships.length) {
+      championshipsEl.style.display =
+        championships.length ? 'flex' : 'none';
 
-  // One row containing every trophy
-  const trophyRow = document.createElement('div');
-  trophyRow.className = 'pokemon-trophy-row';
+      if (championships.length) {
 
-  // One line per winner underneath
-  const winnerList = document.createElement('div');
-  winnerList.className = 'pokemon-winner-list';
+        // One row containing every trophy
+        const trophyRow = document.createElement('div');
+        trophyRow.className = 'pokemon-trophy-row';
 
-  championships.forEach(championship => {
+        // One line per winner underneath
+        const winnerList = document.createElement('div');
+        winnerList.className = 'pokemon-winner-list';
 
-    const trophy = document.createElement('span');
-    trophy.className = 'pokemon-trophy';
-    trophy.textContent = '🏆';
-    trophyRow.appendChild(trophy);
+        championships.forEach(championship => {
 
-    const teraText = championship.tera ? ' — Tera' : '';
+          const trophy = document.createElement('span');
+          trophy.className = 'pokemon-trophy';
+          trophy.textContent = '🏆';
+          trophyRow.appendChild(trophy);
 
-    const winner = document.createElement('div');
-    winner.className = 'pokemon-winner';
-    winner.textContent =
-      `${championship.player} - Season ${championship.season} (${championship.division})${teraText}`;
-    winnerList.appendChild(winner);
+          const teraText = championship.tera ? ' — Tera' : '';
 
-  });
+          const winner = document.createElement('div');
+          winner.className = 'pokemon-winner';
+          winner.textContent =
+            `${championship.player} - Season ${championship.season} (${championship.division})${teraText}`;
+          winnerList.appendChild(winner);
 
-  championshipsEl.appendChild(trophyRow);
-  championshipsEl.appendChild(winnerList);
+        });
 
-}
+        championshipsEl.appendChild(trophyRow);
+        championshipsEl.appendChild(winnerList);
+
+      }
+
 
       /*
        * ----------------------------------------------------------
@@ -618,256 +470,125 @@ if (championships.length) {
        * ----------------------------------------------------------
        */
 
-      draftBody.innerHTML =
-        '';
-
+      draftBody.innerHTML = '';
 
       const drafts =
-        Array.isArray(
-          pokemon.drafts
-        )
+        Array.isArray(pokemon.drafts)
           ? pokemon.drafts
           : [];
 
+      if (drafts.length === 0) {
 
-      if (
-        drafts.length === 0
-      ) {
+        const row = draftBody.insertRow();
+        const cell = row.insertCell();
 
-        const row =
-          draftBody.insertRow();
-
-
-        const cell =
-          row.insertCell();
-
-
-        cell.colSpan =
-          6;
-
-
-        cell.textContent =
-          'No draft history found.';
+        cell.colSpan = 6;
+        cell.textContent = 'No draft history found.';
 
       } else {
 
-        drafts.forEach(
-          draft => {
+        drafts.forEach(draft => {
 
-            const row =
-              draftBody.insertRow();
+          const row = draftBody.insertRow();
 
+          addCell(row, draft.player);
 
-            /*
-             * Player
-             */
+          const seasonText =
+            draft.season
+              ? `Season ${draft.season} (${draft.division})`
+              : `(${draft.division})`;
 
-            addCell(
-              row,
-              draft.player
-            );
+          addCell(row, seasonText);
+          addCell(row, draft.appearances, 'num');
+          addCell(row, draft.kd, 'num');
+          addCell(row, draft.wr, 'num');
+          addCell(row, draft.tera ? 'Tera' : '');
 
-
-            /*
-             * Season
-             */
-
-            const seasonText =
-              draft.season
-                ? `Season ${draft.season} (${draft.division})`
-                : `(${draft.division})`;
-
-
-            addCell(
-              row,
-              seasonText
-            );
-
-
-            /*
-             * Appearances
-             */
-
-            addCell(
-              row,
-              draft.appearances,
-              'num'
-            );
-
-
-            /*
-             * K-D
-             */
-
-            addCell(
-              row,
-              draft.kd,
-              'num'
-            );
-
-
-            /*
-             * WR.
-             */
-
-            addCell(
-              row,
-              draft.wr,
-              'num'
-            );
-
-
-            /*
-             * Tera
-             */
-
-            addCell(
-              row,
-              draft.tera
-                ? 'Tera'
-                : ''
-            );
-
-          }
-        );
+        });
 
       }
-/*
- * ----------------------------------------------------------
- * Commonly Drafted With
- * ----------------------------------------------------------
- */
-
-commonPartnersBody.innerHTML =
-  '';
-
-
-const commonPartners =
-  Array.isArray(
-    pokemon.commonPartners
-  )
-    ? pokemon.commonPartners
-    : [];
-
-
-if (
-  commonPartners.length === 0
-) {
-
-  commonPartnersSection.hidden =
-    true;
-
-} else {
-
-  commonPartnersSection.hidden =
-    false;
-
-
-  commonPartners.forEach(
-    partner => {
-
-      const row =
-        commonPartnersBody.insertRow();
 
 
       /*
-       * Pokémon
+       * ----------------------------------------------------------
+       * Commonly Drafted With
+       * ----------------------------------------------------------
        */
 
-      addCell(
-        row,
-        partner.name
-      );
+      commonPartnersBody.innerHTML = '';
 
-
-      /*
-       * Sprite
-       */
-
-      const spriteCell =
-        row.insertCell();
-
-
-      const sprite =
-        document.createElement('img');
-
-
-      sprite.src =
-        partner.sprite || '';
-
-      sprite.alt =
-        partner.name;
-
-      sprite.loading =
-        'lazy';
-
-
-      if (!partner.sprite) {
-        sprite.style.display =
-          'none';
-      }
-
-
-      spriteCell.appendChild(
-        sprite
-      );
-
-
-      /*
-       * Number of partnerships
-       */
-
-      const count =
-        Number(partner.count) || 0;
-
-
-      addCell(
-        row,
-        `${count} ${count === 1 ? 'Time' : 'Times'}`,
-        'num'
-      );
-
-
-      /*
-       * Users
-       */
-
-      const users =
-        Array.isArray(partner.users)
-          ? partner.users
+      const commonPartners =
+        Array.isArray(pokemon.commonPartners)
+          ? pokemon.commonPartners
           : [];
 
+      if (commonPartners.length === 0) {
 
-      let usersText = '';
+        commonPartnersSection.hidden = true;
 
+      } else {
 
-      if (users.length === 1) {
+        commonPartnersSection.hidden = false;
 
-        usersText =
-          users[0];
+        commonPartners.forEach(partner => {
 
-      } else if (users.length === 2) {
+          const row = commonPartnersBody.insertRow();
 
-        usersText =
-          `${users[0]} and ${users[1]}`;
+          // Pokémon
+          addCell(row, partner.name);
 
-      } else if (users.length > 2) {
+          // Sprite
+          const spriteCell = row.insertCell();
+          const sprite = document.createElement('img');
 
-        usersText =
-          `${users.slice(0, -1).join(', ')} and ${users[users.length - 1]}`;
+          sprite.src = partner.sprite || '';
+          sprite.alt = partner.name;
+          sprite.loading = 'lazy';
+
+          if (!partner.sprite) {
+            sprite.style.display = 'none';
+          }
+
+          spriteCell.appendChild(sprite);
+
+          // Number of partnerships
+          const count = Number(partner.count) || 0;
+
+          addCell(
+            row,
+            `${count} ${count === 1 ? 'Time' : 'Times'}`,
+            'num'
+          );
+
+          // Users
+          const users =
+            Array.isArray(partner.users)
+              ? partner.users
+              : [];
+
+          let usersText = '';
+
+          if (users.length === 1) {
+
+            usersText = users[0];
+
+          } else if (users.length === 2) {
+
+            usersText = `${users[0]} and ${users[1]}`;
+
+          } else if (users.length > 2) {
+
+            usersText =
+              `${users.slice(0, -1).join(', ')} and ${users[users.length - 1]}`;
+
+          }
+
+          addCell(row, usersText);
+
+        });
 
       }
 
-
-      addCell(
-        row,
-        usersText
-      );
-
-    }
-  );
-
-}
 
       /*
        * ----------------------------------------------------------
@@ -879,24 +600,10 @@ if (
        */
 
       const hasTeraDraft =
-        drafts.some(
-          draft => draft.tera === true
-        );
-
+        drafts.some(draft => draft.tera === true);
 
       teraRecordTab.style.display =
-        hasTeraDraft
-          ? ''
-          : 'none';
-
-
-      /*
-       * Always start a newly selected Pokémon
-       * on the Regular tab.
-       */
-
-      selectedRecordType =
-        'regular';
+        hasTeraDraft ? '' : 'none';
 
 
       /*
@@ -908,126 +615,87 @@ if (
       updateRecordTab();
 
     }
+
+
     /*
      * ------------------------------------------------------------
      * Load all Pokémon lookup data
      * ------------------------------------------------------------
      */
 
-    DBA.call(
-      'pokemonLookupGetAll'
-    )
+    DBA.call('pokemonLookupGetAll')
 
-      .then(
-        data => {
+      .then(data => {
 
-          pokemonData =
-            (data.pokemon || []).map(
-              pokemon => ({
+        pokemonData =
+          (data.pokemon || []).map(pokemon => ({
 
-                ...pokemon,
+            ...pokemon,
 
-                championships:
-                  Array.isArray(
-                    pokemon.championships
-                  )
-                    ? pokemon.championships
-                    : [],
+            championships:
+              Array.isArray(pokemon.championships)
+                ? pokemon.championships
+                : [],
 
-                drafts:
-                  Array.isArray(
-                    pokemon.drafts
-                  )
-                    ? pokemon.drafts
-                    : []
+            drafts:
+              Array.isArray(pokemon.drafts)
+                ? pokemon.drafts
+                : []
 
-              })
-            );
+          }));
 
+        pokemonSel.innerHTML = '';
 
-          pokemonSel.innerHTML =
-            '';
+        const first = document.createElement('option');
 
+        first.value = '';
+        first.textContent = 'Select a Pokémon...';
 
-          const first =
-            document.createElement(
-              'option'
-            );
+        pokemonSel.appendChild(first);
 
+        pokemonData.forEach((pokemon, index) => {
 
-          first.value =
-            '';
+          const option = document.createElement('option');
 
+          option.value = index;
+          option.textContent = pokemon.name;
 
-          first.textContent =
-            'Select a Pokémon...';
+          pokemonSel.appendChild(option);
 
+        });
 
-          pokemonSel.appendChild(
-            first
-          );
-
-
-          pokemonData.forEach(
-            (pokemon, index) => {
-
-              const option =
-                document.createElement(
-                  'option'
-                );
-
-
-              option.value =
-                index;
-
-
-              option.textContent =
-                pokemon.name;
-
-
-              pokemonSel.appendChild(
-                option
-              );
-
-            }
-          );
-
-
-          if (
-  pokemonData.length === 0
-) {
-
-  console.error(
-    'No Pokémon were found in PokemonInput.'
-  );
-
-  return;
-
-}
-
-
-
-          /*
-           * Start with no Pokémon selected.
-           */
-
-          detailsEl.hidden =
-            true;
-
-        }
-      )
-
-
-      .catch(
-        error => {
+        if (pokemonData.length === 0) {
 
           console.error(
-      'Error loading Pokémon data:',
-      error
+            'No Pokémon were found in PokemonInput.'
           );
 
+          statusEl.textContent =
+            'No Pokémon data found.';
+
+          return;
+
         }
-      );
+
+        /*
+         * Start with no Pokémon selected.
+         */
+
+        detailsEl.hidden = true;
+
+      })
+
+      .catch(error => {
+
+        console.error(
+          'Error loading Pokémon data:',
+          error
+        );
+
+        statusEl.textContent =
+          'Error: ' + error.message;
+
+      });
 
 
     /*
@@ -1038,55 +706,21 @@ if (
 
     function handlePokemonSelection() {
 
-      const value =
-        pokemonSel.value;
+      const value = pokemonSel.value;
 
-
-      if (
-        value === ''
-      ) {
-
-        showPokemon(
-          null
-        );
-
+      if (value === '') {
+        showPokemon(null);
         return;
-
       }
 
+      const pokemon = pokemonData[Number(value)];
 
-      const pokemon =
-        pokemonData[
-          Number(value)
-        ];
-
-
-      if (!pokemon) {
-
-        showPokemon(
-          null
-        );
-
-        return;
-
-      }
-
-
-      showPokemon(
-        pokemon
-      );
+      showPokemon(pokemon || null);
 
     }
 
-
     pokemonSel.addEventListener(
       'change',
-      handlePokemonSelection
-    );
-
-
-    pokemonSel.addEventListener(
-      'input',
       handlePokemonSelection
     );
 
