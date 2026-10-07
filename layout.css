@@ -581,5 +581,31 @@ body.page-sheets td.season {
     min-width: 600px;
     max-width: none;
   }
+  /*
+   * Three-column Pokémon Records tables:
+   * Sprite | Pokémon | Value
+   *
+   * These are simple enough to fit on most phones,
+   * so don't force them into a horizontally scrolling
+   * 600px-wide table.
+   */
+
+  body.page-pokemon table th:first-child:nth-last-child(3) {
+    width: 22%;
+  }
+
+  body.page-pokemon table th:first-child:nth-last-child(3) + th {
+    width: 48%;
+  }
+
+  body.page-pokemon table th:first-child:nth-last-child(3) + th + th {
+    width: 30%;
+  }
+
+  body.page-pokemon table:has(th:first-child:nth-last-child(3)) {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
 
 }
