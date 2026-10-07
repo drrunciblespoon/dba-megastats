@@ -258,25 +258,46 @@
 
 legalityEl.innerHTML = '';
 
+const legalItem =
+  document.createElement('div');
 
-const legalityItems = [
-  `Legal: ${pokemon.legal ?? '–'}`,
-  `Banned: ${pokemon.banned ?? '–'}`,
-  `Tera Banned: ${pokemon.teraBanned ?? '–'}`
-];
+legalItem.textContent =
+  `Legal: ${pokemon.legal}`;
+
+legalityEl.appendChild(
+  legalItem
+);
 
 
-legalityItems.forEach(text => {
+const bannedItem =
+  document.createElement('div');
 
-  const item =
+bannedItem.textContent =
+  `Banned: ${pokemon.banned}`;
+
+legalityEl.appendChild(
+  bannedItem
+);
+
+
+/*
+ * Mega Pokémon do not need a Tera Banned line.
+ */
+
+if (!pokemon.name.includes('-Mega')) {
+
+  const teraBannedItem =
     document.createElement('div');
 
-  item.textContent =
-    text;
+  teraBannedItem.textContent =
+    `Tera Banned: ${pokemon.teraBanned}`;
 
-  legalityEl.appendChild(item);
+  legalityEl.appendChild(
+    teraBannedItem
+  );
 
-});
+}
+
 
       /*
        * ----------------------------------------------------------
@@ -286,6 +307,10 @@ legalityItems.forEach(text => {
 
       championshipsEl.innerHTML = '';
 
+championshipsEl.style.display =
+  championships.length
+    ? 'flex'
+    : 'none';
 
       const championships =
         Array.isArray(pokemon.championships)
