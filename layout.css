@@ -284,7 +284,7 @@ body.page-individual .role-tabs .role-tab:not(.active):hover,
 
 body.page-individual #seasons .season-draft-row > td {
   padding: 8px;
-  background: #dfe2e9;
+  background: #d7dae1;       
   overflow: visible;
 }
 
@@ -295,7 +295,7 @@ body.page-individual #seasons .season-draft-wrapper {
 
 body.page-individual #seasons .individual-draft-table {
   width: 100%;
-  min-width: 800px;          /* keeps all 9 columns readable; wrapper scrolls on small screens */
+  min-width: 800px;         
   table-layout: auto;
   margin-top: 0;
   font-size: 0.9em;
@@ -303,7 +303,7 @@ body.page-individual #seasons .individual-draft-table {
 
 body.page-individual #seasons .individual-draft-table th,
 body.page-individual #seasons .individual-draft-table td {
-  width: auto;               /* cancels the 30/30/20/20 rules meant for the outer table */
+  width: auto;               
   overflow: visible;
   text-overflow: clip;
   white-space: nowrap;
@@ -334,6 +334,18 @@ body.page-individual #seasons .season-draft-loading::before {
 
 body.page-individual #seasons tr.season-row[title] {
   cursor: pointer;
+}
+
+body.page-individual #seasons tr.season-draft-row:hover > td {
+  filter: none;
+}
+
+body.page-individual #seasons .individual-draft-table tbody tr:hover td {
+  filter: saturate(1.05) brightness(1.015);
+}
+
+body.page-individual #seasons .individual-draft-table th:hover {
+  filter: brightness(1.03);
 }
 
 @keyframes season-draft-spin {
