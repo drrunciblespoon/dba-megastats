@@ -205,6 +205,62 @@ body.page-individual th:nth-child(4) {
   width: 20%;
 }
 
+/* ============================================================
+   INDIVIDUAL RECORDS: ROLE TABS + TOTALS
+   ============================================================ */
+
+body.page-individual .totals-block {
+  width: 1250px;
+  max-width: 100%;
+  margin: 16px auto 0;
+}
+
+body.page-individual .totals-block table {
+  margin-top: 0;
+  width: 100%;
+}
+
+/* Square the table's top-left corner so the tabs attach cleanly */
+body.page-individual .totals-block.has-tabs table.totals {
+  border-top-left-radius: 0;
+}
+
+body.page-individual .role-tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 1px;
+  position: relative;
+  z-index: 1;                          /* paint above the table's top border */
+}
+
+body.page-individual .role-tabs .role-tab {
+  padding: 8px 22px;
+  border: 2px solid var(--accent);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  background: var(--surface-2);
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition: filter 0.15s, color 0.15s;
+}
+
+body.page-individual .role-tabs .role-tab:hover {
+  filter: brightness(1.06);
+  color: var(--text);
+}
+
+/* Active tab matches the table's first header cell and covers its top border */
+body.page-individual .role-tabs .role-tab.active {
+  background: #e06666;
+  color: var(--text);
+  margin-bottom: -2px;
+  padding-bottom: 10px;
+  filter: none;
+}
+
 /* ===========================================================
    NESTED DRAFTS WITHIN INDIVIDUAL RECORDS
    =========================================================== */
