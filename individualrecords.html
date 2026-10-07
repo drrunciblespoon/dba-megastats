@@ -81,34 +81,41 @@
 
     // NEW
     function renderRepeatDrafts(name) {
-      const list = repeatDrafts[DBA.strip(name).toLowerCase()] || [];
-      const body = repeatTbl.querySelector('tbody');
-      body.innerHTML = '';
 
-      list.forEach(p => {
-        const tr = body.insertRow();
+  const body = repeatTbl.querySelector('tbody');
+  body.innerHTML = '';
 
-        tr.insertCell().textContent = p.name;
+  // Coaches only
+  const isCoach = /\(coach\)/i.test(name);
 
-        const spriteCell = tr.insertCell();
-        if (p.sprite) {
-          const img = document.createElement('img');
-          img.src = p.sprite;
-          img.alt = p.name;
-          img.loading = 'lazy';
-          spriteCell.appendChild(img);
-        }
+  const list = isCoach
+    ? (repeatDrafts[DBA.strip(name).toLowerCase()] || [])
+    : [];
 
-        const count = tr.insertCell();
-        count.textContent = p.count;
-        count.className = 'num';
+  list.forEach(p => {
+    const tr = body.insertRow();
 
-        tr.insertCell().textContent = p.seasons.join(', ');
-      });
+    tr.insertCell().textContent = p.name;
 
-      DBA.show(repeatHeading, list.length > 0);
-      DBA.show(repeatTbl, list.length > 0);
+    const spriteCell = tr.insertCell();
+    if (p.sprite) {
+      const img = document.createElement('img');
+      img.src = p.sprite;
+      img.alt = p.name;
+      img.loading = 'lazy';
+      spriteCell.appendChild(img);
     }
+
+    const count = tr.insertCell();
+    count.textContent = p.count;
+    count.className = 'num';
+
+    tr.insertCell().textContent = p.seasons.join(', ');
+  });
+
+  DBA.show(repeatHeading, list.length > 0);
+  DBA.show(repeatTbl, list.length > 0);
+}
 
     function render(name) {
       const p = players.get(name);
