@@ -189,10 +189,7 @@
     const pokemonSel =
       DBA.$('pokemonSel');
 
-    const statusEl =
-      DBA.$('status');
-
-    const detailsEl =
+        const detailsEl =
       DBA.$('pokemonDetails');
 
     const pokemonNameEl =
@@ -461,9 +458,6 @@
         detailsEl.hidden =
           true;
 
-        statusEl.textContent =
-          'Select a Pokémon.';
-
         recordBody.innerHTML =
           '';
 
@@ -482,10 +476,7 @@
       detailsEl.hidden =
         false;
 
-      statusEl.textContent =
-        '';
-
-
+      
       /*
        * ----------------------------------------------------------
        * Header
@@ -905,18 +896,7 @@ if (
 
       updateRecordTab();
 
-      
-      /*
-       * ----------------------------------------------------------
-       * Overall Record
-       * ----------------------------------------------------------
-       */
-
-      updateRecordTab();
-
     }
-
-
     /*
      * ------------------------------------------------------------
      * Load all Pokémon lookup data
@@ -1002,20 +982,18 @@ if (
           );
 
 
-          statusEl.textContent =
-            '';
-
-
           if (
-            pokemonData.length === 0
-          ) {
+  pokemonData.length === 0
+) {
 
-            statusEl.textContent =
-              'No Pokémon were found in PokemonInput.';
+  console.error(
+    'No Pokémon were found in PokemonInput.'
+  );
 
-            return;
+  return;
 
-          }
+}
+
 
 
           /*
@@ -1033,13 +1011,9 @@ if (
         error => {
 
           console.error(
-            error
+      'Error loading Pokémon data:',
+      error
           );
-
-
-          statusEl.textContent =
-            'Error loading Pokémon data: ' +
-            error.message;
 
         }
       );
