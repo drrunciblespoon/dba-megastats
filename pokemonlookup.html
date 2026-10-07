@@ -528,23 +528,29 @@
        * Mega Pokémon do not need a Tera Banned line.
        */
 
-      if (
-        !pokemon.name.includes('-Mega')
-      ) {
+     if (
+!pokemon.name.includes('-Mega')
+) {
 
-        const teraBannedItem =
-          document.createElement('div');
+const teraBannedItem =
+document.createElement('div');
 
+const teraBanned =
+Number(pokemon.teraBanned) || 0;
 
-        teraBannedItem.textContent =
-          `Tera Banned: ${pokemon.teraBanned}`;
+const teraBannedText =
+teraBanned === 0
+? 'Never'
+: ${teraBanned} ${teraBanned === 1 ? 'time' : 'times'};
 
+teraBannedItem.textContent =
+Tera Banned: ${teraBannedText};
 
-        legalityEl.appendChild(
-          teraBannedItem
-        );
+legalityEl.appendChild(
+teraBannedItem
+);
 
-      }
+}
 
 
       /*
