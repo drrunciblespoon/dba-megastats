@@ -343,29 +343,40 @@ td a:focus-visible {
   }
 }
 
-.pokemon-championships {
+/* ---------- Championships ---------- */
+
+.page-pokemon-lookup .pokemon-championships {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  margin-top: 12px;
+  gap: 6px;
+  margin: 8px 0;
 }
 
-.pokemon-championship {
+/* All trophies side by side (wraps if there are a lot) */
+.page-pokemon-lookup .pokemon-trophy-row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
 }
 
-.pokemon-trophy {
+.page-pokemon-lookup .pokemon-trophy {
   font-size: 2rem;
   line-height: 1;
 }
 
-.pokemon-championship-details {
-  margin-top: 5px;
+/* One winner per line */
+.page-pokemon-lookup .pokemon-winner-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.page-pokemon-lookup .pokemon-winner {
   font-size: 0.95rem;
+  text-align: center;
 }
 
 .pokemon-record-note {
