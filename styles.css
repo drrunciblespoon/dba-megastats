@@ -250,7 +250,7 @@ td a:focus-visible {
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
-  gap: 4px;
+  gap: 1px;
   margin: 0;
   position: relative;
   z-index: 1;                      /* paint above the table's top border */
