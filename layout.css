@@ -205,6 +205,34 @@ body.page-individual th:nth-child(4) {
   width: 20%;
 }
 
+/* ===========================================================
+   NESTED DRAFTS WITHIN INDIVIDUAL RECORDS
+   =========================================================== */
+
+.season-draft-row > td {
+  padding: 0;
+  max-width: 0;          /* remove this line if you'd rather widen the page than scroll */
+}
+
+.season-draft-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.individual-draft-table {
+  width: 100%;
+  table-layout: auto;
+  white-space: nowrap;
+  font-size: 0.9em;
+}
+
+.individual-draft-table th,
+.individual-draft-table td {
+  display: table-cell;
+  width: auto;
+  padding: 4px 8px;
+}
+
 
 /* ============================================================
    PAIRING RECORDS
