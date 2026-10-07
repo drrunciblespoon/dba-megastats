@@ -54,7 +54,12 @@ const DBA_NAV = [
 document.addEventListener('DOMContentLoaded', () => {
   const header = document.createElement('header');
   header.className = 'site-header';
-  header.innerHTML = '<h1 class="site-title">Draftholes Battle Association</h1>';
+  const SPRITE = 'https://img.pokemondb.net/sprites/ruby-sapphire/normal/bayleef.png';
+
+header.innerHTML =
+  '<img class="header-sprite header-sprite-left" src="' + SPRITE + '" alt="" aria-hidden="true">' +
+  '<h1 class="site-title">Draftholes Battle Association</h1>' +
+  '<img class="header-sprite header-sprite-right" src="' + SPRITE + '" alt="" aria-hidden="true">';
 
   const nav = document.createElement('nav');
   nav.className = 'site-nav';
