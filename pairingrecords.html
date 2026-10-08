@@ -158,122 +158,219 @@
      * ------------------------------------------------------------
      */
 
-    function lookup() {
+function lookup() {
 
-      if (
-        !coachSel.value &&
-        !battlerSel.value
-      ) {
+  if (
+    !coachSel.value &&
+    !battlerSel.value
+  ) {
 
-        DBA.show(
-          results,
-          false
-        );
+    DBA.show(
+      results,
+      false
+    );
 
-        DBA.show(
-          totals,
-          false
-        );
+    DBA.show(
+      totals,
+      false
+    );
 
-        statusEl.textContent =
-          HINT;
+    statusEl.textContent =
+      HINT;
 
+    return;
+  }
+
+
+  const mine =
+    ++token;
+
+
+  statusEl.textContent =
+    'Loading...';
+
+
+  DBA.call(
+    'puGetPairData',
+    coachSel.value,
+    battlerSel.value
+  )
+
+    .then(d => {
+
+      if (mine !== token) {
         return;
       }
 
 
-      const mine =
-        ++token;
+      /*
+       * ----------------------------------------------------------
+       * Totals
+       * ----------------------------------------------------------
+       */
+
+      DBA.fillTotals(
+        totals,
+        d.totals
+      );
 
 
-      statusEl.textContent =
-        'Loading...';
+      /*
+       * ----------------------------------------------------------
+       * Pairing results
+       * ----------------------------------------------------------
+       */
+
+      const resultsBody =
+        results.querySelector('tbody');
+
+      resultsBody.innerHTML = '';
 
 
-      DBA.call(
-        'puGetPairData',
-        coachSel.value,
-        battlerSel.value
-      )
+      d.rows.forEach(([pair, wins, losses, net]) => {
 
-        .then(d => {
-
-          if (mine !== token) {
-            return;
-          }
+        const row =
+          resultsBody.insertRow();
 
 
-          DBA.fillTotals(
-            totals,
-            d.totals
+        /*
+         * Pair
+         */
+
+        const pairCell =
+          row.insertCell();
+
+
+        const match =
+          String(pair).match(
+            /^(.*?)\s*\((Coach|Battler)\)\s+and\s+(.*?)\s*\((Coach|Battler)\)$/i
           );
 
 
-          const totalsBody =
-  totals.querySelector('tbody');
+        if (match) {
 
-totalsBody.innerHTML = '';
+          const player1 =
+            match[1].trim();
 
-d.totals.forEach(item => {
+          const role1 =
+            match[2];
 
-  const row =
-    totalsBody.insertRow();
+          const player2 =
+            match[3].trim();
 
-  const playerCell =
-    row.insertCell();
-
-  const link =
-    DBA.playerLink(item.label);
-
-  if (link) {
-    playerCell.appendChild(link);
-  } else {
-    playerCell.textContent =
-      item.label || '–';
-  }
-
-  [
-    item.found ? item.wins : '–',
-    item.found ? item.losses : '–',
-    item.found ? item.net : '–'
-  ].forEach(value => {
-
-    const cell =
-      row.insertCell();
-
-    cell.className = 'num';
-    cell.textContent = value;
-
-  });
-
-});
-
-DBA.show(
-  totals,
-  d.totals.length > 0
-);
+          const role2 =
+            match[4];
 
 
+          const link1 =
+            DBA.playerLink(player1);
 
-          statusEl.textContent =
-            n
-              ? ''
-              : 'No pairings found.';
+          const link2 =
+            DBA.playerLink(player2);
 
-        })
 
-        .catch(e => {
-
-          if (mine === token) {
-
-            statusEl.textContent =
-              'Error: ' + e.message;
-
+          if (link1) {
+            pairCell.appendChild(link1);
+          } else {
+            pairCell.appendChild(
+              document.createTextNode(player1)
+            );
           }
+
+
+          pairCell.appendChild(
+            document.createTextNode(
+              ` (${role1}) and `
+            )
+          );
+
+
+          if (link2) {
+            pairCell.appendChild(link2);
+          } else {
+            pairCell.appendChild(
+              document.createTextNode(player2)
+            );
+          }
+
+
+          pairCell.appendChild(
+            document.createTextNode(
+              ` (${role2})`
+            )
+          );
+
+
+        } else {
+
+          pairCell.textContent =
+            pair || '–';
+
+        }
+
+
+        /*
+         * --------------------------------------------------------
+         * Record
+         * --------------------------------------------------------
+         */
+
+        [
+          wins,
+          losses,
+          net
+        ].forEach(value => {
+
+          const cell =
+            row.insertCell();
+
+          cell.className =
+            'num';
+
+          cell.textContent =
+            value;
 
         });
 
-    }
+      });
+
+
+      /*
+       * ----------------------------------------------------------
+       * Show results
+       * ----------------------------------------------------------
+       */
+
+      const n =
+        d.rows.length;
+
+
+      statusEl.textContent =
+        n
+          ? ''
+          : 'No pairings found.';
+
+
+      DBA.show(
+        results,
+        n > 0
+      );
+
+    })
+
+    .catch(e => {
+
+      if (mine === token) {
+
+        statusEl.textContent =
+          'Error: ' + e.message;
+
+      }
+
+    });
+
+}
+
 
 
     /*
