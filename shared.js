@@ -98,6 +98,23 @@ const DBA = {
 
 };
 
+DBA.pokemonLookupUrl = function (pokemonName) {
+
+  const url = new URL(
+    'pokemonlookup.html',
+    window.location.href
+  );
+
+  url.searchParams.set(
+    'pokemon',
+    String(pokemonName).trim()
+  );
+
+  return url.href;
+
+};
+
+
   // Builds a searchable, click-to-sort table from {headers, rows}
   // (used by the Tables page)
   sortableTable(t, opts) {
