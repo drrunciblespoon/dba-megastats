@@ -282,7 +282,30 @@
 
     function toggleSeasonRow(row) {
 
-      const existing = row.nextElementSibling;
+  console.log(
+    '[TOGGLE DRAFT]',
+    {
+      player: row.dataset.player,
+      team: row.dataset.team,
+      season: row.dataset.season,
+      availablePlayers: Object.keys(individualDrafts),
+      availableTeams:
+        individualDrafts[row.dataset.player]
+          ? Object.keys(individualDrafts[row.dataset.player])
+          : [],
+      availableSeasons:
+        individualDrafts[row.dataset.player]?.[row.dataset.team]
+          ? Object.keys(
+              individualDrafts[row.dataset.player][row.dataset.team]
+            )
+          : []
+    }
+  );
+
+  const existing = row.nextElementSibling;
+
+  // ...rest unchanged
+
 
       if (existing && existing.classList.contains('season-draft-row')) {
         collapseSeasonRow(row);
