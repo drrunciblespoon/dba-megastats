@@ -25,10 +25,186 @@
     const root = DBA.$('root');
     let tables = [];
 
-    function show(i) {
-      root.innerHTML = '';
-      root.appendChild(DBA.sortableTable(tables[i], { search: false }));
-    }
+    function createPlayerLink(name) {
+
+  const link =
+    DBA.playerLink(name);
+
+  if (link) {
+    link.style.display = 'inline';
+  }
+
+  return link;
+}
+
+
+function addPlayerLinks(table, data) {
+
+  if (!data || !data.headers || !data.rows) {
+    return;
+  }
+
+
+  const playerColumn =
+    data.headers.findIndex(
+      header =>
+        String(header).toLowerCase() === 'player'
+    );
+
+
+  const pairColumn =
+    data.headers.findIndex(
+      header =>
+        String(header).toLowerCase() === 'pair'
+    );
+
+
+  /*
+   * Ordinary Player table
+   */
+
+  if (playerColumn !== -1) {
+
+    const cells =
+      table.querySelectorAll(
+        `tbody tr td:nth-child(${playerColumn + 1})`
+      );
+
+    cells.forEach(cell => {
+
+      const name =
+        cell.textContent.trim();
+
+      if (!name) {
+        return;
+      }
+
+      const link =
+        createPlayerLink(name);
+
+      if (link) {
+
+        cell.innerHTML = '';
+        cell.appendChild(link);
+
+      }
+
+    });
+
+  }
+
+
+  /*
+   * Future Pair table
+   *
+   * Example:
+   * Aiff (Coach) and Blind Messiah (Battler)
+   */
+
+  if (pairColumn !== -1) {
+
+    const cells =
+      table.querySelectorAll(
+        `tbody tr td:nth-child(${pairColumn + 1})`
+      );
+
+    cells.forEach(cell => {
+
+      const pair =
+        cell.textContent.trim();
+
+      const match =
+        pair.match(
+          /^(.*?)\s*\((Coach|Battler)\)\s+and\s+(.*?)\s*\((Coach|Battler)\)$/i
+        );
+
+      if (!match) {
+        return;
+      }
+
+      const player1 =
+        match[1].trim();
+
+      const role1 =
+        match[2];
+
+      const player2 =
+        match[3].trim();
+
+      const role2 =
+        match[4];
+
+
+      const link1 =
+        createPlayerLink(player1);
+
+      const link2 =
+        createPlayerLink(player2);
+
+
+      cell.innerHTML = '';
+
+      if (link1) {
+        cell.appendChild(link1);
+      } else {
+        cell.appendChild(
+          document.createTextNode(player1)
+        );
+      }
+
+
+      cell.appendChild(
+        document.createTextNode(
+          ` (${role1}) and `
+        )
+      );
+
+
+      if (link2) {
+        cell.appendChild(link2);
+      } else {
+        cell.appendChild(
+          document.createTextNode(player2)
+        );
+      }
+
+
+      cell.appendChild(
+        document.createTextNode(
+          ` (${role2})`
+        )
+      );
+
+
+      cell.style.whiteSpace =
+        'nowrap';
+
+    });
+
+  }
+
+}
+
+
+function show(i) {
+
+  root.innerHTML = '';
+
+  const table =
+    DBA.sortableTable(
+      tables[i],
+      { search: false }
+    );
+
+  root.appendChild(table);
+
+  addPlayerLinks(
+    table,
+    tables[i]
+  );
+
+}
+
 
     DBA.call('srGetAll')
       .then(data => {
