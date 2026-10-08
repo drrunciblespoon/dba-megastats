@@ -209,11 +209,50 @@
           );
 
 
-          const n =
-            DBA.fillTable(
-              results,
-              d.rows
-            );
+          const totalsBody =
+  totals.querySelector('tbody');
+
+totalsBody.innerHTML = '';
+
+d.totals.forEach(item => {
+
+  const row =
+    totalsBody.insertRow();
+
+  const playerCell =
+    row.insertCell();
+
+  const link =
+    DBA.playerLink(item.label);
+
+  if (link) {
+    playerCell.appendChild(link);
+  } else {
+    playerCell.textContent =
+      item.label || '–';
+  }
+
+  [
+    item.found ? item.wins : '–',
+    item.found ? item.losses : '–',
+    item.found ? item.net : '–'
+  ].forEach(value => {
+
+    const cell =
+      row.insertCell();
+
+    cell.className = 'num';
+    cell.textContent = value;
+
+  });
+
+});
+
+DBA.show(
+  totals,
+  d.totals.length > 0
+);
+
 
 
           statusEl.textContent =
