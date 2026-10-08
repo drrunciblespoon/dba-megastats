@@ -69,7 +69,7 @@ const DBA = {
     return rows.length;
   },
 
-  // Fills the overall-record table from
+   // Fills the overall-record table from
   // [{label, wins, losses, net, found}]
   fillTotals(table, items) {
     DBA.fillTable(
@@ -82,38 +82,31 @@ const DBA = {
     );
   },
 
-  DBA.pokemonUrl = function (pokemon) {
+  // Builds a URL to the Pokémon Look Up page.
+  // All pages should use this helper when creating Pokémon links.
+  pokemonUrl(pokemon) {
 
-  const name =
-    typeof pokemon === 'string'
-      ? pokemon
-      : pokemon && pokemon.name;
+    const name =
+      typeof pokemon === 'string'
+        ? pokemon
+        : pokemon && pokemon.name;
 
-  if (!name) {
-    return 'pokemonlookup.html';
-  }
+    if (!name) {
+      return 'pokemonlookup.html';
+    }
 
-  return 'pokemonlookup.html?pokemon=' +
-    encodeURIComponent(name);
+    const url = new URL(
+      'pokemonlookup.html',
+      window.location.href
+    );
 
-};
+    url.searchParams.set(
+      'pokemon',
+      String(name).trim()
+    );
 
-DBA.pokemonLookupUrl = function (pokemonName) {
-
-  const url = new URL(
-    'pokemonlookup.html',
-    window.location.href
-  );
-
-  url.searchParams.set(
-    'pokemon',
-    String(pokemonName).trim()
-  );
-
-  return url.href;
-
-};
-
+    return url.href;
+  },
 
   // Builds a searchable, click-to-sort table from {headers, rows}
   // (used by the Tables page)
