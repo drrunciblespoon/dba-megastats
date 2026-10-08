@@ -807,6 +807,21 @@ body.page-sheets td.season {
   width: 11%;
 }
 
+.page-pokemon-lookup .pokemon-draft-table th:nth-child(n+3):nth-child(-n+9),
+.page-pokemon-lookup .pokemon-draft-table td:nth-child(n+3):nth-child(-n+9) {
+  text-align: center;
+}
+
+
+/* ------------------------------------------------------------
+   Overall Record — Centre All Columns
+   ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-record-table th,
+.page-pokemon-lookup .pokemon-record-table td {
+  text-align: center;
+}
+
 
 /* ------------------------------------------------------------
    Filing-style Record Tabs
