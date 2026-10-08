@@ -627,6 +627,28 @@ function toggleSeasonRow(row) {
           Array.from(groups.keys()).sort((a, b) => a.localeCompare(b))
         );
 
+        const requestedPlayer =
+  new URLSearchParams(window.location.search)
+    .get('player');
+
+if (requestedPlayer) {
+
+  const match =
+    Array.from(groups.keys())
+      .find(
+        name =>
+          normalisePlayerName(name) ===
+          normalisePlayerName(requestedPlayer)
+      );
+
+  if (match) {
+    sel.value = match;
+    render(match);
+  }
+
+}
+
+
       })
 
       .catch(error => {
