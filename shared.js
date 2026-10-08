@@ -65,6 +65,31 @@ const DBA = {
     return url.href;
   },
 
+    pokemonLink(pokemon) {
+
+    const name =
+      typeof pokemon === 'string'
+        ? pokemon
+        : pokemon && pokemon.name;
+
+    if (!name) {
+      return null;
+    }
+
+    const link =
+      document.createElement('a');
+
+    link.href =
+      DBA.pokemonUrl(name);
+
+    link.textContent =
+      String(name).trim();
+
+    return link;
+
+  },
+
+
 
   /* ============================================================
    * Select helpers
