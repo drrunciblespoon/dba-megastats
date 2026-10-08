@@ -41,7 +41,8 @@
      * Pokémon column:
      *   6
      *
-     * JavaScript uses zero-based indexes, so these become:
+     * JavaScript uses zero-based indexes:
+     *
      *   Players: 1, 2, 3, 4, 6
      *   Pokémon: 5
      */
@@ -152,9 +153,14 @@
              * ------------------------------------------------------
              * Player columns
              * ------------------------------------------------------
+             *
+             * Columns 2-5 contain one player.
              */
 
-            if (playerColumns.has(index)) {
+            if (
+              playerColumns.has(index) &&
+              index !== 6
+            ) {
 
               const name =
                 cell.t || '';
@@ -178,8 +184,73 @@
 
             /*
              * ------------------------------------------------------
-             * Pokémon column
+             * Column 7 - potentially multiple players
              * ------------------------------------------------------
+             *
+             * Example:
+             *
+             * Aiff / Blind Messiah
+             *
+             * Each name gets its own link.
+             */
+
+            else if (index === 6) {
+
+              const text =
+                cell.t || '';
+
+              const players =
+                text
+                  .split('/')
+                  .map(name => name.trim())
+                  .filter(Boolean);
+
+
+              players.forEach((name, playerIndex) => {
+
+                if (playerIndex > 0) {
+
+                  td.appendChild(
+                    document.createTextNode(' / ')
+                  );
+
+                }
+
+                const link =
+                  DBA.playerLink(name);
+
+                if (link) {
+
+                  td.appendChild(link);
+
+                } else {
+
+                  td.appendChild(
+                    document.createTextNode(name)
+                  );
+
+                }
+
+              });
+
+            }
+
+
+            /*
+             * ------------------------------------------------------
+             * Column 6 - Pokémon
+             * ------------------------------------------------------
+             *
+             * Normal:
+             *
+             * Garchomp (12-4)
+             *
+             * All Star MVP:
+             *
+             * ⭐ Garchomp (12-4) ⭐
+             *
+             * The stars remain visible.
+             * Only the Pokémon name becomes a link.
              */
 
             else if (index === pokemonColumn) {
@@ -189,33 +260,66 @@
 
 
               /*
-               * Expected format:
-               *
-               * Pokémon Name (12-4)
-               *
-               * The Pokémon name becomes the link.
-               * The record remains plain text.
+               * Find the Pokémon name and record while allowing
+               * optional stars before and after the complete value.
                */
 
               const match =
                 text.match(
-                  /^(.+?)\s*(\(\s*\d+\s*-\s*\d+\s*\))$/
+                  /^(\s*⭐\s*)?(.+?)\s*(\(\s*\d+\s*-\s*\d+\s*\))(\s*⭐\s*)?$/
                 );
 
 
               if (match) {
 
+                const leadingStars =
+                  match[1] || '';
+
                 const pokemonName =
-                  match[1].trim();
+                  match[2].trim();
 
                 const record =
-                  match[2];
+                  match[3];
+
+                const trailingStars =
+                  match[4] || '';
+
+
+                /*
+                 * Keep everything in the same cell and on the
+                 * same line.
+                 */
+
+                td.style.whiteSpace =
+                  'nowrap';
+
+
+                /*
+                 * Leading star(s)
+                 */
+
+                if (leadingStars) {
+
+                  td.appendChild(
+                    document.createTextNode(
+                      leadingStars.trim() + ' '
+                    )
+                  );
+
+                }
+
+
+                /*
+                 * Pokémon name
+                 */
 
                 const link =
                   DBA.pokemonLink(pokemonName);
 
-
                 if (link) {
+
+                  link.style.display =
+                    'inline';
 
                   td.appendChild(link);
 
@@ -230,11 +334,30 @@
                 }
 
 
+                /*
+                 * Record
+                 */
+
                 td.appendChild(
                   document.createTextNode(
                     ' ' + record
                   )
                 );
+
+
+                /*
+                 * Trailing star(s)
+                 */
+
+                if (trailingStars) {
+
+                  td.appendChild(
+                    document.createTextNode(
+                      ' ' + trailingStars.trim()
+                    )
+                  );
+
+                }
 
               } else {
 
