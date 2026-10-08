@@ -158,6 +158,18 @@
      * ------------------------------------------------------------
      */
 
+    function createPlayerLink(name) {
+
+  const link = DBA.playerLink(name);
+
+  if (link) {
+    link.style.display = 'inline';
+  }
+
+  return link;
+}
+
+
 function lookup() {
 
   if (
@@ -198,6 +210,8 @@ function lookup() {
 
     .then(d => {
 
+      console.log('puGetPairData:', d);
+
       if (mine !== token) {
         return;
       }
@@ -209,10 +223,52 @@ function lookup() {
        * ----------------------------------------------------------
        */
 
-      DBA.fillTotals(
-        totals,
-        d.totals
-      );
+      const totalsBody =
+  totals.querySelector('tbody');
+
+totalsBody.innerHTML = '';
+
+d.totals.forEach(item => {
+
+  const row =
+    totalsBody.insertRow();
+
+  const playerCell =
+    row.insertCell();
+
+  const name =
+    item.label || item.name || '–';
+
+  const link =
+    createPlayerLink(name);
+
+  if (link) {
+    playerCell.appendChild(link);
+  } else {
+    playerCell.textContent = name;
+  }
+
+  [
+    item.wins,
+    item.losses,
+    item.net
+  ].forEach(value => {
+
+    const cell =
+      row.insertCell();
+
+    cell.className = 'num';
+    cell.textContent = value;
+
+  });
+
+});
+
+DBA.show(
+  totals,
+  d.totals.length > 0
+);
+
 
 
       /*
@@ -237,8 +293,10 @@ function lookup() {
          * Pair
          */
 
-        const pairCell =
-          row.insertCell();
+       const pairCell =
+  row.insertCell();
+
+pairCell.style.whiteSpace = 'nowrap';
 
 
         const match =
@@ -262,11 +320,12 @@ function lookup() {
             match[4];
 
 
-          const link1 =
-            DBA.playerLink(player1);
+         const link1 =
+  createPlayerLink(player1);
 
-          const link2 =
-            DBA.playerLink(player2);
+const link2 =
+  createPlayerLink(player2);
+
 
 
           if (link1) {
