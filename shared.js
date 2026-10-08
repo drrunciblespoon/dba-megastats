@@ -406,13 +406,32 @@ const DBA = {
 
           } else {
 
-            td.textContent = c.t;
+  if (c.pokemonLink) {
 
-            if (isNum(c)) {
-              td.className = 'num';
-            }
+    const link =
+      document.createElement('a');
 
-          }
+    link.href =
+      c.pokemonLink;
+
+    link.textContent =
+      c.t;
+
+    td.appendChild(link);
+
+  } else {
+
+    td.textContent =
+      c.t;
+
+  }
+
+  if (isNum(c)) {
+    td.className = 'num';
+  }
+
+}
+
 
         });
 
