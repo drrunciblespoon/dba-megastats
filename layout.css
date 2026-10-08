@@ -710,14 +710,14 @@ body.page-sheets td.season {
      POKEMON LOOK UP
      ========================================================== */
 
-   .pokemon-winner a {
-  color: inherit;
+   .pokemon-winner a,
+.pokemon-winner a:visited,
+.pokemon-winner a:hover,
+.pokemon-winner a:active {
+  color: inherit !important;
   text-decoration: none;
 }
 
-.pokemon-winner a:hover {
-  color: inherit;
-}
 
 
   /* ==========================================================
