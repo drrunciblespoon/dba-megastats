@@ -487,3 +487,22 @@ body.page-individual #repeatDrafts td:nth-child(4) {
   text-overflow: clip;
   overflow-wrap: anywhere;
 }
+
+/* Error pages */
+
+.pokemon-not-found {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.pokemon-not-found img {
+  display: block;
+  width: 160px;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 15px;
+}
+
+.pokemon-not-found p {
+  margin: 0;
+}
