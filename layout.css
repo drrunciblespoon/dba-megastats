@@ -295,15 +295,19 @@ body.page-individual #seasons .individual-draft-table {
 body.page-individual #seasons .season-draft-wrapper {
   overflow-x: auto;
   max-width: 100%;
+  background: #d7dae1;
+  border-radius: var(--radius);
 }
 
 body.page-individual #seasons .individual-draft-table {
   width: 100%;
-  min-width: 800px;         
+  min-width: 800px;
   table-layout: auto;
   margin-top: 0;
-  font-size: 0.9em;
+  border-radius: var(--radius);
+  overflow: hidden;
 }
+
 
 body.page-individual #seasons .individual-draft-table th,
 body.page-individual #seasons .individual-draft-table td {
