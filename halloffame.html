@@ -145,26 +145,24 @@
 
           row.forEach((cell, index) => {
 
-            const td =
-              tr.insertCell();
+  const td =
+    tr.insertCell();
 
-            if (index === 6) {
+  if (index === 6) {
     td.style.whiteSpace = 'nowrap';
   }
 
+  /*
+   * ------------------------------------------------------
+   * Player columns
+   * ------------------------------------------------------
+   */
 
-            /*
-             * ------------------------------------------------------
-             * Player columns
-             * ------------------------------------------------------
-             *
-             * Columns 2-5 contain one player.
-             */
+  if (
+    playerColumns.has(index) &&
+    index !== 6
+  ) {
 
-            if (
-              playerColumns.has(index) &&
-              index !== 6
-            ) {
 
               const name =
                 cell.t || '';
