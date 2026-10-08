@@ -34,17 +34,6 @@
      * ============================================================
      * Column rules
      * ============================================================
-     *
-     * Player columns:
-     *   2, 3, 4, 5, 7
-     *
-     * Pokémon column:
-     *   6
-     *
-     * JavaScript uses zero-based indexes:
-     *
-     *   Players: 1, 2, 3, 4, 6
-     *   Pokémon: 5
      */
 
     const playerColumns =
@@ -98,7 +87,11 @@
 
 
         const table =
-          document.createElement('table');
+  document.createElement('table');
+
+table.className =
+  'hof-table';
+
 
         wrap.appendChild(table);
         box.appendChild(wrap);
@@ -185,14 +178,8 @@
 
   /*
    * ------------------------------------------------------
-   * Column 7 - potentially multiple players
+   * Column 7 - Hercule Poirot
    * ------------------------------------------------------
-   *
-   * Example:
-   *
-   * Aiff / Blind Messiah
-   *
-   * Each name gets its own link.
    */
 
   else if (index === 6) {
