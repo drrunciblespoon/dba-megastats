@@ -5,6 +5,25 @@ const API_URL =
   'https://script.google.com/macros/s/AKfycbwgUEH88JFHEf145rWuRygxhTbDiXAsMK_k9n8ssxkLWPskL7aFqmZrknZak7DV5iwy7w/exec';
 const CLIENT_CACHE_MS = 60 * 60 * 1000;   // 1 hour; raise if you like
 const CLIENT_CACHE_VERSION = 'v2';        // change to v2 to discard everyone's saved data
+const API_CLIENT_ID_KEY = 'dba:client-id';
+
+function getApiClientId() {
+  let id = localStorage.getItem(API_CLIENT_ID_KEY);
+
+  if (!id) {
+    id =
+      crypto.randomUUID
+        ? crypto.randomUUID()
+        : (
+            Date.now().toString(36) +
+            Math.random().toString(36).slice(2)
+          );
+
+    localStorage.setItem(API_CLIENT_ID_KEY, id);
+  }
+
+  return id;
+}
 
 // Replaces google.script.run.
 // Usage: DBA.call('hofGetData').then(data => ...)
@@ -20,7 +39,14 @@ DBA.call = function (fn, ...args) {
     } catch (e) {}
   }
 
-  const url = API_URL + '?fn=' + encodeURIComponent(fn) + '&args=' + encodeURIComponent(argJson);
+  const clientId = getApiClientId();
+
+const url =
+  API_URL +
+  '?fn=' + encodeURIComponent(fn) +
+  '&args=' + encodeURIComponent(argJson) +
+  '&client=' + encodeURIComponent(clientId);
+
 
   return fetch(url)
     .then(r => r.json())
