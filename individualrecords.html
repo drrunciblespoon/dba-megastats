@@ -710,17 +710,25 @@ if (requestedPlayer) {
      * Player changed
      * ============================================================ */
 
-    sel.addEventListener('change', () => {
+  sel.addEventListener('change', () => {
 
-      if (!sel.value) {
-        currentName = '';
-        clear();
-        return;
-      }
+  if (!sel.value) {
+    currentName = '';
+    clear();
+    return;
+  }
 
-      render(sel.value);
+  window.history.pushState(
+    {},
+    '',
+    DBA.playerUrl(sel.value)
+  );
 
-    });
+  render(sel.value);
+
+});
+
+
 
   </script>
 
