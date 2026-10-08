@@ -86,11 +86,36 @@
           'wrap';
 
 
-        const table =
-  document.createElement('table');
-
-table.className =
+        table.className =
   'hof-table';
+
+const colgroup =
+  document.createElement('colgroup');
+
+const columnWidths = [
+  '0.75fr',
+  '1fr',
+  '1fr',
+  '1fr',
+  '1fr',
+  '1.15fr',
+  '1.20fr'
+];
+
+columnWidths.forEach(width => {
+
+  const col =
+    document.createElement('col');
+
+  col.style.width =
+    width;
+
+  colgroup.appendChild(col);
+
+});
+
+table.appendChild(colgroup);
+
 
 
         wrap.appendChild(table);
