@@ -67,27 +67,27 @@ const DBA = {
 
     pokemonLink(pokemon) {
 
-    const name =
-      typeof pokemon === 'string'
-        ? pokemon
-        : pokemon && pokemon.name;
+  const name =
+    typeof pokemon === 'string'
+      ? pokemon.trim()
+      : pokemon && String(pokemon.name || '').trim();
 
-    if (!name) {
-      return null;
-    }
+  if (!name) {
+    return null;
+  }
 
-    const link =
-      document.createElement('a');
+  const link =
+    document.createElement('a');
 
-    link.href =
-      DBA.pokemonUrl(name);
+  link.href =
+    DBA.pokemonUrl(name);
 
-    link.textContent =
-      String(name).trim();
+  link.textContent =
+    name;
 
-    return link;
+  return link;
+},
 
-  },
 
 
 
