@@ -770,6 +770,11 @@ body.page-sheets td.season {
   font-weight: 700;
 }
 
+.pokemon-draft-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
 .pokemon-draft-table th:nth-child(1),
 .pokemon-draft-table td:nth-child(1) {
   width: 22.5%;
@@ -794,12 +799,12 @@ body.page-sheets td.season {
 .pokemon-draft-table td:nth-child(8),
 .pokemon-draft-table th:nth-child(9),
 .pokemon-draft-table td:nth-child(9) {
-  width: 7%;
+  width: 5.5%;
 }
 
 .pokemon-draft-table th:nth-child(10),
 .pokemon-draft-table td:nth-child(10) {
-  width: 5.5%;
+  width: 7%;
 }
 
 
