@@ -365,6 +365,16 @@
 
       player.s.forEach(([season, division, pseudonym, record, playoff]) => {
 
+        console.log(
+  '[SEASON RECORD]',
+  {
+    player: name,
+    season: season,
+    division: division,
+    pseudonym: pseudonym
+  }
+);
+
         const row = document.createElement('tr');
         row.className = 'season-row';
 
