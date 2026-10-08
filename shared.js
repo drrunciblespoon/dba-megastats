@@ -108,6 +108,70 @@ pokemonLink(pokemon) {
   return link;
 },
 
+    /* ============================================================
+   * Player URL / links
+   * ============================================================ */
+
+  playerUrl(player) {
+
+    const originalName =
+      typeof player === 'string'
+        ? player
+        : player && player.name;
+
+    if (!originalName) {
+      return 'playerlookup.html';
+    }
+
+    const lookupName =
+      String(originalName).trim();
+
+    const url =
+      new URL(
+        'playerlookup.html',
+        window.location.href
+      );
+
+    url.searchParams.set(
+      'player',
+      lookupName
+    );
+
+    return url.href;
+  },
+
+
+  /*
+   * Creates a Player link.
+   *
+   * The displayed text is the original player name.
+   * playerUrl() handles the URL.
+   */
+
+  playerLink(player) {
+
+    const originalName =
+      typeof player === 'string'
+        ? player
+        : player && player.name;
+
+    if (!originalName) {
+      return null;
+    }
+
+    const link =
+      document.createElement('a');
+
+    link.href =
+      DBA.playerUrl(originalName);
+
+    link.textContent =
+      String(originalName).trim();
+
+    return link;
+  },
+
+
   /* ============================================================
    * Select helpers
    * ============================================================ */
