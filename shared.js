@@ -25,143 +25,88 @@ const DBA = {
   },
 
 
-     /* ============================================================
-   * Pokémon URL / links
-   * ============================================================ */
+  /* ============================================================
+ * Pokémon URL / links
+ * ============================================================ */
 
-  /*
-   * Cleans a Pokémon name for use in the lookup URL only.
-   *
-   * Examples:
-   *
-   *   "Talonflame"       -> "Talonflame"
-   *   "Talonflame (T)"   -> "Talonflame"
-   *
-   * The original display text is NOT changed.
-   */
+/*
+ * Builds the Pokémon Look Up URL.
+ *
+ * The original Pokémon name is not modified.
+ *
+ * Only the URL parameter has "(T)" removed.
+ *
+ * Examples:
+ *
+ *   Talonflame
+ *       -> pokemonlookup.html?pokemon=Talonflame
+ *
+ *   Talonflame (T)
+ *       -> pokemonlookup.html?pokemon=Talonflame
+ */
 
-  pokemonName(pokemon) {
+pokemonUrl(pokemon) {
 
-    const name =
-      typeof pokemon === 'string'
-        ? pokemon
-        : pokemon && pokemon.name;
+  const originalName =
+    typeof pokemon === 'string'
+      ? pokemon
+      : pokemon && pokemon.name;
 
-    if (!name) {
-      return '';
-    }
+  if (!originalName) {
+    return 'pokemonlookup.html';
+  }
 
-    return String(name)
+  const lookupName =
+    String(originalName)
       .replace(/\s*\(T\)\s*$/i, '')
       .trim();
 
-  },
-
-
-  /*
-   * Builds the Pokémon Look Up URL.
-   *
-   * The (T) suffix is removed from the URL parameter,
-   * but only here.
-   */
-
-  pokemonUrl(pokemon) {
-
-    const name =
-      DBA.pokemonName(pokemon);
-
-    if (!name) {
-      return 'pokemonlookup.html';
-    }
-
-    const url =
-      new URL(
-        'pokemonlookup.html',
-        window.location.href
-      );
-
-    url.searchParams.set(
-      'pokemon',
-      name
+  const url =
+    new URL(
+      'pokemonlookup.html',
+      window.location.href
     );
 
-    return url.href;
+  url.searchParams.set(
+    'pokemon',
+    lookupName
+  );
 
-  },
-
-
-  /*
-   * Creates a Pokémon link.
-   *
-   * IMPORTANT:
-   * The original name is retained as the displayed text.
-   *
-   * Example:
-   *
-   *   Display: Talonflame (T)
-   *   URL:     pokemonlookup.html?pokemon=Talonflame
-   */
-
-  pokemonLink(pokemon) {
-
-    const name =
-      typeof pokemon === 'string'
-        ? pokemon
-        : pokemon && pokemon.name;
-
-    if (!name) {
-      return null;
-    }
-
-    const link =
-      document.createElement('a');
-
-    link.href =
-      DBA.pokemonUrl(name);
-
-    // Keep the original display name exactly as supplied.
-    link.textContent =
-      String(name).trim();
-
-    return link;
-
-  },
+  return url.href;
+},
 
 
+/*
+ * Creates a Pokémon link.
+ *
+ * The displayed text is the original value.
+ * pokemonUrl() takes care of cleaning the URL only.
+ */
 
-  /*
-   * Creates an actual <a> element for a Pokémon.
-   *
-   * The displayed text remains the original value,
-   * while the URL uses the cleaned Pokémon name.
-   */
+pokemonLink(pokemon) {
 
-  pokemonLink(pokemon) {
+  const originalName =
+    typeof pokemon === 'string'
+      ? pokemon
+      : pokemon && pokemon.name;
 
-    const name =
-      typeof pokemon === 'string'
-        ? pokemon
-        : pokemon && pokemon.name;
+  if (!originalName) {
+    return null;
+  }
 
-    if (!name) {
-      return null;
-    }
+  const link =
+    document.createElement('a');
 
-    const link =
-      document.createElement('a');
+  link.href =
+    DBA.pokemonUrl(originalName);
 
-    link.href =
-      DBA.pokemonUrl(name);
+  // IMPORTANT:
+  // Do not clean the display text.
+  link.textContent =
+    String(originalName).trim();
 
-    link.textContent = DBA.pokemonName(name);
-
-    return link;
-
-  },
-
-
-
-
+  return link;
+},
 
   /* ============================================================
    * Select helpers
