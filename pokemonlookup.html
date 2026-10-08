@@ -656,25 +656,19 @@ if (playerLink) {
 
 users.forEach((user, index) => {
 
-  const part = document.createElement('span');
-
-part.style.whiteSpace = 'nowrap';
-part.style.display = 'inline-block';
-
-  const link =
-    DBA.playerLink(user);
+  const link = DBA.playerLink(user);
 
   if (link) {
-    part.appendChild(link);
+    usersCell.appendChild(link);
   } else {
-    part.appendChild(
+    usersCell.appendChild(
       document.createTextNode(user)
     );
   }
 
   if (users.length === 2 && index === 0) {
 
-    part.appendChild(
+    usersCell.appendChild(
       document.createTextNode(' and ')
     );
 
@@ -682,21 +676,19 @@ part.style.display = 'inline-block';
 
     if (index < users.length - 2) {
 
-      part.appendChild(
+      usersCell.appendChild(
         document.createTextNode(', ')
       );
 
     } else if (index === users.length - 2) {
 
-      part.appendChild(
+      usersCell.appendChild(
         document.createTextNode(' and ')
       );
 
     }
 
   }
-
-  usersCell.appendChild(part);
 
 });
 
