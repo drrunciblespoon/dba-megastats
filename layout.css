@@ -706,20 +706,6 @@ body.page-sheets td.season {
     margin-bottom: 1rem;
   }
 
-     /* ==========================================================
-     POKEMON LOOK UP
-     ========================================================== */
-
-   .pokemon-winner a,
-.pokemon-winner a:visited,
-.pokemon-winner a:hover,
-.pokemon-winner a:active {
-  color: inherit !important;
-  text-decoration: none;
-}
-
-
-
   /* ==========================================================
      HALL OF FAME
      ========================================================== */
