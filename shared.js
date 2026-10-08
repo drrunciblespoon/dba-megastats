@@ -120,7 +120,7 @@ pokemonLink(pokemon) {
         : player && player.name;
 
     if (!originalName) {
-      return 'playerlookup.html';
+      return 'individualrecords.html';
     }
 
     const lookupName =
