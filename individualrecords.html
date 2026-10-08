@@ -176,8 +176,7 @@ function createPokemonLink(name) {
     document.createElement('a');
 
   link.href =
-    'PokemonLookUp?pokemon=' +
-    encodeURIComponent(pokemonName);
+    DBA.pokemonLookupUrl(pokemonName);
 
   link.textContent =
     pokemonName;
@@ -185,6 +184,7 @@ function createPokemonLink(name) {
   return link;
 
 }
+
 
 
     /* ============================================================
