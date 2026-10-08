@@ -32,6 +32,7 @@
 
     DBA.call('srGetAll')
       .then(data => {
+        console.log('srGetAll:', data);
         tables = data;
         sel.innerHTML = '';
         tables.forEach((t, i) => {
