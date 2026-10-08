@@ -416,6 +416,12 @@ body.page-individual #seasons .individual-draft-table td:nth-child(n+2) {
   text-align: center;
 }
 
+body.page-individual #seasons .individual-draft-table td:nth-child(2) img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @keyframes season-draft-spin {
   to {
     transform: rotate(360deg);
