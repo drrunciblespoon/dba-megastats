@@ -616,6 +616,47 @@
 
     }
 
+/*
+ * ------------------------------------------------------------
+ * Select Pokémon from URL parameter
+ * ------------------------------------------------------------
+ */
+
+function selectPokemonFromUrl() {
+
+  const params = new URLSearchParams(window.location.search);
+  const requestedName = params.get('pokemon');
+
+  if (!requestedName) {
+    return;
+  }
+
+  const wanted =
+    requestedName
+      .trim()
+      .toLowerCase();
+
+  const index =
+    pokemonData.findIndex(
+      pokemon =>
+        String(pokemon.name)
+          .trim()
+          .toLowerCase() === wanted
+    );
+
+  if (index === -1) {
+    console.warn(
+      'Pokémon from URL was not found:',
+      requestedName
+    );
+    return;
+  }
+
+  pokemonSel.value = String(index);
+
+  handlePokemonSelection();
+
+}
 
     /*
      * ------------------------------------------------------------
@@ -677,11 +718,14 @@
 
         }
 
-        /*
-         * Start with no Pokémon selected.
+         /*
+         * Start with no Pokémon selected unless
+         * a Pokémon was supplied in the URL.
          */
 
         detailsEl.hidden = true;
+
+        selectPokemonFromUrl();
 
       })
 
