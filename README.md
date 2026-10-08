@@ -1,3 +1,3 @@
 # dba-megastats
 
-A project building a site to display DBA's player and mons stats.
+A vanity project aimed at displaying as much of the DBA Megastats in as searchable and interactive a way as possible.
