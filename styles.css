@@ -403,13 +403,17 @@ td a:focus-visible {
   margin: 0 auto;          /* centres the sprite (global td img is display:block) */
 }
 
-/* Users column: wrap onto as many lines as needed */
+/* Users column: wrap naturally between users */
 .page-pokemon-lookup .pokemon-partners-table td:nth-child(4) {
-  white-space: normal;     /* overrides the global nowrap */
-  overflow: visible;       /* overrides body.centered td { overflow: hidden } */
-  text-overflow: clip;     /* overrides the ellipsis */
-  overflow-wrap: anywhere; /* breaks very long names if it has to */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
   line-height: 1.4;
+}
+
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(4) a {
+  display: inline;
 }
 
 
