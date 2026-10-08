@@ -282,11 +282,15 @@ body.page-individual .role-tabs .role-tab:not(.active):hover,
    NESTED DRAFTS WITHIN INDIVIDUAL RECORDS
    =========================================================== */
 
-body.page-individual #seasons .season-draft-row > td {
-  padding: 8px;
-  background: #d7dae1;       
-  overflow: visible;
+body.page-individual #seasons .individual-draft-table {
+  width: 100%;
+  min-width: 800px;
+  table-layout: auto;
+  margin-top: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
 }
+
 
 body.page-individual #seasons .season-draft-wrapper {
   overflow-x: auto;
@@ -347,6 +351,20 @@ body.page-individual #seasons .individual-draft-table tbody tr:hover td {
 body.page-individual #seasons .individual-draft-table th:hover {
   filter: brightness(1.03);
 }
+
+body.page-individual #seasons .individual-draft-table {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+body.page-individual #seasons .individual-draft-table thead tr:first-child th:first-child {
+  border-top-left-radius: var(--radius);
+}
+
+body.page-individual #seasons .individual-draft-table thead tr:first-child th:last-child {
+  border-top-right-radius: var(--radius);
+}
+
 
 @keyframes season-draft-spin {
   to { transform: rotate(360deg); }
