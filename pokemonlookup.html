@@ -29,7 +29,23 @@
 
     <div id="status"></div>
 
-    <section id="pokemonDetails" hidden>
+<div
+  id="pokemonNotFound"
+  class="pokemon-not-found"
+  hidden
+>
+  <img
+    src="https://projectpokemon.org/home/uploads/monthly_2020_04/567051636_large.RTDXPortraitFaint.png.686a7c36c82ea0440c4b2fa7e01735cb.png"
+    alt=""
+  >
+
+  <p>
+    Hmm, that Pokémon doesn't appear in our archives.
+  </p>
+</div>
+
+<section id="pokemonDetails" hidden>
+
 
       <div class="pokemon-lookup-header">
 
@@ -197,6 +213,7 @@
     const pokemonSel = DBA.$('pokemonSel');
     const statusEl = DBA.$('status');
     const detailsEl = DBA.$('pokemonDetails');
+    const pokemonNotFoundEl = DBA.$('pokemonNotFound');
     const pokemonNameEl = DBA.$('pokemonName');
     const pokemonSpriteEl = DBA.$('pokemonSprite');
     const championshipsEl = DBA.$('championships');
@@ -342,6 +359,8 @@
      */
 
     function showPokemon(pokemon) {
+  
+      pokemonNotFoundEl.hidden = true;
 
       if (!pokemon) {
 
@@ -708,12 +727,20 @@ function selectPokemonFromUrl() {
     );
 
   if (index === -1) {
-    console.warn(
-      'Pokémon from URL was not found:',
-      requestedName
-    );
-    return;
-  }
+
+  console.warn(
+    'Pokémon from URL was not found:',
+    requestedName
+  );
+
+  detailsEl.hidden = true;
+  pokemonNotFoundEl.hidden = false;
+
+  return;
+
+}
+
+pokemonNotFoundEl.hidden = true;
 
   pokemonSel.value = String(index);
 
