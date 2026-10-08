@@ -450,10 +450,29 @@
           const teraText = championship.tera ? ' — Tera' : '';
 
           const winner = document.createElement('div');
-          winner.className = 'pokemon-winner';
-          winner.textContent =
-            `${championship.player} - Season ${championship.season} (${championship.division})${teraText}`;
-          winnerList.appendChild(winner);
+winner.className = 'pokemon-winner';
+
+const playerLink =
+  DBA.playerLink(championship.player);
+
+if (playerLink) {
+  winner.appendChild(playerLink);
+} else {
+  winner.appendChild(
+    document.createTextNode(
+      championship.player || '–'
+    )
+  );
+}
+
+winner.appendChild(
+  document.createTextNode(
+    ` - Season ${championship.season} (${championship.division})${teraText}`
+  )
+);
+
+winnerList.appendChild(winner);
+
 
         });
 
@@ -490,7 +509,18 @@
 
           const row = draftBody.insertRow();
 
-          addCell(row, draft.player);
+          const playerCell = row.insertCell();
+
+const playerLink =
+  DBA.playerLink(draft.player);
+
+if (playerLink) {
+  playerCell.appendChild(playerLink);
+} else {
+  playerCell.textContent =
+    draft.player || '–';
+}
+
 
           const seasonText =
             draft.season
@@ -565,24 +595,47 @@
               ? partner.users
               : [];
 
-          let usersText = '';
+          const usersCell = row.insertCell();
 
-          if (users.length === 1) {
+users.forEach((user, index) => {
 
-            usersText = users[0];
+  const link =
+    DBA.playerLink(user);
 
-          } else if (users.length === 2) {
+  if (link) {
+    usersCell.appendChild(link);
+  } else {
+    usersCell.appendChild(
+      document.createTextNode(user)
+    );
+  }
 
-            usersText = `${users[0]} and ${users[1]}`;
+  if (users.length === 2 && index === 0) {
 
-          } else if (users.length > 2) {
+    usersCell.appendChild(
+      document.createTextNode(' and ')
+    );
 
-            usersText =
-              `${users.slice(0, -1).join(', ')} and ${users[users.length - 1]}`;
+  } else if (users.length > 2) {
 
-          }
+    if (index < users.length - 2) {
 
-          addCell(row, usersText);
+      usersCell.appendChild(
+        document.createTextNode(', ')
+      );
+
+    } else if (index === users.length - 2) {
+
+      usersCell.appendChild(
+        document.createTextNode(' and ')
+      );
+
+    }
+
+  }
+
+});
+
 
         });
 
