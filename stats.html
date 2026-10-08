@@ -270,14 +270,25 @@ function linkPokemonNames(table) {
            * DBA.sortableTable() creates the actual table.
            */
 
-                    const generatedTable =
-            DBA.sortableTable(table);
+const generatedTable =
+  DBA.sortableTable(table);
 
-          linkPokemonNames(generatedTable);
+console.log(
+  'Generated Gen 9 Stats table:',
+  generatedTable
+);
 
-          root.appendChild(
-            generatedTable
-          );
+console.log(
+  'Headers:',
+  Array.from(
+    generatedTable.querySelectorAll('thead th')
+  ).map(th => th.textContent.trim())
+);
+
+root.appendChild(
+  generatedTable
+);
+
 
 
         })
