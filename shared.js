@@ -82,6 +82,22 @@ const DBA = {
     );
   },
 
+  DBA.pokemonUrl = function (pokemon) {
+
+  const name =
+    typeof pokemon === 'string'
+      ? pokemon
+      : pokemon && pokemon.name;
+
+  if (!name) {
+    return 'pokemonlookup.html';
+  }
+
+  return 'pokemonlookup.html?pokemon=' +
+    encodeURIComponent(name);
+
+};
+
   // Builds a searchable, click-to-sort table from {headers, rows}
   // (used by the Tables page)
   sortableTable(t, opts) {
