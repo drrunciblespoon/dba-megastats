@@ -184,6 +184,11 @@ body.page-stats td {
   padding-right: 10px;
 }
 
+body.page-stats th:not(:nth-child(3)),
+body.page-stats td:not(:nth-child(3)) {
+  text-align: center;
+}
+
 
 /* ============================================================
    INDIVIDUAL RECORDS
