@@ -456,14 +456,25 @@ const playerLink =
   DBA.playerLink(championship.player);
 
 if (playerLink) {
+
+  playerLink.style.color =
+    'inherit';
+
+  playerLink.style.textDecoration =
+    'none';
+
   winner.appendChild(playerLink);
+
 } else {
+
   winner.appendChild(
     document.createTextNode(
       championship.player || '–'
     )
   );
+
 }
+
 
 winner.appendChild(
   document.createTextNode(
