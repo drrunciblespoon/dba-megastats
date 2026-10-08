@@ -458,8 +458,25 @@ function toggleSeasonRow(row) {
       currentName = name;
 
       const hasCoach = !!group.coach;
-      const hasBattler = !!group.battler;
-      const hasBoth = hasCoach && hasBattler;
+const hasBattler = !!group.battler;
+const hasBoth = hasCoach && hasBattler;
+
+const countRealSeasons = player => {
+
+  if (!player || !Array.isArray(player.s)) {
+    return 0;
+  }
+
+  return player.s.filter(([season]) => {
+    return !String(season).trim().toUpperCase().startsWith('SUB');
+  }).length;
+
+};
+
+const totalSeasons =
+  countRealSeasons(group.coach) +
+  countRealSeasons(group.battler);
+
 
       // Keep the current tab if this player has it; otherwise fall back.
       if (!group[currentRole]) {
@@ -478,7 +495,9 @@ function toggleSeasonRow(row) {
 
       /* ---- Totals: Coach / Battler / Combined ---- */
 
-      totalsName.textContent = group.name;
+      totalsName.textContent =
+  `${group.name} (${totalSeasons} Seasons)`;
+
 
       const toItem = (label, rec) => {
         const [w, l, found] = rec.t;
