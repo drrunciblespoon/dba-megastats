@@ -174,7 +174,7 @@
 function linkPokemonNames(table) {
 
   const pokemonLookupUrl =
-    'PokemonLookUp?pokemon=';
+    'pokemonlookup.html?pokemon=';
 
   const headers =
     Array.from(
@@ -186,7 +186,7 @@ function linkPokemonNames(table) {
       th =>
         th.textContent
           .trim()
-          .toLowerCase() === 'pokémon'
+          .toLowerCase() === 'pokemon'
     );
 
   if (pokemonColumn === -1) {
@@ -231,6 +231,7 @@ function linkPokemonNames(table) {
 
 }
 
+
     function load(index) {
 
       const mine =
@@ -273,21 +274,12 @@ function linkPokemonNames(table) {
 const generatedTable =
   DBA.sortableTable(table);
 
-console.log(
-  'Generated Gen 9 Stats table:',
-  generatedTable
-);
-
-console.log(
-  'Headers:',
-  Array.from(
-    generatedTable.querySelectorAll('thead th')
-  ).map(th => th.textContent.trim())
-);
+linkPokemonNames(generatedTable);
 
 root.appendChild(
   generatedTable
 );
+
 
 
 
