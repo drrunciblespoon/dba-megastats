@@ -128,7 +128,7 @@ pokemonLink(pokemon) {
 
     const url =
       new URL(
-        'playerlookup.html',
+        'individualrecords.html',
         window.location.href
       );
 
