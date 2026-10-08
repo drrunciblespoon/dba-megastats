@@ -165,6 +165,71 @@
      * Load selected table
      * ------------------------------------------------------------
      */
+/*
+ * ------------------------------------------------------------
+ * Turn Pokémon names into links to Pokémon Look Up
+ * ------------------------------------------------------------
+ */
+
+function linkPokemonNames(table) {
+
+  const pokemonLookupUrl =
+    'PokemonLookUp?pokemon=';
+
+  const headers =
+    Array.from(
+      table.querySelectorAll('thead th')
+    );
+
+  const pokemonColumn =
+    headers.findIndex(
+      th =>
+        th.textContent
+          .trim()
+          .toLowerCase() === 'pokémon'
+    );
+
+  if (pokemonColumn === -1) {
+    return;
+  }
+
+  table
+    .querySelectorAll('tbody tr')
+    .forEach(row => {
+
+      const cells =
+        row.querySelectorAll('td');
+
+      const cell =
+        cells[pokemonColumn];
+
+      if (!cell) {
+        return;
+      }
+
+      const pokemonName =
+        cell.textContent.trim();
+
+      if (!pokemonName || pokemonName === '–') {
+        return;
+      }
+
+      const link =
+        document.createElement('a');
+
+      link.href =
+        pokemonLookupUrl +
+        encodeURIComponent(pokemonName);
+
+      link.textContent =
+        pokemonName;
+
+      cell.textContent = '';
+      cell.appendChild(link);
+
+    });
+
+}
 
     function load(index) {
 
@@ -205,13 +270,15 @@
            * DBA.sortableTable() creates the actual table.
            */
 
-          const generatedTable =
+                    const generatedTable =
             DBA.sortableTable(table);
 
+          linkPokemonNames(generatedTable);
 
           root.appendChild(
             generatedTable
           );
+
 
         })
 
