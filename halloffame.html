@@ -14,6 +14,7 @@
 </head>
 
 <body class="centered page-hof">
+
   <h2 id="title">Hall of Fame</h2>
 
   <div id="status">Loading...</div>
@@ -21,11 +22,15 @@
   <div id="root"></div>
 
   <script>
+
     const statusEl = DBA.$('status');
     const root = DBA.$('root');
 
+
     DBA.call('hofGetData')
+
       .then(d => {
+
         DBA.$('title').textContent = d.title;
 
         statusEl.textContent = d.rows.length
@@ -36,62 +41,144 @@
           return;
         }
 
+
+        /*
+         * ----------------------------------------------------------
+         * Container
+         * ----------------------------------------------------------
+         */
+
         const box = document.createElement('div');
+
         box.style.marginTop = '20px';
 
+
         const wrap = document.createElement('div');
+
         wrap.className = 'wrap';
+
 
         const table = document.createElement('table');
 
         wrap.appendChild(table);
         box.appendChild(wrap);
 
-        // Header
+
+        /*
+         * ----------------------------------------------------------
+         * Header
+         * ----------------------------------------------------------
+         */
+
         const head = table.createTHead().insertRow();
 
         d.headers.forEach(name => {
+
           const th = document.createElement('th');
 
           th.textContent = name;
 
           head.appendChild(th);
+
         });
 
-        // Rows
+
+        /*
+         * ----------------------------------------------------------
+         * Rows
+         * ----------------------------------------------------------
+         */
+
         const body = table.createTBody();
 
         d.rows.forEach(row => {
+
           const tr = body.insertRow();
 
-          row.forEach(cell => {
+          row.forEach((cell, index) => {
+
             const td = tr.insertCell();
 
-            if (cell.img) {
+
+            /*
+             * ------------------------------------------------------
+             * Player column
+             * ------------------------------------------------------
+             */
+
+            if (
+              d.headers[index] &&
+              d.headers[index].toLowerCase() === 'player' &&
+              cell.t
+            ) {
+
+              const link = DBA.playerLink(cell.t);
+
+              if (link) {
+
+                td.appendChild(link);
+
+              } else {
+
+                td.textContent = cell.t;
+
+              }
+
+
+            /*
+             * ------------------------------------------------------
+             * Image cell
+             * ------------------------------------------------------
+             */
+
+            } else if (cell.img) {
+
               const img = document.createElement('img');
 
               img.src = cell.img;
               img.loading = 'lazy';
 
               td.appendChild(img);
+
+
+            /*
+             * ------------------------------------------------------
+             * Normal cell
+             * ------------------------------------------------------
+             */
+
             } else {
+
               td.textContent = cell.t;
 
               if (
                 cell.n !== null &&
                 cell.n !== undefined
               ) {
+
                 td.className = 'num';
+
               }
+
             }
+
           });
+
         });
 
+
         root.appendChild(box);
+
       })
+
       .catch(e => {
-        statusEl.textContent = 'Error: ' + e.message;
+
+        statusEl.textContent =
+          'Error: ' + e.message;
+
       });
+
   </script>
+
 </body>
 </html>
