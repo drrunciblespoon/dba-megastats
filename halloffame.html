@@ -86,7 +86,10 @@
           'wrap';
 
 
-        table.className =
+        const table =
+  document.createElement('table');
+
+table.className =
   'hof-table';
 
 const colgroup =
@@ -115,6 +118,7 @@ columnWidths.forEach(width => {
 });
 
 table.appendChild(colgroup);
+
 
 
 
