@@ -158,6 +158,34 @@
       return m ? m[0] : String(season).trim();
     }
 
+    /*
+ * ============================================================
+ * Pokémon link
+ * ============================================================ */
+
+function createPokemonLink(name) {
+
+  const pokemonName =
+    String(name || '').trim();
+
+  if (!pokemonName) {
+    return null;
+  }
+
+  const link =
+    document.createElement('a');
+
+  link.href =
+    'PokemonLookUp?pokemon=' +
+    encodeURIComponent(pokemonName);
+
+  link.textContent =
+    pokemonName;
+
+  return link;
+
+}
+
 
     /* ============================================================
      * Hide everything
@@ -210,13 +238,38 @@
       const text = (v, fallback) =>
         v === '' || v === null || v === undefined ? fallback : v;
 
-      rows.forEach(draft => {
+            rows.forEach(draft => {
 
         const tr = tbody.insertRow();
 
-        tr.insertCell().textContent = text(draft.pokemon, '–');
+        const pokemonCell =
+          tr.insertCell();
 
-        const spriteCell = tr.insertCell();
+        const pokemonName =
+          text(draft.pokemon, '–');
+
+        if (pokemonName === '–') {
+
+          pokemonCell.textContent =
+            '–';
+
+        } else {
+
+          const link =
+            createPokemonLink(pokemonName);
+
+          if (link) {
+            pokemonCell.appendChild(link);
+          } else {
+            pokemonCell.textContent =
+              pokemonName;
+          }
+
+        }
+
+        const spriteCell =
+          tr.insertCell();
+
         if (draft.sprite) {
           const img = document.createElement('img');
           img.src = draft.sprite;
@@ -381,9 +434,22 @@
 
         const tr = body.insertRow();
 
-        tr.insertCell().textContent = p.name;
+                const pokemonCell =
+          tr.insertCell();
 
-        const spriteCell = tr.insertCell();
+        const link =
+          createPokemonLink(p.name);
+
+        if (link) {
+          pokemonCell.appendChild(link);
+        } else {
+          pokemonCell.textContent =
+            p.name || '–';
+        }
+
+        const spriteCell =
+          tr.insertCell();
+
         if (p.sprite) {
           const img = document.createElement('img');
           img.src = p.sprite;
