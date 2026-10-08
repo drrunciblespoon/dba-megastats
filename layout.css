@@ -65,12 +65,8 @@ body.centered #status {
  *   input
  *   .wrap
  *
- * Centre the contents of that container.
+ * Centre the search input within that container.
  */
-
-body.centered #root > div {
-  text-align: center;
-}
 
 body.centered #root > div > input {
   display: inline-block;
@@ -79,7 +75,7 @@ body.centered #root > div > input {
 
 
 /* ============================================================
-   CONSISTENT TABLE WIDTH
+   GENERAL TABLES
    ============================================================ */
 
 body.centered table {
@@ -90,15 +86,27 @@ body.centered table {
   table-layout: fixed;
 }
 
-
-/* ============================================================
-   GENERAL TABLE CELL BEHAVIOUR
-   ============================================================ */
-
 body.centered th,
 body.centered td {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+body.centered .wrap {
+  width: 1250px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/*
+ * Keep generated groups centred.
+ */
+
+body.centered #root > div {
+  text-align: center;
+  justify-content: center;
 }
 
 
@@ -126,7 +134,7 @@ body.page-pokemon th:first-child:nth-last-child(3) + th + th {
 
 
 /*
- * Pokémon Records has two groups of tables side-by-side
+ * Pokémon Records uses two groups of tables side-by-side
  * on desktop.
  */
 
@@ -145,6 +153,20 @@ body.page-pokemon .wrap,
 body.page-pokemon table {
   width: 100%;
   max-width: 100%;
+}
+
+
+/*
+ * Seven-column Pokémon tables:
+ * second column gets 30%, remaining six share 70%.
+ */
+
+body.page-pokemon th {
+  width: 11.6667%;
+}
+
+body.page-pokemon th:nth-child(2) {
+  width: 30%;
 }
 
 
@@ -205,6 +227,7 @@ body.page-individual th:nth-child(4) {
   width: 20%;
 }
 
+
 /* ============================================================
    INDIVIDUAL RECORDS: ROLE TABS + TOTALS
    ============================================================ */
@@ -216,11 +239,15 @@ body.page-individual .totals-block {
 }
 
 body.page-individual .totals-block table {
-  margin-top: 0;
   width: 100%;
+  margin-top: 0;
 }
 
-/* Square the table's top-left corner so the tabs attach cleanly */
+
+/*
+ * Square the table's top-left corner so the tabs attach cleanly.
+ */
+
 body.page-individual .totals-block.has-tabs table {
   border-top-left-radius: 0;
 }
@@ -231,7 +258,7 @@ body.page-individual .role-tabs {
   align-items: flex-end;
   gap: 1px;
   position: relative;
-  z-index: 1;                          /* paint above the table's top border */
+  z-index: 1;
 }
 
 body.page-individual .role-tabs .role-tab {
@@ -252,7 +279,6 @@ body.page-individual .role-tabs .role-tab:hover {
   color: var(--text);
 }
 
-/* Active tab matches the table's first header cell and covers its top border */
 body.page-individual .role-tabs .role-tab.active {
   background: #e06666;
   color: var(--text);
@@ -261,62 +287,142 @@ body.page-individual .role-tabs .role-tab.active {
   filter: none;
 }
 
+
 /* ============================================================
-   INACTIVE TABS (light purple)
+   INACTIVE TABS
    ============================================================ */
 
 body.page-individual .role-tabs .role-tab:not(.active),
 .page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active) {
-  background: #d9d0f0;      /* light pastel purple */
+  background: #d9d0f0;
   color: var(--muted);
 }
 
 body.page-individual .role-tabs .role-tab:not(.active):hover,
 .page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active):hover {
-  background: #e4ddf6;      /* slightly lighter on hover */
+  background: #e4ddf6;
   filter: none;
   color: var(--text);
 }
 
-/* ===========================================================
-   NESTED DRAFTS WITHIN INDIVIDUAL RECORDS
-   =========================================================== */
 
-body.page-individual #seasons .individual-draft-table {
-  width: 100%;
-  min-width: 800px;
-  table-layout: auto;
-  margin-top: 0;
-  border-radius: var(--radius);
-  overflow: hidden;
+/* ============================================================
+   NESTED DRAFTS WITHIN INDIVIDUAL RECORDS
+   ============================================================ */
+
+/*
+ * Expanded season row.
+ * The grey background creates the inset area around the
+ * nested draft table.
+ */
+
+body.page-individual #seasons .season-draft-row > td {
+  padding: 8px;
+  background: #d7dae1;
+  overflow: visible;
 }
 
+
+/*
+ * The wrapper is the horizontal scrolling area on
+ * smaller screens.
+ */
 
 body.page-individual #seasons .season-draft-wrapper {
-  overflow-x: auto;
   max-width: 100%;
-  background: #d7dae1;
-  border-radius: var(--radius);
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 }
+
+
+/*
+ * Nested draft table.
+ *
+ * min-width keeps the table readable on small screens;
+ * the wrapper above provides horizontal scrolling.
+ */
 
 body.page-individual #seasons .individual-draft-table {
   width: 100%;
   min-width: 800px;
-  table-layout: auto;
   margin-top: 0;
+  table-layout: auto;
   border-radius: var(--radius);
   overflow: hidden;
 }
 
+
+/*
+ * Draft cells don't use the normal page-wide ellipsis rules.
+ */
 
 body.page-individual #seasons .individual-draft-table th,
 body.page-individual #seasons .individual-draft-table td {
-  width: auto;               
+  width: auto;
+  padding: 6px 10px;
+  white-space: nowrap;
   overflow: visible;
   text-overflow: clip;
-  white-space: nowrap;
-  padding: 6px 10px;
 }
+
+
+/*
+ * Rounded top corners on the actual nested table.
+ */
+
+body.page-individual
+#seasons
+.individual-draft-table
+thead tr:first-child
+th:first-child {
+  border-top-left-radius: var(--radius);
+}
+
+body.page-individual
+#seasons
+.individual-draft-table
+thead tr:first-child
+th:last-child {
+  border-top-right-radius: var(--radius);
+}
+
+
+/*
+ * Don't apply the normal hover effect to the grey
+ * expanded-row background.
+ */
+
+body.page-individual #seasons tr.season-draft-row:hover > td {
+  filter: none;
+}
+
+body.page-individual #seasons .individual-draft-table tbody tr:hover td {
+  filter: saturate(1.05) brightness(1.015);
+}
+
+
+/*
+ * Clickable season rows.
+ */
+
+body.page-individual #seasons tr.season-row[title] {
+  cursor: pointer;
+}
+
+
+/*
+ * Draft-table header hover.
+ */
+
+body.page-individual #seasons .individual-draft-table th:hover {
+  filter: brightness(1.03);
+}
+
+
+/*
+ * Loading state.
+ */
 
 body.page-individual #seasons .season-draft-loading {
   display: flex;
@@ -324,10 +430,10 @@ body.page-individual #seasons .season-draft-loading {
   justify-content: center;
   gap: 10px;
   padding: 18px 0;
+  color: var(--muted);
   font-size: 0.9em;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--muted);
 }
 
 body.page-individual #seasons .season-draft-loading::before {
@@ -340,39 +446,12 @@ body.page-individual #seasons .season-draft-loading::before {
   animation: season-draft-spin 0.8s linear infinite;
 }
 
-body.page-individual #seasons tr.season-row[title] {
-  cursor: pointer;
-}
-
-body.page-individual #seasons tr.season-draft-row:hover > td {
-  filter: none;
-}
-
-body.page-individual #seasons .individual-draft-table tbody tr:hover td {
-  filter: saturate(1.05) brightness(1.015);
-}
-
-body.page-individual #seasons .individual-draft-table th:hover {
-  filter: brightness(1.03);
-}
-
-body.page-individual #seasons .individual-draft-table {
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-body.page-individual #seasons .individual-draft-table thead tr:first-child th:first-child {
-  border-top-left-radius: var(--radius);
-}
-
-body.page-individual #seasons .individual-draft-table thead tr:first-child th:last-child {
-  border-top-right-radius: var(--radius);
-}
-
-
 @keyframes season-draft-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
+
 
 /* ============================================================
    PAIRING RECORDS
@@ -384,45 +463,6 @@ body.page-pairing th:nth-child(1) {
 
 body.page-pairing th:nth-child(n+2) {
   width: 16.66%;
-}
-
-
-/* ============================================================
-   POKÉMON LOOKUP / RECORDS
-   ============================================================ */
-
-/*
- * Seven-column Pokémon tables:
- * second column gets 30%, remaining six share 70%.
- */
-
-body.page-pokemon th {
-  width: 11.6667%;
-}
-
-body.page-pokemon th:nth-child(2) {
-  width: 30%;
-}
-
-
-/* ============================================================
-   TABLE WRAPPERS
-   ============================================================ */
-
-body.centered .wrap {
-  width: 1250px;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-
-/*
- * Keep generated groups centred.
- */
-
-body.centered #root > div {
-  justify-content: center;
 }
 
 
@@ -539,8 +579,6 @@ body.page-sheets td.season {
   input {
     width: 100%;
     min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
   }
 
 
@@ -590,7 +628,7 @@ body.page-sheets td.season {
      ========================================================== */
 
   /*
-   * #root is the horizontal scrolling area.
+   * #root becomes the horizontal scrolling area.
    */
 
   .page-stats #root {
@@ -617,7 +655,6 @@ body.page-sheets td.season {
 
   /*
    * Keep the Stats table deliberately wide.
-   * This prevents 13 columns from being crushed together.
    */
 
   .page-stats #root table {
@@ -674,11 +711,6 @@ body.page-sheets td.season {
      HALL OF FAME
      ========================================================== */
 
-  /*
-   * The entire Hall of Fame table remains intact.
-   * On mobile, the user can swipe horizontally.
-   */
-
   body.page-hof .wrap {
     width: 100%;
     max-width: 100%;
@@ -705,15 +737,7 @@ body.page-sheets td.season {
 
   /*
    * Desktop uses two columns of tables.
-   *
-   * Mobile changes this to one table group per row:
-   *
-   *   Most
-   *   Best
-   *   Least
-   *   Worst
-   *
-   * This makes each table much easier to use.
+   * Mobile changes this to one table group per row.
    */
 
   body.page-pokemon #root > div {
@@ -732,8 +756,8 @@ body.page-sheets td.season {
 
 
   /*
-   * Each Pokémon Records table can still scroll horizontally
-   * if its columns need more room than the phone provides.
+   * Wide Pokémon Records tables remain horizontally scrollable
+   * on mobile.
    */
 
   body.page-pokemon .wrap {
@@ -749,13 +773,11 @@ body.page-sheets td.season {
     min-width: 600px;
     max-width: none;
   }
+
+
   /*
-   * Three-column Pokémon Records tables:
-   * Sprite | Pokémon | Value
-   *
-   * These are simple enough to fit on most phones,
-   * so don't force them into a horizontally scrolling
-   * 600px-wide table.
+   * Three-column Pokémon Records tables are simple enough
+   * to fit on most phones without horizontal scrolling.
    */
 
   body.page-pokemon table th:first-child:nth-last-child(3) {
