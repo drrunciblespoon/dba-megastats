@@ -44,6 +44,18 @@
   </p>
 </div>
 
+<div
+  id="notAPokemon"
+  class="pokemon-not-found"
+  hidden
+>
+  <img src="fakegrassmon.jpg" alt="">
+
+  <p>
+    What? That's not even a Pokémon!
+  </p>
+</div>
+
 <section id="pokemonDetails" hidden>
 
 
@@ -214,6 +226,7 @@
     const statusEl = DBA.$('status');
     const detailsEl = DBA.$('pokemonDetails');
     const pokemonNotFoundEl = DBA.$('pokemonNotFound');
+    const notAPokemonEl = DBA.$('notAPokemon');
     const pokemonNameEl = DBA.$('pokemonName');
     const pokemonSpriteEl = DBA.$('pokemonSprite');
     const championshipsEl = DBA.$('championships');
@@ -358,9 +371,23 @@
      * ------------------------------------------------------------
      */
 
+        function hideNotFound() {
+      pokemonNotFoundEl.hidden = true;
+      notAPokemonEl.hidden = true;
+    }
+
+    // Accent- and case-insensitive, so "flabebe" matches "Flabébé"
+    function normaliseName(s) {
+      return String(s)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toLowerCase();
+    }
+    
     function showPokemon(pokemon) {
   
-      pokemonNotFoundEl.hidden = true;
+      hideNotFound();
 
       if (!pokemon) {
 
@@ -713,34 +740,71 @@ function selectPokemonFromUrl() {
     return;
   }
 
-  const wanted =
-    requestedName
-      .trim()
-      .toLowerCase();
+    const wanted =
+    normaliseName(requestedName);
 
   const index =
     pokemonData.findIndex(
       pokemon =>
-        String(pokemon.name)
-          .trim()
-          .toLowerCase() === wanted
+        normaliseName(pokemon.name) === wanted
     );
 
-  if (index === -1) {
+    if (index === -1) {
 
-  console.warn(
-    'Pokémon from URL was not found:',
-    requestedName
-  );
+    console.warn(
+      'Pokémon from URL was not found:',
+      requestedName
+    );
 
-  detailsEl.hidden = true;
-  pokemonNotFoundEl.hidden = false;
+    detailsEl.hidden = true;
+    hideNotFound();
 
-  return;
+    DBA.call('pokemonNamesGetAll')
 
-}
+      .then(data => {
 
-pokemonNotFoundEl.hidden = true;
+        // The user may have picked something from the dropdown meanwhile.
+        if (selectedPokemon) return;
+
+        const names =
+          data && Array.isArray(data.names)
+            ? data.names
+            : [];
+
+        const isPokemon =
+          names.some(
+            n =>
+              normaliseName(n) ===
+              normaliseName(requestedName)
+          );
+
+        if (isPokemon) {
+          pokemonNotFoundEl.hidden = false;   // real Pokémon, not in the archives
+        } else {
+          notAPokemonEl.hidden = false;       // not a Pokémon at all
+        }
+
+      })
+
+      .catch(error => {
+
+        console.error(
+          'Pokémon name check failed:',
+          error
+        );
+
+        // If the check fails, fall back to the standard message.
+        if (!selectedPokemon) {
+          pokemonNotFoundEl.hidden = false;
+        }
+
+      });
+
+    return;
+
+  }
+
+  hideNotFound();
 
   pokemonSel.value = String(index);
 
