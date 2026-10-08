@@ -67,7 +67,7 @@ const url =
 // [label, file] for every page on the site except Home (Home is added separately, on its own row)
 const DBA_NAV = [
   ['Gen 9 Stats', 'stats.html'],
-  ['Player Look Up', 'individualrecords.html'],
+  ['Player Look Up', 'playerlookup.html'],
   ['Pokémon Look Up', 'pokemonlookup.html'],
   ['Pairing Records', 'pairingrecords.html'],
   ['Player Records', 'playerrecords.html'],
