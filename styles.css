@@ -191,6 +191,17 @@ td a:focus-visible {
   text-decoration: underline;
 }
 
+.hof-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.hof-table td,
+.hof-table th {
+  box-sizing: border-box;
+}
+
+
 /* ---------- Searchable select ---------- */
 .combo {
   position: relative;
