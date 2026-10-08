@@ -62,9 +62,29 @@
             im.loading = 'lazy';
             td.appendChild(im);
           } else {
-            td.textContent = c.t;
-            if (isNum[i]) td.className = 'num';
-          }
+
+  const isPokemonColumn =
+    String(t.headers[i]).trim().toLowerCase() === 'pokemon';
+
+  if (isPokemonColumn && c.t) {
+
+    const link = document.createElement('a');
+
+    link.href = DBA.pokemonLookupUrl(c.t);
+    link.textContent = c.t;
+
+    td.appendChild(link);
+
+  } else {
+
+    td.textContent = c.t;
+
+  }
+
+  if (isNum[i]) td.className = 'num';
+
+}
+
         });
       });
       wrap.appendChild(table);
