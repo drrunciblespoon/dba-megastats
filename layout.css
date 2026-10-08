@@ -162,6 +162,12 @@ body.page-pokemon td:not(:nth-child(2)) {
   text-align: center;
 }
 
+body.page-pokemon td:nth-child(1) img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 /* ============================================================
    GEN 9 STATS
