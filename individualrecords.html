@@ -158,35 +158,6 @@
       return m ? m[0] : String(season).trim();
     }
 
-    /*
- * ============================================================
- * Pokémon link
- * ============================================================ */
-
-function createPokemonLink(name) {
-
-  const pokemonName =
-    String(name || '').trim();
-
-  if (!pokemonName) {
-    return null;
-  }
-
-  const link =
-    document.createElement('a');
-
-  link.href =
-    DBA.pokemonUrl(pokemonName);
-
-  link.textContent =
-    pokemonName;
-
-  return link;
-
-}
-
-
-
     /* ============================================================
      * Hide everything
      * ============================================================ */
@@ -256,7 +227,8 @@ function createPokemonLink(name) {
         } else {
 
           const link =
-            createPokemonLink(pokemonName);
+            DBA.pokemonLink(pokemonName)
+
 
           if (link) {
             pokemonCell.appendChild(link);
@@ -438,7 +410,8 @@ function createPokemonLink(name) {
           tr.insertCell();
 
         const link =
-          createPokemonLink(p.name);
+         DBA.pokemonLink(p.name);
+
 
         if (link) {
           pokemonCell.appendChild(link);
