@@ -694,88 +694,131 @@ function selectPokemonFromUrl() {
 }
 
 
+   /*
+ * ------------------------------------------------------------
+ * Load all Pokémon lookup data
+ * ------------------------------------------------------------
+ */
+
+DBA.call('pokemonLookupGetAll')
+
+  .then(data => {
+
+    console.log(
+      'pokemonLookupGetAll returned:',
+      data
+    );
+
+    pokemonData =
+      (data.pokemon || []).map(pokemon => ({
+
+        ...pokemon,
+
+        championships:
+          Array.isArray(pokemon.championships)
+            ? pokemon.championships
+            : [],
+
+        drafts:
+          Array.isArray(pokemon.drafts)
+            ? pokemon.drafts
+            : []
+
+      }));
+
+    pokemonSel.innerHTML = '';
+
+    const first =
+      document.createElement('option');
+
+    first.value = '';
+    first.textContent =
+      'Select a Pokémon...';
+
+    pokemonSel.appendChild(first);
+
+
+    pokemonData.forEach((pokemon, index) => {
+
+      const option =
+        document.createElement('option');
+
+      option.value = index;
+      option.textContent = pokemon.name;
+
+      pokemonSel.appendChild(option);
+
+    });
+
+
+    console.log(
+      'Loaded Pokémon:',
+      pokemonData.length
+    );
+
+
+    if (pokemonData.length === 0) {
+
+      console.error(
+        'No Pokémon were found in PokemonInput.'
+      );
+
+      statusEl.textContent =
+        'No Pokémon data found.';
+
+      return;
+
+    }
+
+
     /*
-     * ------------------------------------------------------------
-     * Load all Pokémon lookup data
-     * ------------------------------------------------------------
+     * Start with no Pokémon selected unless
+     * a Pokémon was supplied in the URL.
      */
 
-    DBA.call('pokemonLookupGetAll')
+    detailsEl.hidden = true;
 
-      .then(data => {
 
-        pokemonData =
-          (data.pokemon || []).map(pokemon => ({
+    /*
+     * ----------------------------------------------------------
+     * If the URL contains ?pokemon=..., select it now.
+     * ----------------------------------------------------------
+     */
 
-            ...pokemon,
+    selectPokemonFromUrl();
 
-            championships:
-              Array.isArray(pokemon.championships)
-                ? pokemon.championships
-                : [],
+  })
 
-            drafts:
-              Array.isArray(pokemon.drafts)
-                ? pokemon.drafts
-                : []
 
-          }));
+  .catch(error => {
 
-        pokemonSel.innerHTML = '';
+    console.error(
+      'Error loading Pokémon data:',
+      error
+    );
 
-        const first = document.createElement('option');
+    /*
+     * Don't leave the select permanently saying
+     * "Loading..." if the API call failed.
+     */
 
-        first.value = '';
-        first.textContent = 'Select a Pokémon...';
+    pokemonSel.innerHTML = '';
 
-        pokemonSel.appendChild(first);
+    const option =
+      document.createElement('option');
 
-        pokemonData.forEach((pokemon, index) => {
+    option.value = '';
+    option.textContent =
+      'Unable to load Pokémon';
 
-          const option = document.createElement('option');
+    pokemonSel.appendChild(option);
 
-          option.value = index;
-          option.textContent = pokemon.name;
+    statusEl.textContent =
+      'Error loading Pokémon: ' +
+      error.message;
 
-          pokemonSel.appendChild(option);
+  });
 
-        });
-
-        if (pokemonData.length === 0) {
-
-          console.error(
-            'No Pokémon were found in PokemonInput.'
-          );
-
-          statusEl.textContent =
-            'No Pokémon data found.';
-
-          return;
-
-        }
-
-         /*
-         * Start with no Pokémon selected unless
-         * a Pokémon was supplied in the URL.
-         */
-
-        detailsEl.hidden = true;
-
-        selectPokemonFromUrl();
-
-      })
-
-      .catch(error => {
-
-        console.error(
-          'Error loading Pokémon data:',
-          error
-        );
-
-        statusEl.textContent =
-          'Error: ' + error.message;
-
-      });
 
 
     /*
