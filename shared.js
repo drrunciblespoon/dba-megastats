@@ -25,21 +25,19 @@ const DBA = {
   },
 
 
-    /* ============================================================
+     /* ============================================================
    * Pokémon URL / links
    * ============================================================ */
 
   /*
-   * Removes display-only suffixes from Pokémon names.
+   * Cleans a Pokémon name for use in the lookup URL only.
    *
    * Examples:
    *
-   *   "Pokemon (T)"       -> "Pokemon"
-   *   "Pokemon (Coach)"   -> "Pokemon"
-   *   "Pokemon (Battler)" -> "Pokemon"
+   *   "Talonflame"       -> "Talonflame"
+   *   "Talonflame (T)"   -> "Talonflame"
    *
-   * This is used only when building Pokémon lookup links.
-   * It does not alter the text displayed in tables.
+   * The original display text is NOT changed.
    */
 
   pokemonName(pokemon) {
@@ -54,26 +52,17 @@ const DBA = {
     }
 
     return String(name)
-      .replace(
-        /\s*\((t|coach|battler)\)\s*$/i,
-        ''
-      )
+      .replace(/\s*\(T\)\s*$/i, '')
       .trim();
 
   },
 
 
   /*
-   * Builds the canonical URL for Pokémon Look Up.
+   * Builds the Pokémon Look Up URL.
    *
-   * Examples:
-   *
-   *   DBA.pokemonUrl('Azelf')
-   *   DBA.pokemonUrl('Azelf (T)')
-   *
-   * Both point to:
-   *
-   *   pokemonlookup.html?pokemon=Azelf
+   * The (T) suffix is removed from the URL parameter,
+   * but only here.
    */
 
   pokemonUrl(pokemon) {
@@ -99,6 +88,45 @@ const DBA = {
     return url.href;
 
   },
+
+
+  /*
+   * Creates a Pokémon link.
+   *
+   * IMPORTANT:
+   * The original name is retained as the displayed text.
+   *
+   * Example:
+   *
+   *   Display: Talonflame (T)
+   *   URL:     pokemonlookup.html?pokemon=Talonflame
+   */
+
+  pokemonLink(pokemon) {
+
+    const name =
+      typeof pokemon === 'string'
+        ? pokemon
+        : pokemon && pokemon.name;
+
+    if (!name) {
+      return null;
+    }
+
+    const link =
+      document.createElement('a');
+
+    link.href =
+      DBA.pokemonUrl(name);
+
+    // Keep the original display name exactly as supplied.
+    link.textContent =
+      String(name).trim();
+
+    return link;
+
+  },
+
 
 
   /*
