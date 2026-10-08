@@ -656,20 +656,24 @@ if (playerLink) {
 
 users.forEach((user, index) => {
 
+  const part = document.createElement('span');
+
+  part.style.whiteSpace = 'nowrap';
+
   const link =
     DBA.playerLink(user);
 
   if (link) {
-    usersCell.appendChild(link);
+    part.appendChild(link);
   } else {
-    usersCell.appendChild(
+    part.appendChild(
       document.createTextNode(user)
     );
   }
 
   if (users.length === 2 && index === 0) {
 
-    usersCell.appendChild(
+    part.appendChild(
       document.createTextNode(' and ')
     );
 
@@ -677,13 +681,13 @@ users.forEach((user, index) => {
 
     if (index < users.length - 2) {
 
-      usersCell.appendChild(
+      part.appendChild(
         document.createTextNode(', ')
       );
 
     } else if (index === users.length - 2) {
 
-      usersCell.appendChild(
+      part.appendChild(
         document.createTextNode(' and ')
       );
 
@@ -691,8 +695,9 @@ users.forEach((user, index) => {
 
   }
 
-});
+  usersCell.appendChild(part);
 
+});
 
         });
 
