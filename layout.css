@@ -1,4 +1,9 @@
-/* Extra layout rules. Load this after styles.css. */
+/* ============================================================
+   LAYOUT.CSS
+   Page-specific layouts, table sizing and responsive behaviour.
+
+   Load this AFTER styles.css.
+   ============================================================ */
 
 
 /* ============================================================
@@ -55,18 +60,7 @@ body.centered #status {
 }
 
 
-/* ============================================================
-   SEARCH BOX
-   ============================================================ */
-
-/*
- * sortableTable() creates a div containing:
- *
- *   input
- *   .wrap
- *
- * Centre the search input within that container.
- */
+/* Search input created by sortableTable() */
 
 body.centered #root > div > input {
   display: inline-block;
@@ -75,7 +69,7 @@ body.centered #root > div > input {
 
 
 /* ============================================================
-   GENERAL TABLES
+   GENERAL TABLE LAYOUT
    ============================================================ */
 
 body.centered table {
@@ -86,12 +80,6 @@ body.centered table {
   table-layout: fixed;
 }
 
-body.centered th,
-body.centered td {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 body.centered .wrap {
   width: 1250px;
   max-width: 100%;
@@ -99,10 +87,11 @@ body.centered .wrap {
   margin-right: auto;
 }
 
-
-/*
- * Keep generated groups centred.
- */
+body.centered th,
+body.centered td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 body.centered #root > div {
   text-align: center;
@@ -113,25 +102,6 @@ body.centered #root > div {
 /* ============================================================
    POKÉMON RECORDS
    ============================================================ */
-
-/*
- * Three-column tables:
- *
- * Sprite | Pokémon | Value
- */
-
-body.page-pokemon th:first-child:nth-last-child(3) {
-  width: 22%;
-}
-
-body.page-pokemon th:first-child:nth-last-child(3) + th {
-  width: 48%;
-}
-
-body.page-pokemon th:first-child:nth-last-child(3) + th + th {
-  width: 30%;
-}
-
 
 /*
  * Pokémon Records uses two groups of tables side-by-side
@@ -157,6 +127,24 @@ body.page-pokemon table {
 
 
 /*
+ * Three-column Pokémon Records tables:
+ * Sprite | Pokémon | Value
+ */
+
+body.page-pokemon th:first-child:nth-last-child(3) {
+  width: 22%;
+}
+
+body.page-pokemon th:first-child:nth-last-child(3) + th {
+  width: 48%;
+}
+
+body.page-pokemon th:first-child:nth-last-child(3) + th + th {
+  width: 30%;
+}
+
+
+/*
  * Seven-column Pokémon tables:
  * second column gets 30%, remaining six share 70%.
  */
@@ -174,11 +162,6 @@ body.page-pokemon th:nth-child(2) {
    GEN 9 STATS
    ============================================================ */
 
-/*
- * Rank 6%, Sprite 6%, Pokémon 19.2%,
- * remaining columns share the rest.
- */
-
 body.page-stats th:nth-child(1) {
   width: 6%;
 }
@@ -194,11 +177,6 @@ body.page-stats th:nth-child(3) {
 body.page-stats th:nth-child(n+4) {
   width: 6.88%;
 }
-
-
-/*
- * Slimmer padding so Stats headings fit more comfortably.
- */
 
 body.page-stats th,
 body.page-stats td {
@@ -228,9 +206,41 @@ body.page-individual th:nth-child(4) {
 }
 
 
-/* ============================================================
-   INDIVIDUAL RECORDS: ROLE TABS + TOTALS
-   ============================================================ */
+/* ------------------------------------------------------------
+   Commonly Drafted
+   ------------------------------------------------------------ */
+
+body.page-individual #repeatDrafts th:nth-child(1) {
+  width: 25%;
+}
+
+body.page-individual #repeatDrafts th:nth-child(2) {
+  width: 15%;
+}
+
+body.page-individual #repeatDrafts th:nth-child(3) {
+  width: 20%;
+}
+
+body.page-individual #repeatDrafts th:nth-child(4) {
+  width: 40%;
+}
+
+body.page-individual #repeatDrafts td:nth-child(2) img {
+  margin: 0 auto;
+}
+
+body.page-individual #repeatDrafts td:nth-child(4) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+
+
+/* ------------------------------------------------------------
+   Totals + Role Tabs
+   ------------------------------------------------------------ */
 
 body.page-individual .totals-block {
   width: 1250px;
@@ -242,11 +252,6 @@ body.page-individual .totals-block table {
   width: 100%;
   margin-top: 0;
 }
-
-
-/*
- * Square the table's top-left corner so the tabs attach cleanly.
- */
 
 body.page-individual .totals-block.has-tabs table {
   border-top-left-radius: 0;
@@ -288,9 +293,9 @@ body.page-individual .role-tabs .role-tab.active {
 }
 
 
-/* ============================================================
-   INACTIVE TABS
-   ============================================================ */
+/* ------------------------------------------------------------
+   Inactive Tabs
+   ------------------------------------------------------------ */
 
 body.page-individual .role-tabs .role-tab:not(.active),
 .page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active) {
@@ -306,15 +311,9 @@ body.page-individual .role-tabs .role-tab:not(.active):hover,
 }
 
 
-/* ============================================================
-   NESTED DRAFTS WITHIN INDIVIDUAL RECORDS
-   ============================================================ */
-
-/*
- * Expanded season row.
- * The grey background creates the inset area around the
- * nested draft table.
- */
+/* ------------------------------------------------------------
+   Nested Draft Tables
+   ------------------------------------------------------------ */
 
 body.page-individual #seasons .season-draft-row > td {
   padding: 8px;
@@ -322,26 +321,12 @@ body.page-individual #seasons .season-draft-row > td {
   overflow: visible;
 }
 
-
-/*
- * The wrapper is the horizontal scrolling area on
- * smaller screens.
- */
-
 body.page-individual #seasons .season-draft-wrapper {
   max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
 }
-
-
-/*
- * Nested draft table.
- *
- * min-width keeps the table readable on small screens;
- * the wrapper above provides horizontal scrolling.
- */
 
 body.page-individual #seasons .individual-draft-table {
   width: 100%;
@@ -352,11 +337,6 @@ body.page-individual #seasons .individual-draft-table {
   overflow: hidden;
 }
 
-
-/*
- * Draft cells don't use the normal page-wide ellipsis rules.
- */
-
 body.page-individual #seasons .individual-draft-table th,
 body.page-individual #seasons .individual-draft-table td {
   width: auto;
@@ -365,11 +345,6 @@ body.page-individual #seasons .individual-draft-table td {
   overflow: visible;
   text-overflow: clip;
 }
-
-
-/*
- * Rounded top corners on the actual nested table.
- */
 
 body.page-individual
 #seasons
@@ -387,12 +362,6 @@ th:last-child {
   border-top-right-radius: var(--radius);
 }
 
-
-/*
- * Don't apply the normal hover effect to the grey
- * expanded-row background.
- */
-
 body.page-individual #seasons tr.season-draft-row:hover > td {
   filter: none;
 }
@@ -401,28 +370,13 @@ body.page-individual #seasons .individual-draft-table tbody tr:hover td {
   filter: saturate(1.05) brightness(1.015);
 }
 
-
-/*
- * Clickable season rows.
- */
-
 body.page-individual #seasons tr.season-row[title] {
   cursor: pointer;
 }
 
-
-/*
- * Draft-table header hover.
- */
-
 body.page-individual #seasons .individual-draft-table th:hover {
   filter: brightness(1.03);
 }
-
-
-/*
- * Loading state.
- */
 
 body.page-individual #seasons .season-draft-loading {
   display: flex;
@@ -583,7 +537,7 @@ body.page-sheets td.season {
 
 
   /* ----------------------------------------------------------
-     General tables
+     General Tables
      ---------------------------------------------------------- */
 
   body.centered table {
@@ -610,9 +564,9 @@ body.page-sheets td.season {
   }
 
 
-  /* ==========================================================
-     PAIRING RECORDS
-     ========================================================== */
+  /* ----------------------------------------------------------
+     Pairing Records
+     ---------------------------------------------------------- */
 
   .pairing-totals-wrap {
     margin-top: 1.5rem;
@@ -623,13 +577,9 @@ body.page-sheets td.season {
   }
 
 
-  /* ==========================================================
-     GEN 9 STATS
-     ========================================================== */
-
-  /*
-   * #root becomes the horizontal scrolling area.
-   */
+  /* ----------------------------------------------------------
+     Gen 9 Stats
+     ---------------------------------------------------------- */
 
   .page-stats #root {
     width: 100%;
@@ -640,22 +590,11 @@ body.page-sheets td.season {
     -webkit-overflow-scrolling: touch;
   }
 
-
-  /*
-   * sortableTable() creates a wrapper div inside #root.
-   * Make that wrapper wide enough for the table.
-   */
-
   .page-stats #root > div {
     width: max-content;
     min-width: 100%;
     max-width: none;
   }
-
-
-  /*
-   * Keep the Stats table deliberately wide.
-   */
 
   .page-stats #root table {
     width: 1250px;
@@ -664,30 +603,15 @@ body.page-sheets td.season {
     table-layout: fixed;
   }
 
-
-  /*
-   * Pokémon name column.
-   */
-
   .page-stats #root table th:nth-child(3),
   .page-stats #root table td:nth-child(3) {
     width: 240px;
   }
 
-
-  /*
-   * Smaller sprites on mobile.
-   */
-
   .page-stats #root table td img {
     height: 30px;
     width: auto;
   }
-
-
-  /*
-   * Stats cells get enough room for their headings.
-   */
 
   .page-stats #root table th,
   .page-stats #root table td {
@@ -696,19 +620,15 @@ body.page-sheets td.season {
     white-space: nowrap;
   }
 
-
-  /*
-   * Keep the explanatory note separated from the table.
-   */
-
   .page-stats .page-note {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
 
-  /* ==========================================================
-     HALL OF FAME
-     ========================================================== */
+
+  /* ----------------------------------------------------------
+     Hall of Fame
+     ---------------------------------------------------------- */
 
   body.page-hof .wrap {
     width: 100%;
@@ -730,14 +650,9 @@ body.page-sheets td.season {
   }
 
 
-  /* ==========================================================
-     POKÉMON RECORDS
-     ========================================================== */
-
-  /*
-   * Desktop uses two columns of tables.
-   * Mobile changes this to one table group per row.
-   */
+  /* ----------------------------------------------------------
+     Pokémon Records
+     ---------------------------------------------------------- */
 
   body.page-pokemon #root > div {
     width: 100%;
@@ -753,12 +668,6 @@ body.page-sheets td.season {
     flex: none;
   }
 
-
-  /*
-   * Wide Pokémon Records tables remain horizontally scrollable
-   * on mobile.
-   */
-
   body.page-pokemon .wrap {
     width: 100%;
     max-width: 100%;
@@ -772,12 +681,6 @@ body.page-sheets td.season {
     min-width: 600px;
     max-width: none;
   }
-
-
-  /*
-   * Three-column Pokémon Records tables are simple enough
-   * to fit on most phones without horizontal scrolling.
-   */
 
   body.page-pokemon table th:first-child:nth-last-child(3) {
     width: 22%;
@@ -795,6 +698,254 @@ body.page-sheets td.season {
     width: 100%;
     min-width: 0;
     max-width: 100%;
+  }
+}
+
+
+/* ============================================================
+   POKÉMON LOOK UP
+   ============================================================ */
+
+.page-pokemon-lookup .pokemon-lookup {
+  width: 100%;
+}
+
+.page-pokemon-lookup .pokemon-lookup-controls {
+  margin-top: 8px;
+}
+
+
+/* ------------------------------------------------------------
+   Lookup Header
+   ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-lookup-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.page-pokemon-lookup .pokemon-lookup-header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-pokemon-lookup .pokemon-lookup-sprite {
+  width: auto;
+  height: 160px;
+  image-rendering: pixelated;
+  margin: 4px 0 8px;
+}
+
+.page-pokemon-lookup .pokemon-legality {
+  margin: 4px 0 12px;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+
+/* ------------------------------------------------------------
+   Lookup Record Tables
+   ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-section {
+  margin-top: 28px;
+}
+
+.page-pokemon-lookup .pokemon-section h3 {
+  margin-bottom: 10px;
+}
+
+.page-pokemon-lookup .pokemon-draft-table,
+.page-pokemon-lookup .pokemon-record-table {
+  margin-top: 0;
+}
+
+.page-pokemon-lookup .pokemon-record-table td {
+  font-weight: 700;
+}
+
+
+/* ------------------------------------------------------------
+   Filing-style Record Tabs
+   ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-record-tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 1px;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab {
+  padding: 8px 22px;
+  border: 2px solid var(--accent);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  background: var(--surface-2);
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition: filter 0.15s, color 0.15s;
+}
+
+.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:hover {
+  filter: brightness(1.06);
+  color: var(--text);
+}
+
+.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab.active {
+  background: #e06666;
+  color: var(--text);
+  margin-bottom: -2px;
+  padding-bottom: 10px;
+  filter: none;
+}
+
+.page-pokemon-lookup .pokemon-record-table {
+  border-top-left-radius: 0;
+}
+
+
+/* ------------------------------------------------------------
+   Commonly Drafted With
+   ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-partners-table th:nth-child(1) {
+  width: 30%;
+}
+
+.page-pokemon-lookup .pokemon-partners-table th:nth-child(2) {
+  width: 20%;
+}
+
+.page-pokemon-lookup .pokemon-partners-table th:nth-child(3) {
+  width: 20%;
+}
+
+.page-pokemon-lookup .pokemon-partners-table th:nth-child(4) {
+  width: 30%;
+}
+
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(2) {
+  text-align: center;
+}
+
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(2) img {
+  height: 45px;
+  width: auto;
+  margin: 0 auto;
+}
+
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(4) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+}
+
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(4) a {
+  display: inline;
+}
+
+
+/* ------------------------------------------------------------
+   Championships
+   ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-championships {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.page-pokemon-lookup .pokemon-trophy-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+.page-pokemon-lookup .pokemon-trophy {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.page-pokemon-lookup .pokemon-winner-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.page-pokemon-lookup .pokemon-winner {
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+
+/* ------------------------------------------------------------
+   Record Note
+   ------------------------------------------------------------ */
+
+.pokemon-record-note {
+  margin: -8px 0 10px;
+  color: #666;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+/* ------------------------------------------------------------
+   Not Found
+   ------------------------------------------------------------ */
+
+.pokemon-not-found {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.pokemon-not-found img {
+  display: block;
+  width: 160px;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 15px;
+}
+
+.pokemon-not-found p {
+  margin: 0;
+}
+
+
+/* ------------------------------------------------------------
+   Pokémon Look Up — Mobile
+   ------------------------------------------------------------ */
+
+@media (max-width: 700px) {
+
+  .page-pokemon-lookup .pokemon-record-table {
+    min-width: 760px;
+  }
+
+  .page-pokemon-lookup .pokemon-draft-table {
+    min-width: 650px;
+  }
+
+  .page-pokemon-lookup .pokemon-partners-table {
+    min-width: 650px;
   }
 
 }
