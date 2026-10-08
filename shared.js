@@ -95,6 +95,13 @@ const DBA = {
       return 'pokemonlookup.html';
     }
 
+    return 'pokemonlookup.html?pokemon=' +
+      encodeURIComponent(name);
+
+  },
+
+  pokemonLookupUrl(pokemonName) {
+
     const url = new URL(
       'pokemonlookup.html',
       window.location.href
@@ -102,11 +109,13 @@ const DBA = {
 
     url.searchParams.set(
       'pokemon',
-      String(name).trim()
+      String(pokemonName).trim()
     );
 
     return url.href;
+
   },
+
 
   // Builds a searchable, click-to-sort table from {headers, rows}
   // (used by the Tables page)
