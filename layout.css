@@ -897,6 +897,27 @@ body.page-sheets td.season {
 
 
 /* ------------------------------------------------------------
+   Pokémon Look Up — Mobile
+   ------------------------------------------------------------ */
+
+@media (max-width: 700px) {
+
+  .page-pokemon-lookup .pokemon-record-table {
+    min-width: 760px;
+  }
+
+  .page-pokemon-lookup .pokemon-draft-table {
+    min-width: 650px;
+  }
+
+  .page-pokemon-lookup .pokemon-partners-table {
+    min-width: 650px;
+  }
+
+}
+
+
+/* ------------------------------------------------------------
    Record Note
    ------------------------------------------------------------ */
 
@@ -927,25 +948,4 @@ body.page-sheets td.season {
 
 .pokemon-not-found p {
   margin: 0;
-}
-
-
-/* ------------------------------------------------------------
-   Pokémon Look Up — Mobile
-   ------------------------------------------------------------ */
-
-@media (max-width: 700px) {
-
-  .page-pokemon-lookup .pokemon-record-table {
-    min-width: 760px;
-  }
-
-  .page-pokemon-lookup .pokemon-draft-table {
-    min-width: 650px;
-  }
-
-  .page-pokemon-lookup .pokemon-partners-table {
-    min-width: 650px;
-  }
-
 }
