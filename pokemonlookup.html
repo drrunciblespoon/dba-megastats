@@ -96,16 +96,20 @@
 
           <table class="nosort pokemon-draft-table">
 
-            <thead>
-              <tr>
-                <th>Player Name</th>
-                <th>Season</th>
-                <th>Appearances</th>
-                <th>K-D</th>
-                <th>WR.</th>
-                <th>Tera</th>
-              </tr>
-            </thead>
+           <thead>
+  <tr>
+    <th>Player Name</th>
+    <th>Season</th>
+    <th>GP</th>
+    <th>Kills</th>
+    <th>Deaths</th>
+    <th>Diff</th>
+    <th>Wins</th>
+    <th>Losses</th>
+    <th>WR.</th>
+    <th>Tera</th>
+  </tr>
+</thead>
 
             <tbody id="draftBody"></tbody>
 
@@ -540,59 +544,188 @@ winnerList.appendChild(winner);
 
 
       /*
-       * ----------------------------------------------------------
-       * Draft History
-       * ----------------------------------------------------------
-       */
+ * ----------------------------------------------------------
+ * Draft History
+ * ----------------------------------------------------------
+ */
 
-      draftBody.innerHTML = '';
+draftBody.innerHTML = '';
 
-      const drafts =
-        Array.isArray(pokemon.drafts)
-          ? pokemon.drafts
-          : [];
+const drafts =
+  Array.isArray(pokemon.drafts)
+    ? pokemon.drafts
+    : [];
 
-      if (drafts.length === 0) {
+if (drafts.length === 0) {
 
-        const row = draftBody.insertRow();
-        const cell = row.insertCell();
+  const row = draftBody.insertRow();
+  const cell = row.insertCell();
 
-        cell.colSpan = 6;
-        cell.textContent = 'No draft history found.';
+  cell.colSpan = 10;
+  cell.textContent = 'No draft history found.';
 
-      } else {
-
-        drafts.forEach(draft => {
-
-          const row = draftBody.insertRow();
-
-          const playerCell = row.insertCell();
-
-const playerLink =
-  DBA.playerLink(draft.player);
-
-if (playerLink) {
-  playerCell.appendChild(playerLink);
 } else {
-  playerCell.textContent =
-    draft.player || '–';
+
+  drafts.forEach(draft => {
+
+    const row = draftBody.insertRow();
+
+
+    /*
+     * --------------------------------------------------------
+     * Player Name
+     * --------------------------------------------------------
+     */
+
+    const playerCell =
+      row.insertCell();
+
+    const playerLink =
+      DBA.playerLink(draft.player);
+
+    if (playerLink) {
+
+      playerCell.appendChild(
+        playerLink
+      );
+
+    } else {
+
+      playerCell.textContent =
+        draft.player || '–';
+
+    }
+
+
+    /*
+     * --------------------------------------------------------
+     * Season
+     * --------------------------------------------------------
+     *
+     * Display as:
+     *
+     * Season 4 (Frontier)
+     * Season 7 (Tower)
+     */
+
+    const seasonText =
+      draft.season
+        ? `Season ${draft.season} (${draft.division})`
+        : draft.division
+          ? `(${draft.division})`
+          : '–';
+
+    addCell(
+      row,
+      seasonText
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * GP
+     * --------------------------------------------------------
+     */
+
+    addCell(
+      row,
+      draft.appearances,
+      'num'
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * Kills
+     * --------------------------------------------------------
+     */
+
+    addCell(
+      row,
+      draft.kills,
+      'num'
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * Deaths
+     * --------------------------------------------------------
+     */
+
+    addCell(
+      row,
+      draft.deaths,
+      'num'
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * Diff
+     * --------------------------------------------------------
+     */
+
+    addCell(
+      row,
+      draft.diff,
+      'num'
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * Wins
+     * --------------------------------------------------------
+     */
+
+    addCell(
+      row,
+      draft.wins,
+      'num'
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * Losses
+     * --------------------------------------------------------
+     */
+
+    addCell(
+      row,
+      draft.losses,
+      'num'
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * WR.
+     * --------------------------------------------------------
+     */
+
+    addCell(
+      row,
+      draft.wr,
+      'num'
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * Tera
+     * --------------------------------------------------------
+     */
+
+    addCell(
+      row,
+      draft.tera ? 'Tera' : ''
+    );
+
+  });
+
 }
-
-
-          const seasonText =
-            draft.season
-              ? `Season ${draft.season} (${draft.division})`
-              : `(${draft.division})`;
-
-          addCell(row, seasonText);
-          addCell(row, draft.appearances, 'num');
-          addCell(row, draft.kd, 'num');
-          addCell(row, draft.wr, 'num');
-          addCell(row, draft.tera ? 'Tera' : '');
-
-        });
-
-      }
 
 
       /*
