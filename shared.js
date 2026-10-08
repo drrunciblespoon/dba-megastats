@@ -25,23 +25,24 @@ const DBA = {
   },
 
 
-  /* ============================================================
-   * Pokémon URL
+    /* ============================================================
+   * Pokémon URL / links
    * ============================================================ */
 
   /*
-   * Builds the canonical URL for Pokémon Look Up.
+   * Removes display-only suffixes from Pokémon names.
    *
-   * Accepts either:
+   * Examples:
    *
-   *   DBA.pokemonUrl('Azelf')
+   *   "Pokemon (T)"       -> "Pokemon"
+   *   "Pokemon (Coach)"   -> "Pokemon"
+   *   "Pokemon (Battler)" -> "Pokemon"
    *
-   * or:
-   *
-   *   DBA.pokemonUrl({ name: 'Azelf' })
+   * This is used only when building Pokémon lookup links.
+   * It does not alter the text displayed in tables.
    */
 
-  pokemonUrl(pokemon) {
+  pokemonName(pokemon) {
 
     const name =
       typeof pokemon === 'string'
@@ -49,44 +50,87 @@ const DBA = {
         : pokemon && pokemon.name;
 
     if (!name) {
+      return '';
+    }
+
+    return String(name)
+      .replace(
+        /\s*\((t|coach|battler)\)\s*$/i,
+        ''
+      )
+      .trim();
+
+  },
+
+
+  /*
+   * Builds the canonical URL for Pokémon Look Up.
+   *
+   * Examples:
+   *
+   *   DBA.pokemonUrl('Azelf')
+   *   DBA.pokemonUrl('Azelf (T)')
+   *
+   * Both point to:
+   *
+   *   pokemonlookup.html?pokemon=Azelf
+   */
+
+  pokemonUrl(pokemon) {
+
+    const name =
+      DBA.pokemonName(pokemon);
+
+    if (!name) {
       return 'pokemonlookup.html';
     }
 
-    const url = new URL(
-      'pokemonlookup.html',
-      window.location.href
-    );
+    const url =
+      new URL(
+        'pokemonlookup.html',
+        window.location.href
+      );
 
     url.searchParams.set(
       'pokemon',
-      String(name).trim()
+      name
     );
 
     return url.href;
+
   },
 
-    pokemonLink(pokemon) {
 
-  const name =
-    typeof pokemon === 'string'
-      ? pokemon.trim()
-      : pokemon && String(pokemon.name || '').trim();
+  /*
+   * Creates an actual <a> element for a Pokémon.
+   *
+   * The displayed text remains the original value,
+   * while the URL uses the cleaned Pokémon name.
+   */
 
-  if (!name) {
-    return null;
-  }
+  pokemonLink(pokemon) {
 
-  const link =
-    document.createElement('a');
+    const name =
+      typeof pokemon === 'string'
+        ? pokemon
+        : pokemon && pokemon.name;
 
-  link.href =
-    DBA.pokemonUrl(name);
+    if (!name) {
+      return null;
+    }
 
-  link.textContent =
-    name;
+    const link =
+      document.createElement('a');
 
-  return link;
-},
+    link.href =
+      DBA.pokemonUrl(name);
+
+    link.textContent = DBA.pokemonName(name);
+
+    return link;
+
+  },
+
 
 
 
