@@ -23,19 +23,53 @@
 
   <script>
 
-    const statusEl = DBA.$('status');
-    const root = DBA.$('root');
+    const statusEl =
+      DBA.$('status');
 
+    const root =
+      DBA.$('root');
+
+
+    /*
+     * ============================================================
+     * Column rules
+     * ============================================================
+     *
+     * Player columns:
+     *   2, 3, 4, 5, 7
+     *
+     * Pokémon column:
+     *   6
+     *
+     * JavaScript uses zero-based indexes, so these become:
+     *   Players: 1, 2, 3, 4, 6
+     *   Pokémon: 5
+     */
+
+    const playerColumns =
+      new Set([1, 2, 3, 4, 6]);
+
+    const pokemonColumn = 5;
+
+
+    /*
+     * ============================================================
+     * Load Hall of Fame data
+     * ============================================================
+     */
 
     DBA.call('hofGetData')
 
       .then(d => {
 
-        DBA.$('title').textContent = d.title;
+        DBA.$('title').textContent =
+          d.title;
 
-        statusEl.textContent = d.rows.length
-          ? ''
-          : 'No entries yet.';
+        statusEl.textContent =
+          d.rows.length
+            ? ''
+            : 'No entries yet.';
+
 
         if (!d.rows.length) {
           return;
@@ -48,17 +82,22 @@
          * ----------------------------------------------------------
          */
 
-        const box = document.createElement('div');
+        const box =
+          document.createElement('div');
 
-        box.style.marginTop = '20px';
-
-
-        const wrap = document.createElement('div');
-
-        wrap.className = 'wrap';
+        box.style.marginTop =
+          '20px';
 
 
-        const table = document.createElement('table');
+        const wrap =
+          document.createElement('div');
+
+        wrap.className =
+          'wrap';
+
+
+        const table =
+          document.createElement('table');
 
         wrap.appendChild(table);
         box.appendChild(wrap);
@@ -70,13 +109,17 @@
          * ----------------------------------------------------------
          */
 
-        const head = table.createTHead().insertRow();
+        const head =
+          table.createTHead().insertRow();
+
 
         d.headers.forEach(name => {
 
-          const th = document.createElement('th');
+          const th =
+            document.createElement('th');
 
-          th.textContent = name;
+          th.textContent =
+            name;
 
           head.appendChild(th);
 
@@ -89,30 +132,35 @@
          * ----------------------------------------------------------
          */
 
-        const body = table.createTBody();
+        const body =
+          table.createTBody();
+
 
         d.rows.forEach(row => {
 
-          const tr = body.insertRow();
+          const tr =
+            body.insertRow();
+
 
           row.forEach((cell, index) => {
 
-            const td = tr.insertCell();
+            const td =
+              tr.insertCell();
 
 
             /*
              * ------------------------------------------------------
-             * Player column
+             * Player columns
              * ------------------------------------------------------
              */
 
-            if (
-              d.headers[index] &&
-              d.headers[index].toLowerCase() === 'player' &&
-              cell.t
-            ) {
+            if (playerColumns.has(index)) {
 
-              const link = DBA.playerLink(cell.t);
+              const name =
+                cell.t || '';
+
+              const link =
+                DBA.playerLink(name);
 
               if (link) {
 
@@ -120,9 +168,82 @@
 
               } else {
 
-                td.textContent = cell.t;
+                td.textContent =
+                  name;
 
               }
+
+            }
+
+
+            /*
+             * ------------------------------------------------------
+             * Pokémon column
+             * ------------------------------------------------------
+             */
+
+            else if (index === pokemonColumn) {
+
+              const text =
+                cell.t || '';
+
+
+              /*
+               * Expected format:
+               *
+               * Pokémon Name (12-4)
+               *
+               * The Pokémon name becomes the link.
+               * The record remains plain text.
+               */
+
+              const match =
+                text.match(
+                  /^(.+?)\s*(\(\s*\d+\s*-\s*\d+\s*\))$/
+                );
+
+
+              if (match) {
+
+                const pokemonName =
+                  match[1].trim();
+
+                const record =
+                  match[2];
+
+                const link =
+                  DBA.pokemonLink(pokemonName);
+
+
+                if (link) {
+
+                  td.appendChild(link);
+
+                } else {
+
+                  td.appendChild(
+                    document.createTextNode(
+                      pokemonName
+                    )
+                  );
+
+                }
+
+
+                td.appendChild(
+                  document.createTextNode(
+                    ' ' + record
+                  )
+                );
+
+              } else {
+
+                td.textContent =
+                  text;
+
+              }
+
+            }
 
 
             /*
@@ -131,14 +252,20 @@
              * ------------------------------------------------------
              */
 
-            } else if (cell.img) {
+            else if (cell.img) {
 
-              const img = document.createElement('img');
+              const img =
+                document.createElement('img');
 
-              img.src = cell.img;
-              img.loading = 'lazy';
+              img.src =
+                cell.img;
+
+              img.loading =
+                'lazy';
 
               td.appendChild(img);
+
+            }
 
 
             /*
@@ -147,16 +274,18 @@
              * ------------------------------------------------------
              */
 
-            } else {
+            else {
 
-              td.textContent = cell.t;
+              td.textContent =
+                cell.t;
 
               if (
                 cell.n !== null &&
                 cell.n !== undefined
               ) {
 
-                td.className = 'num';
+                td.className =
+                  'num';
 
               }
 
