@@ -777,12 +777,12 @@ body.page-sheets td.season {
 
 .pokemon-draft-table th:nth-child(1),
 .pokemon-draft-table td:nth-child(1) {
-  width: 22.5%;
+  width: 20%;
 }
 
 .pokemon-draft-table th:nth-child(2),
 .pokemon-draft-table td:nth-child(2) {
-  width: 22.5%;
+  width: 20%;
 }
 
 .pokemon-draft-table th:nth-child(3),
@@ -799,12 +799,12 @@ body.page-sheets td.season {
 .pokemon-draft-table td:nth-child(8),
 .pokemon-draft-table th:nth-child(9),
 .pokemon-draft-table td:nth-child(9) {
-  width: 5.5%;
+  width: 7%;
 }
 
 .pokemon-draft-table th:nth-child(10),
 .pokemon-draft-table td:nth-child(10) {
-  width: 7%;
+  width: 11%;
 }
 
 
