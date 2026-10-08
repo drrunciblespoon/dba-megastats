@@ -515,14 +515,55 @@ function toggleSeasonRow(row) {
 
       /* ---- Opponent records ---- */
 
-      const n = DBA.fillTable(
-        results,
-        p.r.map(([opponent, wins, losses]) =>
-          [opponent, wins, losses, wins - losses])
-      );
+    const resultsBody =
+      results.querySelector('tbody');
 
-      statusEl.textContent = n ? '' : 'No records found.';
-      DBA.show(results, n > 0);
+    resultsBody.innerHTML = '';
+
+    p.r.forEach(([opponent, wins, losses]) => {
+
+      const tr =
+        resultsBody.insertRow();
+
+      const opponentCell =
+        tr.insertCell();
+
+      const link =
+        DBA.playerLink(opponent);
+
+      if (link) {
+        opponentCell.appendChild(link);
+      } else {
+        opponentCell.textContent =
+          opponent || '–';
+      }
+
+      [
+        wins,
+        losses,
+        wins - losses
+      ].forEach(value => {
+
+        const td =
+          tr.insertCell();
+
+        td.className = 'num';
+        td.textContent = value;
+
+      });
+
+    });
+
+    const n = p.r.length;
+
+    statusEl.textContent =
+      n ? '' : 'No records found.';
+
+    DBA.show(
+      results,
+      n > 0
+    );
+
 
       /* ---- Commonly drafted ---- */
 
