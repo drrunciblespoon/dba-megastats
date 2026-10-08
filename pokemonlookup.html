@@ -336,6 +336,15 @@
     };
 
 
+  pokemonSel.value =
+    String(index);
+
+  showPokemon(
+    pokemonData[index]
+  );
+
+}
+
     /*
      * ------------------------------------------------------------
      * Display selected Pokémon
@@ -658,6 +667,33 @@ function selectPokemonFromUrl() {
 
 }
 
+    function updatePokemonUrl(pokemon) {
+
+  const url =
+    new URL(window.location.href);
+
+  if (pokemon) {
+
+    url.searchParams.set(
+      'pokemon',
+      pokemon.name
+    );
+
+  } else {
+
+    url.searchParams.delete('pokemon');
+
+  }
+
+  window.history.replaceState(
+    {},
+    '',
+    url
+  );
+
+}
+
+
     /*
      * ------------------------------------------------------------
      * Load all Pokémon lookup data
@@ -750,18 +786,25 @@ function selectPokemonFromUrl() {
 
     function handlePokemonSelection() {
 
-      const value = pokemonSel.value;
+  const value =
+    pokemonSel.value;
 
-      if (value === '') {
-        showPokemon(null);
-        return;
-      }
+  if (value === '') {
 
-      const pokemon = pokemonData[Number(value)];
+    showPokemon(null);
+    updatePokemonUrl(null);
 
-      showPokemon(pokemon || null);
+    return;
+  }
 
-    }
+  const pokemon =
+    pokemonData[Number(value)] || null;
+
+  showPokemon(pokemon);
+  updatePokemonUrl(pokemon);
+
+}
+
 
     pokemonSel.addEventListener(
       'change',
