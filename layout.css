@@ -1,6 +1,6 @@
 /* ============================================================
    LAYOUT.CSS
-   Page-specific layouts, table sizing, shared container borders
+   Page-specific layouts, table sizing, shared container borders,
    and responsive behaviour.
 
    Load this AFTER styles.css.
@@ -8,7 +8,7 @@
 
 
 /* ============================================================
-   SHARED CONTAINER STYLING
+   01. SHARED CONTAINER STYLING
    ============================================================ */
 
 :root {
@@ -16,8 +16,7 @@
   --container-border-width: 2px;
 }
 
-
-/* Apply the same border as the tabs to primary page tables. */
+/* Consistent borders for primary tables. */
 
 body.page-stats table,
 body.page-pokemon table,
@@ -39,7 +38,65 @@ body.page-individual .individual-draft-table,
 
 
 /* ============================================================
-   HOME PAGE
+   02. SHARED CENTRED PAGE LAYOUTS
+   ============================================================ */
+
+body.centered .controls {
+  justify-content: center;
+}
+
+body.centered .controls > div {
+  text-align: center;
+}
+
+body.centered h2,
+body.centered h3,
+body.centered #status {
+  text-align: center;
+}
+
+body.centered #root > div > input {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+body.centered #root > div {
+  text-align: center;
+  justify-content: center;
+}
+
+body.centered table {
+  width: 1250px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  table-layout: fixed;
+}
+
+body.centered .wrap {
+  width: 1250px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.centered th,
+body.centered td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.centered .page-note {
+  max-width: 720px;
+  margin: 12px auto 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+
+/* ============================================================
+   03. HOME PAGE
    ============================================================ */
 
 body.page-home .intro {
@@ -74,121 +131,7 @@ body.page-home .intro a:hover {
 
 
 /* ============================================================
-   CENTRED PAGES
-   ============================================================ */
-
-body.centered .controls {
-  justify-content: center;
-}
-
-body.centered .controls > div {
-  text-align: center;
-}
-
-body.centered h2,
-body.centered h3,
-body.centered #status {
-  text-align: center;
-}
-
-body.centered #root > div > input {
-  display: inline-block;
-  margin-bottom: 10px;
-}
-
-body.centered #root > div {
-  text-align: center;
-  justify-content: center;
-}
-
-
-/* ============================================================
-   GENERAL TABLE LAYOUT
-   ============================================================ */
-
-body.centered table {
-  width: 1250px;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  table-layout: fixed;
-}
-
-body.centered .wrap {
-  width: 1250px;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-body.centered th,
-body.centered td {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-
-/* ============================================================
-   POKÉMON RECORDS
-   ============================================================ */
-
-body.page-pokemon #root > div {
-  max-width: 1250px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-body.page-pokemon #root > div > div {
-  flex: 1 1 calc(50% - 16px);
-  min-width: 0;
-}
-
-body.page-pokemon .wrap,
-body.page-pokemon table {
-  width: 100%;
-  max-width: 100%;
-}
-
-
-/* Three-column tables: Sprite | Pokémon | Value */
-
-body.page-pokemon th:first-child:nth-last-child(3) {
-  width: 22%;
-}
-
-body.page-pokemon th:first-child:nth-last-child(3) + th {
-  width: 48%;
-}
-
-body.page-pokemon th:first-child:nth-last-child(3) + th + th {
-  width: 30%;
-}
-
-
-/* Seven-column Pokémon tables */
-
-body.page-pokemon th {
-  width: 11.6667%;
-}
-
-body.page-pokemon th:nth-child(2) {
-  width: 30%;
-}
-
-body.page-pokemon th:not(:nth-child(2)),
-body.page-pokemon td:not(:nth-child(2)) {
-  text-align: center;
-}
-
-body.page-pokemon td:first-child img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-
-/* ============================================================
-   GEN 9 STATS
+   04. GEN 9 STATS
    ============================================================ */
 
 body.page-stats th:nth-child(1),
@@ -217,13 +160,72 @@ body.page-stats td:not(:nth-child(3)) {
 
 
 /* ============================================================
-   INDIVIDUAL PLAYER RECORDS
+   05. POKÉMON RECORDS
+   ============================================================ */
+
+body.page-pokemon #root > div {
+  max-width: 1250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.page-pokemon #root > div > div {
+  flex: 1 1 calc(50% - 16px);
+  min-width: 0;
+}
+
+body.page-pokemon .wrap,
+body.page-pokemon table {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Three-column tables: Sprite | Pokémon | Value. */
+
+body.page-pokemon th:first-child:nth-last-child(3) {
+  width: 22%;
+}
+
+body.page-pokemon th:first-child:nth-last-child(3) + th {
+  width: 48%;
+}
+
+body.page-pokemon th:first-child:nth-last-child(3) + th + th {
+  width: 30%;
+}
+
+/* Seven-column Pokémon tables. */
+
+body.page-pokemon th {
+  width: 11.6667%;
+}
+
+body.page-pokemon th:nth-child(2) {
+  width: 30%;
+}
+
+body.page-pokemon th:not(:nth-child(2)),
+body.page-pokemon td:not(:nth-child(2)) {
+  text-align: center;
+}
+
+body.page-pokemon td:first-child img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* ============================================================
+   06. INDIVIDUAL PLAYER RECORDS
    ============================================================ */
 
 body.page-individual {
   --individual-border: var(--container-border);
   --individual-border-width: var(--container-border-width);
 }
+
+/* Main season table column widths. */
 
 body.page-individual th:nth-child(1),
 body.page-individual th:nth-child(2) {
@@ -237,7 +239,7 @@ body.page-individual th:nth-child(4) {
 
 
 /* ------------------------------------------------------------
-   Player Overview — Totals + Coach MVP
+   06.1. Player Overview: Totals + Coach MVP
    ------------------------------------------------------------ */
 
 body.page-individual .player-overview {
@@ -267,7 +269,7 @@ body.page-individual .player-overview #totals {
 
 
 /* ------------------------------------------------------------
-   Coach MVP Card
+   06.2. Coach MVP Card
    ------------------------------------------------------------ */
 
 body.page-individual .player-overview .coach-mvp {
@@ -321,39 +323,7 @@ body.page-individual .player-overview .coach-mvp p {
 
 
 /* ------------------------------------------------------------
-   Commonly Drafted
-   ------------------------------------------------------------ */
-
-body.page-individual #repeatDrafts th:nth-child(1) {
-  width: 25%;
-}
-
-body.page-individual #repeatDrafts th:nth-child(2) {
-  width: 15%;
-}
-
-body.page-individual #repeatDrafts th:nth-child(3) {
-  width: 20%;
-}
-
-body.page-individual #repeatDrafts th:nth-child(4) {
-  width: 40%;
-}
-
-body.page-individual #repeatDrafts td:nth-child(2) img {
-  margin: 0 auto;
-}
-
-body.page-individual #repeatDrafts td:nth-child(4) {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  overflow-wrap: anywhere;
-}
-
-
-/* ------------------------------------------------------------
-   Totals + Role Tabs
+   06.3. Role Tabs
    ------------------------------------------------------------ */
 
 body.page-individual .totals-block {
@@ -407,8 +377,7 @@ body.page-individual .role-tabs .role-tab.active {
   filter: none;
 }
 
-
-/* Make the tabbed table meet the active tab without a gap. */
+/* Connect the table to the active tab. */
 
 body.page-individual .totals-block.has-tabs table {
   position: relative;
@@ -420,32 +389,42 @@ body.page-individual .totals-block.has-tabs .role-tab.active {
   margin-right: 0;
 }
 
-.page-player-lookup .player-record-table { border-top-left-radius: 0; }
 
-.page-player-lookup .player-record-table thead tr:first-child th:first-child { border-top-left-radius: 0; }
+/* ------------------------------------------------------------
+   06.4. Commonly Drafted
+   ------------------------------------------------------------ */
+
+body.page-individual #repeatDrafts th:nth-child(1) {
+  width: 25%;
+}
+
+body.page-individual #repeatDrafts th:nth-child(2) {
+  width: 15%;
+}
+
+body.page-individual #repeatDrafts th:nth-child(3) {
+  width: 20%;
+}
+
+body.page-individual #repeatDrafts th:nth-child(4) {
+  width: 40%;
+}
+
+body.page-individual #repeatDrafts td:nth-child(2) img {
+  margin: 0 auto;
+}
+
+body.page-individual #repeatDrafts td:nth-child(4) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
 
 
 /* ------------------------------------------------------------
-   Inactive Tabs — Individual Records + Pokémon Lookup
+   06.5. Nested Season Draft Tables
    ------------------------------------------------------------ */
-
-body.page-individual .role-tabs .role-tab:not(.active),
-.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active) {
-  background: #d9d0f0;
-  color: var(--muted);
-}
-
-body.page-individual .role-tabs .role-tab:not(.active):hover,
-.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active):hover {
-  background: #e4ddf6;
-  filter: none;
-  color: var(--text);
-}
-
-
-/* ============================================================
-   NESTED SEASON DRAFT TABLES
-   ============================================================ */
 
 body.page-individual #seasons .season-draft-row > td {
   padding: 8px;
@@ -518,6 +497,8 @@ body.page-individual #seasons .individual-draft-table td:nth-child(2) img {
   margin-right: auto;
 }
 
+/* Loading indicator. */
+
 body.page-individual #seasons .season-draft-loading {
   display: flex;
   align-items: center;
@@ -548,99 +529,10 @@ body.page-individual #seasons .season-draft-loading::before {
 
 
 /* ============================================================
-   PAIRING RECORDS
+   07. POKÉMON LOOKUP
    ============================================================ */
 
-body.page-pairing th:nth-child(1) {
-  width: 50%;
-}
-
-body.page-pairing th:nth-child(n+2) {
-  width: 16.66%;
-}
-
-
-/* ============================================================
-   NON-SORTABLE TABLES
-   ============================================================ */
-
-table.nosort th {
-  cursor: default;
-}
-
-table.nosort th:hover {
-  filter: none;
-}
-
-
-/* ============================================================
-   HALL OF FAME
-   ============================================================ */
-
-body.page-hof th:nth-child(1) {
-  width: 11%;
-}
-
-body.page-hof th:nth-child(2),
-body.page-hof th:nth-child(3),
-body.page-hof th:nth-child(4),
-body.page-hof th:nth-child(5) {
-  width: 13%;
-}
-
-body.page-hof th:nth-child(6) {
-  width: 17%;
-}
-
-body.page-hof th:nth-child(7) {
-  width: 20%;
-}
-
-body.page-hof td {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-
-/* ============================================================
-   PAGE NOTES
-   ============================================================ */
-
-body.centered .page-note {
-  max-width: 720px;
-  margin: 12px auto 0;
-  text-align: center;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-
-/* ============================================================
-   SEASON SHEETS
-   ============================================================ */
-
-body.page-sheets table {
-  width: 640px;
-  table-layout: fixed;
-}
-
-body.page-sheets th:nth-child(1) {
-  width: 28%;
-}
-
-body.page-sheets th:nth-child(2),
-body.page-sheets th:nth-child(3) {
-  width: 36%;
-}
-
-body.page-sheets td.season {
-  font-weight: 700;
-}
-
-
-/* ============================================================
-   POKÉMON LOOKUP
-   ============================================================ */
+/* Main layout. */
 
 .page-pokemon-lookup .pokemon-lookup {
   width: 100%;
@@ -652,7 +544,7 @@ body.page-sheets td.season {
 
 
 /* ------------------------------------------------------------
-   Lookup Header
+   07.1. Lookup Header
    ------------------------------------------------------------ */
 
 .page-pokemon-lookup .pokemon-lookup-header {
@@ -686,7 +578,7 @@ body.page-sheets td.season {
 
 
 /* ------------------------------------------------------------
-   Lookup Record Tables
+   07.2. Lookup Sections and Record Tables
    ------------------------------------------------------------ */
 
 .page-pokemon-lookup .pokemon-section {
@@ -733,8 +625,28 @@ body.page-sheets td.season {
   text-align: center;
 }
 
+/* ============================================================
+   TABBED TABLES — SEAMLESS TOP-LEFT CORNER
+   ============================================================ */
+
+/* Individual player records: Coach / Battler tabs */
+body.page-individual .totals-block.has-tabs > #seasons {
+  border-top-left-radius: 0;
+}
+
+/* Pokémon lookup: overall record tabs */
+.page-pokemon-lookup .pokemon-record-table {
+  border-top-left-radius: 0;
+}
+
+/* Season records: tabbed main season table */
+body.page-season-records .season-main-table {
+  border-top-left-radius: 0;
+}
+
+
 /* ------------------------------------------------------------
-   Pokémon Lookup — Gen 9 Season Stats Note
+   07.3. Gen 9 Season Stats Note
    ------------------------------------------------------------ */
 
 body.page-pokemon-lookup .pokemon-record-note {
@@ -748,8 +660,9 @@ body.page-pokemon-lookup .pokemon-record-note {
   text-align: center;
 }
 
+
 /* ------------------------------------------------------------
-   Overall Record Tabs
+   07.4. Overall Record Tabs
    ------------------------------------------------------------ */
 
 .page-pokemon-lookup .pokemon-record-tabs {
@@ -797,9 +710,17 @@ body.page-pokemon-lookup .pokemon-record-note {
   border-top-left-radius: 0;
 }
 
+.page-player-lookup .player-record-table {
+  border-top-left-radius: 0;
+}
+
+.page-player-lookup .player-record-table thead tr:first-child th:first-child {
+  border-top-left-radius: 0;
+}
+
 
 /* ------------------------------------------------------------
-   Commonly Drafted With
+   07.5. Commonly Drafted With
    ------------------------------------------------------------ */
 
 .page-pokemon-lookup .pokemon-partners-table th:nth-child(1) {
@@ -842,7 +763,7 @@ body.page-pokemon-lookup .pokemon-record-note {
 
 
 /* ------------------------------------------------------------
-   Pokémon Championships
+   07.6. Pokémon Championships
    ------------------------------------------------------------ */
 
 .page-pokemon-lookup .pokemon-championships,
@@ -888,9 +809,90 @@ body.page-individual .pokemon-medal {
   font-size: 1.5rem;
 }
 
+
 /* ============================================================
-   SEASON RECORDS
+   08. PAIRING RECORDS
    ============================================================ */
+
+body.page-pairing th:nth-child(1) {
+  width: 50%;
+}
+
+body.page-pairing th:nth-child(n+2) {
+  width: 16.66%;
+}
+
+
+/* ============================================================
+   09. NON-SORTABLE TABLES
+   ============================================================ */
+
+table.nosort th {
+  cursor: default;
+}
+
+table.nosort th:hover {
+  filter: none;
+}
+
+
+/* ============================================================
+   10. HALL OF FAME
+   ============================================================ */
+
+body.page-hof th:nth-child(1) {
+  width: 11%;
+}
+
+body.page-hof th:nth-child(2),
+body.page-hof th:nth-child(3),
+body.page-hof th:nth-child(4),
+body.page-hof th:nth-child(5) {
+  width: 13%;
+}
+
+body.page-hof th:nth-child(6) {
+  width: 17%;
+}
+
+body.page-hof th:nth-child(7) {
+  width: 20%;
+}
+
+body.page-hof td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   11. SEASON SHEETS
+   ============================================================ */
+
+body.page-sheets table {
+  width: 640px;
+  table-layout: fixed;
+}
+
+body.page-sheets th:nth-child(1) {
+  width: 28%;
+}
+
+body.page-sheets th:nth-child(2),
+body.page-sheets th:nth-child(3) {
+  width: 36%;
+}
+
+body.page-sheets td.season {
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   12. SEASON RECORDS
+   ============================================================ */
+
+/* Main sections and headings. */
 
 body.page-season-records .season-record-controls {
   justify-content: center;
@@ -912,6 +914,11 @@ body.page-season-records .season-record-section h3 {
   margin: 0 0 10px;
   text-align: left;
 }
+
+
+/* ------------------------------------------------------------
+   12.1. Season Record Tabs
+   ------------------------------------------------------------ */
 
 body.page-season-records .season-record-tabs {
   display: flex;
@@ -950,6 +957,11 @@ body.page-season-records .season-record-tab.active {
   border-bottom-right-radius: 0;
 }
 
+
+/* ------------------------------------------------------------
+   12.2. Season Record Tables
+   ------------------------------------------------------------ */
+
 body.page-season-records .season-record-table-wrap {
   width: 100%;
   max-width: 100%;
@@ -973,47 +985,21 @@ body.page-season-records .season-playoff-table {
   min-width: 900px;
 }
 
-body.page-season-records .season-record-empty {
-  text-align: center;
-  color: var(--muted);
-  padding: 18px;
-}
-
 body.page-season-records .season-main-table td:nth-child(n+3),
 body.page-season-records .season-main-table th:nth-child(n+3) {
   text-align: center;
 }
 
-@media (max-width: 700px) {
-  body.page-season-records .season-record-controls {
-    width: 100%;
-  }
-
-  body.page-season-records .season-record-controls > div {
-    width: 100%;
-    min-width: 0;
-  }
-
-  body.page-season-records .season-record-section {
-    margin-top: 24px;
-  }
-
-  body.page-season-records .season-record-tab {
-    padding: 8px 18px;
-  }
-
-  body.page-season-records .season-main-table {
-    min-width: 650px;
-  }
-
-  body.page-season-records .season-playoff-table {
-    min-width: 900px;
-  }
+body.page-season-records .season-record-empty {
+  padding: 18px;
+  text-align: center;
+  color: var(--muted);
 }
 
-/* ============================================================
-   SEASON RECORDS — PLAYOFF BRACKET
-   ============================================================ */
+
+/* ------------------------------------------------------------
+   12.3. Playoff Bracket Layout
+   ------------------------------------------------------------ */
 
 .page-season-records .season-bracket {
   display: grid;
@@ -1080,13 +1066,6 @@ body.page-season-records .season-main-table th:nth-child(n+3) {
 
 .page-season-records .season-bracket-player-name a {
   color: inherit;
-}
-
-.page-season-records .season-bracket-pseudonym {
-  margin-top: 3px;
-  font-size: 0.85em;
-  opacity: 0.75;
-  overflow-wrap: anywhere;
 }
 
 .page-season-records .season-bracket-player-meta {
@@ -1157,102 +1136,179 @@ body.page-season-records .season-main-table th:nth-child(n+3) {
   min-width: 0;
 }
 
-@media (max-width: 760px) {
-  .page-season-records .season-bracket {
-    grid-template-columns: repeat(3, minmax(220px, 1fr));
-    padding: 10px;
-    gap: 16px;
-  }
+
+/* ------------------------------------------------------------
+   12.4. Pastel Rainbow Playoff Bracket
+   ------------------------------------------------------------ */
+
+/* Shared bracket colours. */
+
+body.page-season-records .season-bracket {
+  --bracket-red: #e06666;
+  --bracket-orange: #f6b26b;
+  --bracket-yellow: #ffd966;
+  --bracket-green: #93c47d;
+  --bracket-blue: #6fa8dc;
+  --bracket-purple: #9a82c8;
+
+  --bracket-ink: #343449;
+  --bracket-muted: #737386;
 }
 
-/* ============================================================ SEASON RECORDS — PASTEL RAINBOW PLAYOFF BRACKET ============================================================ */
+/* Round headings. */
 
-/* Shared bracket colours */
+body.page-season-records .season-bracket-round-title {
+  padding: 10px 8px;
+  border: 1px solid #d4d0df;
+  border-bottom-width: 3px;
+  border-radius: 10px;
+  background: #eceaf3;
+  color: var(--bracket-ink);
+}
 
-body.page-season-records .season-bracket { --bracket-red: #e06666; --bracket-orange: #f6b26b; --bracket-yellow: #ffd966; --bracket-green: #93c47d; --bracket-blue: #6fa8dc; --bracket-purple: #9a82c8;
+/* Quarter-finals: pastel red. */
 
---bracket-ink: #343449; --bracket-muted: #737386; }
+body.page-season-records .season-bracket-round:nth-child(1) .season-bracket-round-title {
+  background: #f8dada;
+  border-color: #e8aaaa;
+}
 
-/* Round headings */
+body.page-season-records .season-bracket-round:nth-child(1) .season-bracket-match {
+  border-color: #e8aaaa;
+  background: #fff5f2;
+}
 
-body.page-season-records .season-bracket-round-title { padding: 10px 8px; border: 1px solid #d4d0df; border-bottom-width: 3px; border-radius: 10px; background: #eceaf3; color: var(--bracket-ink); }
+/* Semi-finals: pastel green. */
 
-/* Quarter-finals — pastel red and orange */
+body.page-season-records .season-bracket-round:nth-child(2) .season-bracket-round-title {
+  background: #e4edc9;
+  border-color: #b6d7a8;
+}
 
-body.page-season-records .season-bracket-round:nth-child(1) .season-bracket-round-title { background: #f8dada; border-color: #e8aaaa; }
+body.page-season-records .season-bracket-round:nth-child(2) .season-bracket-match {
+  border-color: #b6d7a8;
+  background: #f6faef;
+}
 
-body.page-season-records .season-bracket-round:nth-child(1) .season-bracket-match { border-color: #e8aaaa; background: #fff5f2; }
+/* Finals: pastel blue and purple. */
 
-/* Semi-finals — pastel yellow and green */
+body.page-season-records .season-bracket-round:nth-child(3) .season-bracket-round-title {
+  background: #dedcf5;
+  border-color: #aaa0dc;
+}
 
-body.page-season-records .season-bracket-round:nth-child(2) .season-bracket-round-title { background: #e4edc9; border-color: #b6d7a8; }
+body.page-season-records .season-bracket-round:nth-child(3) .season-bracket-match {
+  border-color: #aaa0dc;
+  background: #f4f2fc;
+}
 
-body.page-season-records .season-bracket-round:nth-child(2) .season-bracket-match { border-color: #b6d7a8; background: #f6faef; }
+/* Match cards. */
 
-/* Final — pastel blue and purple */
+body.page-season-records .season-bracket-match {
+  border-width: 1px;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(52, 52, 73, 0.06);
+}
 
-body.page-season-records .season-bracket-round:nth-child(3) .season-bracket-round-title { background: #dedcf5; border-color: #aaa0dc; }
+/* Player cards. */
 
-body.page-season-records .season-bracket-round:nth-child(3) .season-bracket-match { border-color: #aaa0dc; background: #f4f2fc; }
+body.page-season-records .season-bracket-player {
+  background: #ffffff;
+  border: 1px solid rgba(100, 100, 130, 0.12);
+  border-radius: 8px;
+  transition: background 0.15s, opacity 0.15s;
+}
 
-/* Match cards */
+body.page-season-records .season-bracket-player-name {
+  color: var(--bracket-ink);
+}
 
-body.page-season-records .season-bracket-match { border-width: 1px; border-radius: 12px; padding: 10px; box-shadow: 0 2px 5px rgba(52, 52, 73, 0.06); }
+body.page-season-records .season-bracket-player-name a {
+  text-decoration: none;
+}
 
-/* Player cards */
+body.page-season-records .season-bracket-player-name a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
 
-body.page-season-records .season-bracket-player { background: #ffffff; border: 1px solid rgba(100, 100, 130, 0.12); border-radius: 8px; transition: background 0.15s, opacity 0.15s; }
+/* Winning player. */
 
-body.page-season-records .season-bracket-player-name { color: var(--bracket-ink); }
+body.page-season-records .season-bracket-player:has(.season-bracket-result.is-winner) {
+  background: #e5f1dc;
+  border-color: #a8ca93;
+}
 
-body.page-season-records .season-bracket-player-name a { text-decoration: none; }
+body.page-season-records .season-bracket-result.is-winner {
+  background: #c5dfb4;
+  border-color: #91b77b;
+  color: #284b20;
+  opacity: 1;
+}
 
-body.page-season-records .season-bracket-player-name a:hover { color: var(--accent); text-decoration: underline; }
+/* Losing player. */
 
-/* Winning player */
+body.page-season-records .season-bracket-player:has(.season-bracket-result.is-loser) {
+  background: #f0eef1;
+  border-color: #ded9e0;
+}
 
-body.page-season-records .season-bracket-player:has(.season-bracket-result.is-winner) { background: #e5f1dc; border-color: #a8ca93; }
+body.page-season-records .season-bracket-player:has(.season-bracket-result.is-loser) .season-bracket-player-name {
+  color: #777381;
+}
 
-body.page-season-records .season-bracket-result.is-winner { background: #c5dfb4; border-color: #91b77b; color: #284b20; opacity: 1; }
+body.page-season-records .season-bracket-player:has(.season-bracket-result.is-loser) .season-bracket-pseudonym {
+  color: #918c99;
+  opacity: 1;
+}
 
-/* Losing player — softer colours and less emphasis */
+body.page-season-records .season-bracket-result.is-loser {
+  background: #e5e0e7;
+  border-color: #d0c8d4;
+  color: #77717e;
+  opacity: 1;
+}
 
-body.page-season-records .season-bracket-player:has(.season-bracket-result.is-loser) { background: #f0eef1; border-color: #ded9e0; }
+/* Scores and versus labels. */
 
-body.page-season-records .season-bracket-player:has(.season-bracket-result.is-loser) .season-bracket-player-name { color: #777381; }
+body.page-season-records .season-bracket-score {
+  color: var(--bracket-ink);
+  font-size: 1.05em;
+}
 
-body.page-season-records .season-bracket-player:has(.season-bracket-result.is-loser) .season-bracket-pseudonym { color: #918c99; opacity: 1; }
+body.page-season-records .season-bracket-versus {
+  color: #858197;
+}
 
-body.page-season-records .season-bracket-result.is-loser { background: #e5e0e7; border-color: #d0c8d4; color: #77717e; opacity: 1; }
+/* TBD players. */
 
-/* Scores remain clear and readable */
+body.page-season-records .season-bracket-player.is-tbd {
+  background: #f0eef4;
+  border-style: dashed;
+}
 
-body.page-season-records .season-bracket-score { color: var(--bracket-ink); font-size: 1.05em; }
+/* Other playoff matches. */
 
-/* Versus label */
+body.page-season-records .season-bracket-other-round {
+  color: var(--bracket-ink);
+}
 
-body.page-season-records .season-bracket-versus { color: #858197; }
-
-/* TBD players */
-
-body.page-season-records .season-bracket-player.is-tbd { background: #f0eef4; border-style: dashed; }
-
-/* Other matches */
-
-body.page-season-records .season-bracket-other-round { color: var(--bracket-ink); }
-
-body.page-season-records .season-bracket-other-match .season-bracket-match { background: #f4f0fa; border-color: #c8b8e1; }
-
-/* Respect reduced-motion preferences */
-
-@media (prefers-reduced-motion: reduce) { body.page-season-records .season-bracket-player { transition: none; } }
+body.page-season-records .season-bracket-other-match .season-bracket-match {
+  background: #f4f0fa;
+  border-color: #c8b8e1;
+}
 
 
 /* ============================================================
-   MOBILE RESPONSIVE FOUNDATION
+   13. MOBILE RESPONSIVE FOUNDATION
    ============================================================ */
 
 @media (max-width: 700px) {
+
+  /* ----------------------------------------------------------
+     Global mobile layout
+     ---------------------------------------------------------- */
 
   html,
   body {
@@ -1265,8 +1321,7 @@ body.page-season-records .season-bracket-other-match .season-bracket-match { bac
     padding-right: 10px;
   }
 
-
-  /* Controls */
+  /* Controls. */
 
   .controls {
     width: 100%;
@@ -1283,8 +1338,7 @@ body.page-season-records .season-bracket-other-match .season-bracket-match { bac
     min-width: 0;
   }
 
-
-  /* General tables */
+  /* General tables. */
 
   body.centered table {
     width: 100%;
@@ -1310,18 +1364,9 @@ body.page-season-records .season-bracket-other-match .season-bracket-match { bac
   }
 
 
-  /* Pairing Records */
-
-  .pairing-totals-wrap {
-    margin-top: 1.5rem;
-  }
-
-  .page-pairing #totals {
-    margin-top: 0;
-  }
-
-
-  /* Gen 9 Stats */
+  /* ----------------------------------------------------------
+     Gen 9 Stats
+     ---------------------------------------------------------- */
 
   .page-stats #root {
     width: 100%;
@@ -1368,7 +1413,9 @@ body.page-season-records .season-bracket-other-match .season-bracket-match { bac
   }
 
 
-  /* Hall of Fame */
+  /* ----------------------------------------------------------
+     Hall of Fame
+     ---------------------------------------------------------- */
 
   body.page-hof .wrap {
     width: 100%;
@@ -1390,7 +1437,9 @@ body.page-season-records .season-bracket-other-match .season-bracket-match { bac
   }
 
 
-  /* Pokémon Records */
+  /* ----------------------------------------------------------
+     Pokémon Records
+     ---------------------------------------------------------- */
 
   body.page-pokemon #root > div {
     display: flex;
@@ -1439,10 +1488,13 @@ body.page-season-records .season-bracket-other-match .season-bracket-match { bac
   }
 
 
-  /* Pokémon Lookup */
+  /* ----------------------------------------------------------
+     Pokémon Lookup
+     ---------------------------------------------------------- */
 
   .page-pokemon-lookup .pokemon-record-table {
     min-width: 760px;
+    border-top-left-radius: 0 !important;
   }
 
   .page-pokemon-lookup .pokemon-draft-table {
@@ -1453,16 +1505,14 @@ body.page-season-records .season-bracket-other-match .season-bracket-match { bac
     min-width: 650px;
   }
 
-   .page-pokemon-lookup .pokemon-record-table {
-    border-top-left-radius: 0 !important;
-  }
-
   .page-pokemon-lookup .pokemon-record-table thead tr:first-child th:first-child {
     border-top-left-radius: 0 !important;
   }
 
 
-  /* Individual Player Overview */
+  /* ----------------------------------------------------------
+     Individual Player Overview
+     ---------------------------------------------------------- */
 
   body.page-individual .player-overview {
     gap: 8px;
@@ -1486,12 +1536,53 @@ body.page-season-records .season-bracket-other-match .season-bracket-match { bac
   body.page-individual .player-overview .coach-mvp p {
     font-size: 12px;
   }
+
+
+  /* ----------------------------------------------------------
+     Season Records
+     ---------------------------------------------------------- */
+
+  body.page-season-records .season-record-controls {
+    width: 100%;
+  }
+
+  body.page-season-records .season-record-controls > div {
+    width: 100%;
+    min-width: 0;
+  }
+
+  body.page-season-records .season-record-section {
+    margin-top: 24px;
+  }
+
+  body.page-season-records .season-record-tab {
+    padding: 8px 18px;
+  }
+
+  body.page-season-records .season-main-table {
+    min-width: 650px;
+  }
+
+  body.page-season-records .season-playoff-table {
+    min-width: 900px;
+  }
+
+  .page-season-records .season-bracket {
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    padding: 10px;
+    gap: 16px;
+  }
+
 }
 
 
-/* Stack the player overview on very narrow screens. */
+/* ============================================================
+   14. VERY NARROW SCREENS
+   ============================================================ */
 
 @media (max-width: 600px) {
+
+  /* Stack totals and Coach MVP vertically. */
 
   body.page-individual .player-overview {
     flex-direction: column;
@@ -1506,6 +1597,20 @@ body.page-season-records .season-bracket-other-match .season-bracket-match { bac
   body.page-individual .player-overview .coach-mvp {
     align-self: center;
   }
+
+}
+
+
+/* ============================================================
+   15. ACCESSIBILITY: REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  body.page-season-records .season-bracket-player {
+    transition: none;
+  }
+
 }
 
 
