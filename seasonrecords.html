@@ -305,9 +305,18 @@ tr.appendChild(td);
     }
 
     seasonSel.addEventListener('change', () => {
-      populateDivisions();
-      loadSelected();
-    });
+  populateDivisions();
+
+  if (divisionSel.disabled || !divisionSel.value) {
+    requestToken++;
+    currentData = null;
+    root.replaceChildren();
+    statusEl.textContent = 'No divisions available for this season.';
+    return;
+  }
+
+  loadSelected();
+});
 
     divisionSel.addEventListener('change', loadSelected);
 
