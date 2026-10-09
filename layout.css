@@ -945,41 +945,10 @@ body.page-sheets td.season {
 
 
 /* ------------------------------------------------------------
-   Championships
+   Championships — Player and Pokémon Lookup
    ------------------------------------------------------------ */
 
-.page-pokemon-lookup .pokemon-championships {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  margin: 8px 0;
-}
-
-.page-pokemon-lookup .pokemon-trophy-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 4px;
-}
-
-.page-pokemon-lookup .pokemon-trophy {
-  font-size: 2rem;
-  line-height: 1;
-}
-
-.page-pokemon-lookup .pokemon-winner-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.page-pokemon-lookup .pokemon-winner {
-  font-size: 0.95rem;
-  text-align: center;
-}
-
+.page-pokemon-lookup .pokemon-championships,
 body.page-individual .pokemon-championships {
   display: flex;
   flex-direction: column;
@@ -988,6 +957,7 @@ body.page-individual .pokemon-championships {
   margin: 8px 0;
 }
 
+.page-pokemon-lookup .pokemon-trophy-row,
 body.page-individual .pokemon-trophy-row {
   display: flex;
   flex-wrap: wrap;
@@ -995,11 +965,13 @@ body.page-individual .pokemon-trophy-row {
   gap: 4px;
 }
 
+.page-pokemon-lookup .pokemon-trophy,
 body.page-individual .pokemon-trophy {
-  font-size: 2rem;
+  font-size: 4rem;
   line-height: 1;
 }
 
+.page-pokemon-lookup .pokemon-winner-list,
 body.page-individual .pokemon-winner-list {
   display: flex;
   flex-direction: column;
@@ -1007,11 +979,11 @@ body.page-individual .pokemon-winner-list {
   gap: 2px;
 }
 
+.page-pokemon-lookup .pokemon-winner,
 body.page-individual .pokemon-winner {
-  font-size: 0.95rem;
+  font-size: 0.475rem;
   text-align: center;
 }
-
 
 /* ------------------------------------------------------------
    Pokémon Look Up — Mobile
