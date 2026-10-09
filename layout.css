@@ -251,6 +251,28 @@ body.page-individual .player-overview .totals-block { flex: none; width: 100%; }
 
 body.page-individual .player-overview .coach-mvp { flex: none; width: 100%; min-height: 0; } }
 
+/* ------------------------------------------------------------ Coach MVP — Pastel Purple Card ------------------------------------------------------------ */
+
+body.page-individual .player-overview .coach-mvp { background: #eee8fa; border: 1px solid var(--border); border-radius: var(--radius);
+
+padding: 12px; box-sizing: border-box;
+
+display: flex; flex-direction: column; flex-wrap: nowrap; align-items: center; justify-content: center; gap: 0;
+
+text-align: center; }
+
+/* MVP sprite */ body.page-individual .player-overview .coach-mvp img { display: block; flex: 0 0 auto;
+
+width: auto; height: 160px; max-width: 100%;
+
+margin: 0; padding: 0; border: 0;
+
+object-fit: contain; image-rendering: pixelated; }
+
+/* MVP caption */ body.page-individual .player-overview .coach-mvp p { display: block; flex: 0 0 auto;
+
+margin: 6px 0 0; color: var(--text); font-weight: 700; text-align: center; }
+
 
 /* ------------------------------------------------------------
    Commonly Drafted
