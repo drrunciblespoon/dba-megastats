@@ -1161,6 +1161,88 @@ body.page-season-records .season-main-table th:nth-child(n+3) {
   }
 }
 
+/* ============================================================ SEASON RECORDS — PASTEL RAINBOW PLAYOFF BRACKET ============================================================ */
+
+/* Shared bracket colours */
+
+body.page-season-records .season-bracket { --bracket-red: #e06666; --bracket-orange: #f6b26b; --bracket-yellow: #ffd966; --bracket-green: #93c47d; --bracket-blue: #6fa8dc; --bracket-purple: #9a82c8;
+
+--bracket-ink: #343449; --bracket-muted: #737386; }
+
+/* Round headings */
+
+body.page-season-records .season-bracket-round-title { padding: 10px 8px; border: 1px solid #d4d0df; border-bottom-width: 3px; border-radius: 10px; background: #eceaf3; color: var(--bracket-ink); }
+
+/* Quarter-finals — pastel red and orange */
+
+body.page-season-records .season-bracket-round:nth-child(1) .season-bracket-round-title { background: #f8dada; border-color: #e8aaaa; }
+
+body.page-season-records .season-bracket-round:nth-child(1) .season-bracket-match { border-color: #e8aaaa; background: #fff5f2; }
+
+/* Semi-finals — pastel yellow and green */
+
+body.page-season-records .season-bracket-round:nth-child(2) .season-bracket-round-title { background: #e4edc9; border-color: #b6d7a8; }
+
+body.page-season-records .season-bracket-round:nth-child(2) .season-bracket-match { border-color: #b6d7a8; background: #f6faef; }
+
+/* Final — pastel blue and purple */
+
+body.page-season-records .season-bracket-round:nth-child(3) .season-bracket-round-title { background: #dedcf5; border-color: #aaa0dc; }
+
+body.page-season-records .season-bracket-round:nth-child(3) .season-bracket-match { border-color: #aaa0dc; background: #f4f2fc; }
+
+/* Match cards */
+
+body.page-season-records .season-bracket-match { border-width: 1px; border-radius: 12px; padding: 10px; box-shadow: 0 2px 5px rgba(52, 52, 73, 0.06); }
+
+/* Player cards */
+
+body.page-season-records .season-bracket-player { background: #ffffff; border: 1px solid rgba(100, 100, 130, 0.12); border-radius: 8px; transition: background 0.15s, opacity 0.15s; }
+
+body.page-season-records .season-bracket-player-name { color: var(--bracket-ink); }
+
+body.page-season-records .season-bracket-player-name a { text-decoration: none; }
+
+body.page-season-records .season-bracket-player-name a:hover { color: var(--accent); text-decoration: underline; }
+
+/* Winning player */
+
+body.page-season-records .season-bracket-player:has(.season-bracket-result.is-winner) { background: #e5f1dc; border-color: #a8ca93; }
+
+body.page-season-records .season-bracket-result.is-winner { background: #c5dfb4; border-color: #91b77b; color: #284b20; opacity: 1; }
+
+/* Losing player — softer colours and less emphasis */
+
+body.page-season-records .season-bracket-player:has(.season-bracket-result.is-loser) { background: #f0eef1; border-color: #ded9e0; }
+
+body.page-season-records .season-bracket-player:has(.season-bracket-result.is-loser) .season-bracket-player-name { color: #777381; }
+
+body.page-season-records .season-bracket-player:has(.season-bracket-result.is-loser) .season-bracket-pseudonym { color: #918c99; opacity: 1; }
+
+body.page-season-records .season-bracket-result.is-loser { background: #e5e0e7; border-color: #d0c8d4; color: #77717e; opacity: 1; }
+
+/* Scores remain clear and readable */
+
+body.page-season-records .season-bracket-score { color: var(--bracket-ink); font-size: 1.05em; }
+
+/* Versus label */
+
+body.page-season-records .season-bracket-versus { color: #858197; }
+
+/* TBD players */
+
+body.page-season-records .season-bracket-player.is-tbd { background: #f0eef4; border-style: dashed; }
+
+/* Other matches */
+
+body.page-season-records .season-bracket-other-round { color: var(--bracket-ink); }
+
+body.page-season-records .season-bracket-other-match .season-bracket-match { background: #f4f0fa; border-color: #c8b8e1; }
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) { body.page-season-records .season-bracket-player { transition: none; } }
+
 
 /* ============================================================
    MOBILE RESPONSIVE FOUNDATION
