@@ -482,42 +482,48 @@ function renderPlayerChampionships(group) {
     { player: group.battler, role: 'Battler' }
   ];
 
-  const awards = [];
+  const championships = [];
+const runnersUp = [];
 
   players.forEach(({ player, role }) => {
 
-    if (!player || !Array.isArray(player.s)) {
+  if (!player || !Array.isArray(player.s)) {
+    return;
+  }
+
+  player.s.forEach(([season, division, pseudonym, record, playoff]) => {
+
+    const status = String(playoff || '').trim().toLowerCase();
+
+    let icon;
+    let label;
+    let target;
+
+    if (status === 'champion') {
+      icon = '🏆';
+      label = 'Champion';
+      target = championships;
+    } else if (status === 'runner up') {
+      icon = '🥈';
+      label = 'Runner Up';
+      target = runnersUp;
+    } else {
       return;
     }
 
-    player.s.forEach(([season, division, pseudonym, record, playoff]) => {
+    const seasonText = String(season || '').trim()
+      .replace(/^season\s*/i, '');
 
-      const status = String(playoff || '').trim().toLowerCase();
-
-      let award;
-
-      if (status === 'champion') {
-        award = '🏆';
-      } else if (status === 'runner up') {
-        award = '🥈';
-      } else {
-        return;
-      }
-
-      // Avoid repeating "Season" if the source already includes it.
-      const seasonText = String(season || '').trim()
-        .replace(/^season\s*/i, '');
-
-      awards.push({
-        icon: award,
-        caption: `Season ${seasonText} ${
-          status === 'champion' ? 'Champion' : 'Runner Up'
-        }${division ? ` (${division})` : ''} (${role})`
-      });
-
+    target.push({
+      icon,
+      caption: `Season ${seasonText} ${label}${
+        division ? ` (${division})` : ''
+      } (${role})`
     });
 
   });
+
+});
 
   // Hide the section if there are no awards.
   if (awards.length === 0) {
