@@ -204,6 +204,14 @@ td a:focus-visible {
   box-sizing: border-box;
 }
 
+/* Season Records: Main Season column widths */
+
+.season-main-table { width: 100%; table-layout: fixed; }
+
+.season-main-table th:nth-child(2), .season-main-table td:nth-child(2), .season-main-table th:nth-child(3), .season-main-table td:nth-child(3) { width: 30%; }
+
+.season-main-table th:first-child, .season-main-table td:first-child { width: 6%; text-align: center; }
+
 
 /* ---------- Searchable select ---------- */
 .combo {
