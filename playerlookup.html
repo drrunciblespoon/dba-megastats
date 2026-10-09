@@ -40,6 +40,14 @@
   </p>
 </div>
 
+  <!-- Player championships -->
+  <div
+    id="playerChampionships"
+    class="pokemon-championships"
+    aria-label="Player championships"
+    style="display:none"
+  ></div>
+  
   <!-- Overall totals (Coach / Battler / Combined) -->
   <div id="totalsBlock" class="totals-block" style="display:none">
 
@@ -119,6 +127,7 @@
     const sel            = DBA.$('player');
     const playerNotFoundEl = DBA.$('playerNotFound');
     const statusEl       = DBA.$('status');
+    const playerChampionships = DBA.$('playerChampionships');
     const results        = DBA.$('results');
     const totals         = DBA.$('totals');
     const totalsBlock    = DBA.$('totalsBlock');
@@ -182,12 +191,16 @@
   DBA.show(repeatTbl, false);
   DBA.show(repeatHeading, false);
 
+  playerChampionships.innerHTML = '';
+playerChampionships.style.display = 'none';
+
   roleTabs.style.display = 'none';
   statusEl.textContent = '';
 
   playerNotFoundEl.hidden = true;
 }
 
+    
 
     /* ============================================================
      * Draft table (nested under a season row)
@@ -455,7 +468,86 @@ function toggleSeasonRow(row) {
       DBA.show(repeatHeading, list.length > 0);
       DBA.show(repeatTbl, list.length > 0);
     }
+/* ============================================================
+ * Player championships
+ * ============================================================ */
 
+function renderPlayerChampionships(group) {
+
+  playerChampionships.innerHTML = '';
+
+  // Check both roles, regardless of the currently selected tab.
+  const players = [
+    group.coach,
+    group.battler
+  ];
+
+  const championships = [];
+
+  players.forEach(player => {
+
+    if (!player || !Array.isArray(player.s)) {
+      return;
+    }
+
+    player.s.forEach(([season, division, pseudonym, record, playoff]) => {
+
+      if (
+        String(playoff || '').trim().toLowerCase() !== 'champion'
+      ) {
+        return;
+      }
+
+      championships.push({
+        season,
+        division
+      });
+
+    });
+
+  });
+
+  // Hide the section if the player has no championships.
+  if (championships.length === 0) {
+    playerChampionships.style.display = 'none';
+    return;
+  }
+
+  playerChampionships.style.display = 'flex';
+
+  // Trophy row.
+  const trophyRow = document.createElement('div');
+  trophyRow.className = 'pokemon-trophy-row';
+
+  // Captions listed underneath the trophies.
+  const captionList = document.createElement('div');
+  captionList.className = 'pokemon-winner-list';
+
+  championships.forEach(championship => {
+
+    const trophy = document.createElement('span');
+    trophy.className = 'pokemon-trophy';
+    trophy.textContent = '🏆';
+    trophyRow.appendChild(trophy);
+
+    const caption = document.createElement('div');
+    caption.className = 'pokemon-winner';
+
+    const divisionText = championship.division
+      ? ` (${championship.division})`
+      : '';
+
+    caption.textContent =
+      `Season ${championship.season}${divisionText}`;
+
+    captionList.appendChild(caption);
+
+  });
+
+  playerChampionships.appendChild(trophyRow);
+  playerChampionships.appendChild(captionList);
+
+}
 
     /* ============================================================
      * Render the selected player in the selected role
@@ -471,6 +563,8 @@ function toggleSeasonRow(row) {
       }
 
       currentName = name;
+
+      renderPlayerChampionships(group);
 
       const hasCoach = !!group.coach;
 const hasBattler = !!group.battler;
