@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Season Records - DBA Megastats</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="layout.css">
+
+  <script src="shared.js"></script>
+  <script src="api.js"></script>
+</head>
+
+<body class="centered page-season-records">
+
+  <h2>Season Records</h2>
+
+  <div class="controls season-record-controls">
+    <div>
+      <label for="seasonSel">Season</label>
+      <select id="seasonSel" data-plain disabled>
+        <option>Loading...</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="divisionSel">Division</label>
+      <select id="divisionSel" data-plain disabled>
+        <option>Select a season first</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="status" role="status" aria-live="polite"></div>
+
+  <div id="seasonRoot"></div>
+
+  <script>
+    const seasonSel = DBA.$('seasonSel');
+    const divisionSel = DBA.$('divisionSel');
+    const statusEl = DBA.$('status');
+    const root = DBA.$('seasonRoot');
+
+    let options = [];
+    let currentData = null;
+    let activeRole = 'coach';
+    let requestToken = 0;
+
+    function key(value) {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '');
+    }
+
+    function selectedOption() {
+      return options.find(option =>
+        option.season === seasonSel.value &&
+        option.division === divisionSel.value
+      );
+    }
+
+    function populateSeasons() {
+      const seasons = [...new Set(
+        options.map(option => option.season)
+      )];
+
+      seasonSel.replaceChildren();
+
+      seasons.forEach(season => {
+        const option = document.createElement('option');
+        option.value = season;
+        option.textContent =
+          'Season ' + season.replace(/^Season\s*/i, '');
+
+        seasonSel.appendChild(option);
+      });
+    }
+
+    function populateDivisions(preferredDivision) {
+      const season = seasonSel.value;
+
+      const divisions = options.filter(option =>
+        option.season === season
+      );
+
+      divisionSel.replaceChildren();
+
+      divisions.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.division;
+        option.textContent = item.division;
+        divisionSel.appendChild(option);
+      });
+
+      if (
+        preferredDivision &&
+        divisions.some(item => item.division === preferredDivision)
+      ) {
+        divisionSel.value = preferredDivision;
+      }
+
+      divisionSel.disabled = divisions.length === 0;
+    }
+
+    function makeTable(headers, rows, className) {
+      const table = document.createElement('table');
+      table.className = className || '';
+      table.dataset.seasonTable = 'true';
+
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+
+      headers.forEach((header, index) => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        th.dataset.c = index;
+        th.scope = 'col';
+        headerRow.appendChild(th);
+      });
+
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+
+      rows.forEach(row => {
+        const tr = document.createElement('tr');
+
+        row.forEach((value, index) => {
+          const td = document.createElement('td');
+          td.dataset.c = index;
+          td.textContent = value == null ? '' : value;
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      if (!rows.length) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+
+        td.colSpan = headers.length;
+        td.className = 'season-record-empty';
+        td.textContent = 'No records available.';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      }
+
+      table.appendChild(tbody);
+
+      return table;
+    }
+
+    function makeTableWrapper(table) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'season-record-table-wrap';
+      wrapper.appendChild(table);
+      return wrapper;
+    }
+
+    function renderRoleTabs(container) {
+      const tabs = document.createElement('div');
+      tabs.className = 'season-record-tabs';
+      tabs.setAttribute('role', 'tablist');
+      tabs.setAttribute('aria-label', 'Player class');
+
+      [
+        { id: 'coach', label: 'Coach' },
+        { id: 'battler', label: 'Battler' }
+      ].forEach(role => {
+        const button = document.createElement('button');
+
+        button.type = 'button';
+        button.className = 'season-record-tab';
+        button.textContent = role.label;
+        button.dataset.role = role.id;
+        button.setAttribute('role', 'tab');
+        button.setAttribute(
+          'aria-selected',
+          String(activeRole === role.id)
+        );
+
+        if (activeRole === role.id) {
+          button.classList.add('active');
+        }
+
+        button.addEventListener('click', () => {
+          if (activeRole === role.id) return;
+
+          activeRole = role.id;
+          renderTables();
+        });
+
+        tabs.appendChild(button);
+      });
+
+      container.appendChild(tabs);
+    }
+
+    function renderTables() {
+      if (!currentData) return;
+
+      root.replaceChildren();
+
+      const mainSection = document.createElement('section');
+      mainSection.className = 'season-record-section';
+
+      const mainHeading = document.createElement('h3');
+      mainHeading.textContent = 'Main Season';
+      mainSection.appendChild(mainHeading);
+
+      renderRoleTabs(mainSection);
+
+      const mainData = currentData[activeRole];
+
+      const mainTable = makeTable(
+        mainData.headers,
+        mainData.rows,
+        'season-main-table'
+      );
+
+      mainSection.appendChild(makeTableWrapper(mainTable));
+      root.appendChild(mainSection);
+
+      const playoffSection = document.createElement('section');
+      playoffSection.className = 'season-record-section';
+
+      const playoffHeading = document.createElement('h3');
+      playoffHeading.textContent = 'Play Offs';
+      playoffSection.appendChild(playoffHeading);
+
+      const playoffRows = currentData.playoffs[activeRole] || [];
+
+      const playoffTable = makeTable(
+        [
+          'ROUND',
+          'PLAYER 1',
+          'PSEUDONYM',
+          'RESULT',
+          'SCORE',
+          'VS.',
+          'SCORE',
+          'RESULT',
+          'PSEUDONYM',
+          'PLAYER 2'
+        ],
+        playoffRows,
+        'season-playoff-table'
+      );
+
+      playoffSection.appendChild(makeTableWrapper(playoffTable));
+      root.appendChild(playoffSection);
+    }
+
+    async function loadSelected() {
+      const selection = selectedOption();
+      if (!selection) return;
+
+      const mine = ++requestToken;
+
+      statusEl.textContent = 'Loading season records...';
+      root.replaceChildren();
+      currentData = null;
+
+      try {
+        const data = await DBA.call(
+          'seasonRecordsGetData',
+          selection.season,
+          selection.division
+        );
+
+        if (mine !== requestToken) return;
+
+        currentData = data;
+        activeRole = 'coach';
+
+        renderTables();
+        statusEl.textContent = '';
+      } catch (error) {
+        if (mine !== requestToken) return;
+
+        statusEl.textContent =
+          'Error loading season records: ' + error.message;
+      }
+    }
+
+    seasonSel.addEventListener('change', () => {
+      populateDivisions();
+      loadSelected();
+    });
+
+    divisionSel.addEventListener('change', loadSelected);
+
+    async function initialise() {
+      statusEl.textContent = 'Loading available seasons...';
+
+      try {
+        options = await DBA.call('seasonRecordsGetOptions');
+
+        if (!options.length) {
+          seasonSel.replaceChildren();
+          divisionSel.replaceChildren();
+
+          seasonSel.disabled = true;
+          divisionSel.disabled = true;
+
+          statusEl.textContent =
+            'No season records were found in SeasonInput.';
+          return;
+        }
+
+        populateSeasons();
+        populateDivisions();
+
+        seasonSel.disabled = false;
+
+        await loadSelected();
+      } catch (error) {
+        statusEl.textContent =
+          'Error loading seasons: ' + error.message;
+      }
+    }
+
+    initialise();
+  </script>
+
+</body>
+</html>
