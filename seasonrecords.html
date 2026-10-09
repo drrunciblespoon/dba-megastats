@@ -103,73 +103,47 @@
       divisionSel.disabled = divisions.length === 0;
     }
 
-    function makeTable(headers, rows, className) {
-      const table = document.createElement('table');
-      table.className = className || '';
-      table.dataset.seasonTable = 'true';
+   function makeTable(headers, rows, className) { const table = document.createElement('table'); table.className = className || ''; table.dataset.seasonTable = 'true';
 
-      const thead = document.createElement('thead');
-      const headerRow = document.createElement('tr');
+const hasRank = className === 'season-main-table';
 
-      headers.forEach((header, index) => {
-        const th = document.createElement('th');
-        th.textContent = header;
-        th.dataset.c = index;
-        th.scope = 'col';
-        headerRow.appendChild(th);
-      });
+// Header const thead = document.createElement('thead'); const headerRow = document.createElement('tr');
 
-      thead.appendChild(headerRow);
-      table.appendChild(thead);
+if (hasRank) { const th = document.createElement('th'); th.textContent = 'Rank'; th.dataset.c = 'rank'; th.scope = 'col'; headerRow.appendChild(th); }
 
-      const tbody = document.createElement('tbody');
+headers.forEach((header, index) => { const th = document.createElement('th'); th.textContent = header; th.dataset.c = index; th.scope = 'col'; headerRow.appendChild(th); });
 
-      rows.forEach(row => {
-        const tr = document.createElement('tr');
+thead.appendChild(headerRow); table.appendChild(thead);
 
-        row.forEach((value, index) => {
-          const td = document.createElement('td');
-          td.dataset.c = index;
-          const text = value == null ? '' : String(value);
+// Body const tbody = document.createElement('tbody');
 
-const isPlayerColumn =
-  (className === 'season-main-table' && index === 0) ||
-  (className === 'season-playoff-table' &&
-    (index === 1 || index === 9));
+rows.forEach((row, rowIndex) => { const tr = document.createElement('tr');
 
-if (isPlayerColumn && text.trim()) {
-  const link = DBA.playerLink(text);
+if (hasRank) { const rankCell = document.createElement('td'); rankCell.textContent = String(rowIndex + 1); rankCell.dataset.c = 'rank'; rankCell.className = 'num'; tr.appendChild(rankCell); }
 
-  if (link) {
-    td.appendChild(link);
-  } else {
-    td.textContent = text;
-  }
-} else {
-  td.textContent = text;
-}
+row.forEach((value, index) => { const td = document.createElement('td'); td.dataset.c = index;
 
-tr.appendChild(td);
-        });
+const text = value == null ? '' : String(value);
 
-        tbody.appendChild(tr);
-      });
+const isPlayerColumn = (hasRank && index === 0) || ( className === 'season-playoff-table' && (index === 1 || index === 9) );
 
-      if (!rows.length) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
+if (isPlayerColumn && text.trim()) { const link = DBA.playerLink(text);
 
-        td.colSpan = headers.length;
-        td.className = 'season-record-empty';
-        td.textContent = 'No records available.';
-        tr.appendChild(td);
-        tbody.appendChild(tr);
-      }
+if (link) { td.appendChild(link); } else { td.textContent = text; } } else { td.textContent = text; }
 
-      table.appendChild(tbody);
+tr.appendChild(td); });
 
-      return table;
-    }
+tbody.appendChild(tr); });
+
+if (!rows.length) { const tr = document.createElement('tr'); const td = document.createElement('td');
+
+td.colSpan = headers.length + (hasRank ? 1 : 0); td.className = 'season-record-empty'; td.textContent = 'No records available.';
+
+tr.appendChild(td); tbody.appendChild(tr); }
+
+table.appendChild(tbody);
+
+return table; }
 
     function makeTableWrapper(table) {
       const wrapper = document.createElement('div');
