@@ -420,6 +420,10 @@ body.page-individual .totals-block.has-tabs .role-tab.active {
   margin-right: 0;
 }
 
+.page-player-lookup .player-record-table { border-top-left-radius: 0; }
+
+.page-player-lookup .player-record-table thead tr:first-child th:first-child { border-top-left-radius: 0; }
+
 
 /* ------------------------------------------------------------
    Inactive Tabs — Individual Records + Pokémon Lookup
