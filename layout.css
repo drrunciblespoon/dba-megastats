@@ -221,57 +221,35 @@ body.page-individual th:nth-child(4) {
   width: 20%;
 }
 
-/* Player overview: totals table + Coach MVP */
-.player-overview {
-  display: flex;
-  align-items: stretch;
-  gap: 12px;
-  width: 100%;
-}
+/* ------------------------------------------------------------ Player Overview — Totals + Coach MVP ------------------------------------------------------------ */
 
-.player-overview .totals-block {
-  flex: 0 0 calc(75% - 9px);
-  min-width: 0;
-}
+body.page-individual .player-overview { display: flex; align-items: stretch; gap: 16px;
 
-.player-overview .coach-mvp {
-  flex: 1;
-  min-width: 0;
-  min-height: 160px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
+width: 1250px; max-width: 100%; box-sizing: border-box;
 
-.coach-mvp img {
-  max-width: 100%;
-  max-height: 110px;
-  object-fit: contain;
-}
+margin: 16px auto 0; }
 
-.coach-mvp p {
-  margin: 6px 0 0;
-}
+body.page-individual .player-overview .totals-block { flex: 3 1 0; min-width: 0; margin: 0; }
 
-/* Mobile: stack the MVP between the first and second tables */
-@media (max-width: 600px) {
-  .player-overview {
-    flex-direction: column;
-    gap: 12px;
-  }
+body.page-individual .player-overview #totals { width: 100%; max-width: 100%; margin: 0; table-layout: fixed; }
 
-  .player-overview .totals-block {
-    flex: none;
-    width: 100%;
-  }
+body.page-individual .player-overview .coach-mvp { flex: 1 1 0; min-width: 0; min-height: 160px;
 
-  .player-overview .coach-mvp {
-    width: 100%;
-    min-height: 120px;
-  }
-}
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+
+text-align: center; box-sizing: border-box; }
+
+body.page-individual .coach-mvp img { width: auto; height: 160px; max-width: 100%; object-fit: contain; image-rendering: pixelated; }
+
+body.page-individual .coach-mvp p { margin: 6px 0 0; }
+
+/* Mobile layout */
+
+@media (max-width: 600px) { body.page-individual .player-overview { flex-direction: column; gap: 12px; }
+
+body.page-individual .player-overview .totals-block { flex: none; width: 100%; }
+
+body.page-individual .player-overview .coach-mvp { flex: none; width: 100%; min-height: 0; } }
 
 
 /* ------------------------------------------------------------
