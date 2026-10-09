@@ -15,6 +15,9 @@
   --sprite-height: 45px;
   --header-bg: #274e13;
   --header-text: #d9ead3;
+  --container-border: var(--accent);
+--container-border-width: 2px;
+  
 }
 
 /* ---------- Column colours (matches the Sheet) ----------
@@ -140,7 +143,7 @@ table {
   border-spacing: 0;
   overflow: hidden;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: var(--container-border-width) solid var(--container-border);
   border-radius: var(--radius);
 }
 .wrap table { margin-top: 0; }
