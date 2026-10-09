@@ -469,7 +469,7 @@ function toggleSeasonRow(row) {
       DBA.show(repeatTbl, list.length > 0);
     }
 /* ============================================================
- * Player championships
+ * Player Championships and Runner Up Awards
  * ============================================================ */
 
 function renderPlayerChampionships(group) {
@@ -478,70 +478,74 @@ function renderPlayerChampionships(group) {
 
   // Check both roles, regardless of the currently selected tab.
   const players = [
-  { player: group.coach, role: 'Coach' },
-  { player: group.battler, role: 'Battler' }
-];
+    { player: group.coach, role: 'Coach' },
+    { player: group.battler, role: 'Battler' }
+  ];
 
-  const championships = [];
+  const awards = [];
 
   players.forEach(({ player, role }) => {
 
-  if (!player || !Array.isArray(player.s)) {
-    return;
-  }
+    if (!player || !Array.isArray(player.s)) {
+      return;
+    }
 
-  player.s.forEach(([season, division, pseudonym, record, playoff]) => {
+    player.s.forEach(([season, division, pseudonym, record, playoff]) => {
 
-      if (
-        String(playoff || '').trim().toLowerCase() !== 'champion'
-      ) {
+      const status = String(playoff || '').trim().toLowerCase();
+
+      let award;
+
+      if (status === 'champion') {
+        award = '🏆';
+      } else if (status === 'runner up') {
+        award = '🥈';
+      } else {
         return;
       }
 
-      championships.push({
-  season,
-  division,
-  role
-});
+      // Avoid repeating "Season" if the source already includes it.
+      const seasonText = String(season || '').trim()
+        .replace(/^season\s*/i, '');
+
+      awards.push({
+        icon: award,
+        caption: `Season ${seasonText} ${
+          status === 'champion' ? 'Champion' : 'Runner Up'
+        }${division ? ` (${division})` : ''} (${role})`
+      });
 
     });
 
   });
 
-  // Hide the section if the player has no championships.
-  if (championships.length === 0) {
+  // Hide the section if there are no awards.
+  if (awards.length === 0) {
     playerChampionships.style.display = 'none';
     return;
   }
 
   playerChampionships.style.display = 'flex';
 
-  // Trophy row.
+  // Display all award icons in one row/group.
   const trophyRow = document.createElement('div');
   trophyRow.className = 'pokemon-trophy-row';
 
-  // Captions listed underneath the trophies.
+  // Display captions underneath the icons.
   const captionList = document.createElement('div');
   captionList.className = 'pokemon-winner-list';
 
-  championships.forEach(championship => {
+  awards.forEach(({ icon, caption }) => {
 
     const trophy = document.createElement('span');
     trophy.className = 'pokemon-trophy';
-    trophy.textContent = '🏆';
+    trophy.textContent = icon;
     trophyRow.appendChild(trophy);
 
-    const caption = document.createElement('div');
-    caption.className = 'pokemon-winner';
-
-    const divisionText = championship.division
-  ? ` (${championship.division})`
-  : '';
-
-caption.textContent =
-  `${championship.season}${divisionText} (${championship.role})`;
-
-    captionList.appendChild(caption);
+    const captionEl = document.createElement('div');
+    captionEl.className = 'pokemon-winner';
+    captionEl.textContent = caption;
+    captionList.appendChild(captionEl);
 
   });
 
