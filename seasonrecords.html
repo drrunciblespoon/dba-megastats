@@ -47,12 +47,6 @@
     let activeRole = 'coach';
     let requestToken = 0;
 
-    function key(value) {
-      return String(value || '')
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '');
-    }
-
     function selectedOption() {
       return options.find(option =>
         option.season === seasonSel.value &&
@@ -69,6 +63,7 @@
 
       seasons.forEach(season => {
         const option = document.createElement('option');
+
         option.value = season;
         option.textContent =
           'Season ' + season.replace(/^Season\s*/i, '');
@@ -88,8 +83,10 @@
 
       divisions.forEach(item => {
         const option = document.createElement('option');
+
         option.value = item.division;
         option.textContent = item.division;
+
         divisionSel.appendChild(option);
       });
 
@@ -103,57 +100,121 @@
       divisionSel.disabled = divisions.length === 0;
     }
 
-   function makeTable(headers, rows, className) { const table = document.createElement('table'); table.className = className || ''; table.dataset.seasonTable = 'true';
+    function makeTable(headers, rows, className) {
+      const table = document.createElement('table');
 
-const hasRank = className === 'season-main-table';
+      table.className = className || '';
+      table.dataset.seasonTable = 'true';
 
-// Header const thead = document.createElement('thead'); const headerRow = document.createElement('tr');
+      const hasRank = className === 'season-main-table';
 
-if (hasRank) { const th = document.createElement('th'); th.textContent = 'Rank'; th.dataset.c = 'rank'; th.scope = 'col'; headerRow.appendChild(th); }
+      // Create the header.
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
 
-headers.forEach((header, index) => { const th = document.createElement('th'); th.textContent = header; th.dataset.c = index; th.scope = 'col'; headerRow.appendChild(th); });
+      // Rank is only used in the Main Season table.
+      if (hasRank) {
+        const th = document.createElement('th');
 
-thead.appendChild(headerRow); table.appendChild(thead);
+        th.textContent = 'Rank';
+        th.dataset.c = 'rank';
+        th.scope = 'col';
 
-// Body const tbody = document.createElement('tbody');
+        headerRow.appendChild(th);
+      }
 
-rows.forEach((row, rowIndex) => { const tr = document.createElement('tr');
+      headers.forEach((header, index) => {
+        const th = document.createElement('th');
 
-if (hasRank) { const rankCell = document.createElement('td'); rankCell.textContent = String(rowIndex + 1); rankCell.dataset.c = 'rank'; rankCell.className = 'num'; tr.appendChild(rankCell); }
+        th.textContent = header;
+        th.dataset.c = index;
+        th.scope = 'col';
 
-row.forEach((value, index) => { const td = document.createElement('td'); td.dataset.c = index;
+        headerRow.appendChild(th);
+      });
 
-const text = value == null ? '' : String(value);
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
 
-const isPlayerColumn = (hasRank && index === 0) || ( className === 'season-playoff-table' && (index === 1 || index === 9) );
+      // Create the table body.
+      const tbody = document.createElement('tbody');
 
-if (isPlayerColumn && text.trim()) { const link = DBA.playerLink(text);
+      rows.forEach((row, rowIndex) => {
+        const tr = document.createElement('tr');
 
-if (link) { td.appendChild(link); } else { td.textContent = text; } } else { td.textContent = text; }
+        // Add sequential ranks to Main Season rows.
+        if (hasRank) {
+          const rankCell = document.createElement('td');
 
-tr.appendChild(td); });
+          rankCell.textContent = String(rowIndex + 1);
+          rankCell.dataset.c = 'rank';
+          rankCell.className = 'num';
 
-tbody.appendChild(tr); });
+          tr.appendChild(rankCell);
+        }
 
-if (!rows.length) { const tr = document.createElement('tr'); const td = document.createElement('td');
+        row.forEach((value, index) => {
+          const td = document.createElement('td');
+          const text = value == null ? '' : String(value);
 
-td.colSpan = headers.length + (hasRank ? 1 : 0); td.className = 'season-record-empty'; td.textContent = 'No records available.';
+          td.dataset.c = index;
 
-tr.appendChild(td); tbody.appendChild(tr); }
+          // Link player names to the Player Look Up page.
+          const isPlayerColumn =
+            (hasRank && index === 0) ||
+            (
+              className === 'season-playoff-table' &&
+              (index === 1 || index === 9)
+            );
 
-table.appendChild(tbody);
+          if (isPlayerColumn && text.trim()) {
+            const link = DBA.playerLink(text);
 
-return table; }
+            if (link) {
+              td.appendChild(link);
+            } else {
+              td.textContent = text;
+            }
+          } else {
+            td.textContent = text;
+          }
+
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      // Display a message if there are no records.
+      if (!rows.length) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+
+        td.colSpan = headers.length + (hasRank ? 1 : 0);
+        td.className = 'season-record-empty';
+        td.textContent = 'No records available.';
+
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      }
+
+      table.appendChild(tbody);
+
+      return table;
+    }
 
     function makeTableWrapper(table) {
       const wrapper = document.createElement('div');
+
       wrapper.className = 'season-record-table-wrap';
       wrapper.appendChild(table);
+
       return wrapper;
     }
 
     function renderRoleTabs(container) {
       const tabs = document.createElement('div');
+
       tabs.className = 'season-record-tabs';
       tabs.setAttribute('role', 'tablist');
       tabs.setAttribute('aria-label', 'Player class');
@@ -168,6 +229,7 @@ return table; }
         button.className = 'season-record-tab';
         button.textContent = role.label;
         button.dataset.role = role.id;
+
         button.setAttribute('role', 'tab');
         button.setAttribute(
           'aria-selected',
@@ -196,10 +258,13 @@ return table; }
 
       root.replaceChildren();
 
+      // Main Season section.
       const mainSection = document.createElement('section');
+
       mainSection.className = 'season-record-section';
 
       const mainHeading = document.createElement('h3');
+
       mainHeading.textContent = 'Main Season';
       mainSection.appendChild(mainHeading);
 
@@ -216,10 +281,13 @@ return table; }
       mainSection.appendChild(makeTableWrapper(mainTable));
       root.appendChild(mainSection);
 
+      // Play Offs section.
       const playoffSection = document.createElement('section');
+
       playoffSection.className = 'season-record-section';
 
       const playoffHeading = document.createElement('h3');
+
       playoffHeading.textContent = 'Play Offs';
       playoffSection.appendChild(playoffHeading);
 
@@ -248,11 +316,13 @@ return table; }
 
     async function loadSelected() {
       const selection = selectedOption();
+
       if (!selection) return;
 
       const mine = ++requestToken;
 
       statusEl.textContent = 'Loading season records...';
+
       root.replaceChildren();
       currentData = null;
 
@@ -269,6 +339,7 @@ return table; }
         activeRole = 'coach';
 
         renderTables();
+
         statusEl.textContent = '';
       } catch (error) {
         if (mine !== requestToken) return;
@@ -279,18 +350,22 @@ return table; }
     }
 
     seasonSel.addEventListener('change', () => {
-  populateDivisions();
+      populateDivisions();
 
-  if (divisionSel.disabled || !divisionSel.value) {
-    requestToken++;
-    currentData = null;
-    root.replaceChildren();
-    statusEl.textContent = 'No divisions available for this season.';
-    return;
-  }
+      if (divisionSel.disabled || !divisionSel.value) {
+        requestToken++;
+        currentData = null;
 
-  loadSelected();
-});
+        root.replaceChildren();
+
+        statusEl.textContent =
+          'No divisions available for this season.';
+
+        return;
+      }
+
+      loadSelected();
+    });
 
     divisionSel.addEventListener('change', loadSelected);
 
@@ -309,6 +384,7 @@ return table; }
 
           statusEl.textContent =
             'No season records were found in SeasonInput.';
+
           return;
         }
 
