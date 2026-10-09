@@ -1182,10 +1182,10 @@ body.page-season-records .season-bracket-round:nth-child(3)
 
 body.page-season-records .season-bracket-match {
   padding: 10px;
-  border: 1px solid var(--bracket-border);
+  border: var(--container-border-width) solid var(--container-border);
   border-radius: var(--radius);
-  background: var(--bracket-surface);
-  box-shadow: 0 2px 5px rgba(29, 32, 48, 0.05);
+  background: var(--surface);
+  box-shadow: none;
 }
 
 /* All rounds share the same match styling */
@@ -1196,8 +1196,8 @@ body.page-season-records .season-bracket-round:nth-child(2)
 .season-bracket-match,
 body.page-season-records .season-bracket-round:nth-child(3)
 .season-bracket-match {
-  background: var(--bracket-surface);
-  border-color: var(--bracket-border);
+  background: var(--surface);
+  border-color: var(--container-border);
 }
 
 /* Player cards */
