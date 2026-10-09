@@ -962,6 +962,7 @@ body.page-individual .pokemon-trophy-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: flex-end;
   gap: 4px;
 }
 
