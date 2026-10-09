@@ -49,21 +49,20 @@
   ></div>
   
   <!-- Overall totals (Coach / Battler / Combined) -->
-  <div id="totalsBlock" class="totals-block" style="display:none">
+ <div id="playerOverview" class="player-overview">
 
+  <div id="totalsBlock" class="totals-block">
     <table id="totals" class="totals nosort">
-      <thead>
-        <tr>
-          <th id="totalsName">Player</th>
-          <th class="num">Wins</th>
-          <th class="num">Losses</th>
-          <th class="num">Net</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
+      <!-- Keep your existing table content here -->
     </table>
-
   </div>
+
+  <div id="coachMvp" class="coach-mvp" style="display:none">
+    <img id="coachMvpSprite" src="" alt="">
+    <p id="coachMvpCaption"></p>
+  </div>
+
+</div>
 
   <h3 id="seasonsHeading" style="display:none">Season Records</h3>
 
@@ -140,6 +139,9 @@
     const seasonsHeading = DBA.$('seasonsHeading');
     const repeatTbl      = DBA.$('repeatDrafts');
     const repeatHeading  = DBA.$('repeatHeading');
+    const coachMvp = DBA.$('coachMvp');
+const coachMvpSprite = DBA.$('coachMvpSprite');
+const coachMvpCaption = DBA.$('coachMvpCaption');
 
 
     /* ============================================================
@@ -468,6 +470,97 @@ function toggleSeasonRow(row) {
       DBA.show(repeatHeading, list.length > 0);
       DBA.show(repeatTbl, list.length > 0);
     }
+
+/* ============================================================
+ * Coach MVP — Pokémon with the most total kills
+ * ============================================================ */
+
+function renderCoachMvp(name, coach) {
+
+  // Hide the MVP if the player has no Coach record.
+  if (!coach) {
+    coachMvp.style.display = 'none';
+    coachMvpSprite.removeAttribute('src');
+    coachMvpCaption.textContent = '';
+    return;
+  }
+
+  const playerKey = normalisePlayerName(name);
+  const playerDrafts = individualDrafts[playerKey] || {};
+
+  // Aggregate kills across every team and season.
+  const pokemonTotals = new Map();
+
+  Object.values(playerDrafts).forEach(seasons => {
+
+    if (!seasons || typeof seasons !== 'object') return;
+
+    Object.values(seasons).forEach(drafts => {
+
+      if (!Array.isArray(drafts)) return;
+
+      drafts.forEach(draft => {
+
+        const pokemon = String(draft.pokemon || '').trim();
+
+        if (!pokemon) return;
+
+        const kills = Number(draft.kills);
+
+        if (!Number.isFinite(kills)) return;
+
+        const key = pokemon.toLowerCase();
+        const existing = pokemonTotals.get(key);
+
+        if (existing) {
+          existing.kills += kills;
+
+          // Keep a sprite URL if one is available.
+          if (!existing.sprite && draft.sprite) {
+            existing.sprite = draft.sprite;
+          }
+        } else {
+          pokemonTotals.set(key, {
+            name: pokemon,
+            kills,
+            sprite: draft.sprite || ''
+          });
+        }
+
+      });
+
+    });
+
+  });
+
+  const candidates = [...pokemonTotals.values()]
+    .filter(pokemon => pokemon.kills > 0)
+    .sort((a, b) => b.kills - a.kills);
+
+  // No usable draft data or no Pokémon with kills.
+  if (candidates.length === 0) {
+    coachMvp.style.display = 'none';
+    coachMvpSprite.removeAttribute('src');
+    coachMvpCaption.textContent = '';
+    return;
+  }
+
+  const mvp = candidates[0];
+
+  if (mvp.sprite) {
+    coachMvpSprite.src = mvp.sprite;
+    coachMvpSprite.alt = mvp.name;
+    coachMvpSprite.style.display = '';
+  } else {
+    coachMvpSprite.removeAttribute('src');
+    coachMvpSprite.alt = '';
+    coachMvpSprite.style.display = 'none';
+  }
+
+  coachMvpCaption.textContent = `MVP – ${mvp.kills} Kills`;
+  coachMvp.style.display = 'flex';
+}
+    
 /* ============================================================
  * Player Championships and Runner Up Awards
  * ============================================================ */
@@ -591,8 +684,10 @@ function renderPlayerChampionships(group) {
 
       currentName = name;
 
-      renderPlayerChampionships(group);
+renderPlayerChampionships(group);
 
+renderCoachMvp(name, group.coach);
+      
       const hasCoach = !!group.coach;
 const hasBattler = !!group.battler;
 const hasBoth = hasCoach && hasBattler;
@@ -851,6 +946,14 @@ if (requestedPlayer) {
 
         individualDrafts = data && data.drafts ? data.drafts : {};
         individualDraftsLoaded = true;
+
+        if (currentName) {
+  const group = groups.get(currentName);
+
+  if (group) {
+    renderCoachMvp(currentName, group.coach);
+  }
+}
 
         // Swap any open "Loading draft…" for the real table.
         const expandedRow =
