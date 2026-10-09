@@ -478,19 +478,19 @@ function renderPlayerChampionships(group) {
 
   // Check both roles, regardless of the currently selected tab.
   const players = [
-    group.coach,
-    group.battler
-  ];
+  { player: group.coach, role: 'Coach' },
+  { player: group.battler, role: 'Battler' }
+];
 
   const championships = [];
 
-  players.forEach(player => {
+  players.forEach(({ player, role }) => {
 
-    if (!player || !Array.isArray(player.s)) {
-      return;
-    }
+  if (!player || !Array.isArray(player.s)) {
+    return;
+  }
 
-    player.s.forEach(([season, division, pseudonym, record, playoff]) => {
+  player.s.forEach(([season, division, pseudonym, record, playoff]) => {
 
       if (
         String(playoff || '').trim().toLowerCase() !== 'champion'
@@ -499,9 +499,10 @@ function renderPlayerChampionships(group) {
       }
 
       championships.push({
-        season,
-        division
-      });
+  season,
+  division,
+  role
+});
 
     });
 
@@ -534,11 +535,11 @@ function renderPlayerChampionships(group) {
     caption.className = 'pokemon-winner';
 
     const divisionText = championship.division
-      ? ` (${championship.division})`
-      : '';
+  ? ` (${championship.division})`
+  : '';
 
-    caption.textContent =
-      `${championship.season}${divisionText}`;
+caption.textContent =
+  `${championship.season}${divisionText} (${championship.role})`;
 
     captionList.appendChild(caption);
 
