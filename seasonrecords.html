@@ -279,34 +279,38 @@
         .replace(/[^a-z0-9]/g, '');
     }
 
-    function roundType(value) {
-      const round = normaliseRound(value);
+  function roundType(value) {
+  const round = normaliseRound(value);
 
-      if (
-        round.includes('quarter') ||
-        round === 'qf' ||
-        round.includes('quarterfinal')
-      ) {
-        return 'quarters';
-      }
+  if (
+    round === 'quarters' ||
+    round === 'quarter' ||
+    round === 'quarterfinal' ||
+    round === 'quarterfinals' ||
+    round === 'qf'
+  ) {
+    return 'quarters';
+  }
 
-      if (
-        round.includes('semi') ||
-        round === 'sf'
-      ) {
-        return 'semis';
-      }
+  if (
+    round === 'semi' ||
+    round === 'semis' ||
+    round === 'semifinal' ||
+    round === 'semifinals' ||
+    round === 'sf'
+  ) {
+    return 'semis';
+  }
 
-      if (
-        round.includes('final') &&
-        !round.includes('semi') &&
-        !round.includes('quarter')
-      ) {
-        return 'final';
-      }
+  if (
+    round === 'final' ||
+    round === 'finals'
+  ) {
+    return 'final';
+  }
 
-      return 'other';
-    }
+  return 'other';
+}
 
     function makePlayerCard(name, pseudonym, score, result) {
       const card = document.createElement('div');
