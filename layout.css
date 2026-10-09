@@ -729,6 +729,20 @@ body.page-sheets td.season {
   text-align: center;
 }
 
+/* ------------------------------------------------------------
+   Pokémon Lookup — Gen 9 Season Stats Note
+   ------------------------------------------------------------ */
+
+body.page-pokemon-lookup .pokemon-record-note {
+  display: block;
+  width: 100%;
+  margin: -8px auto 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  font-weight: 700;
+  text-align: center;
+}
 
 /* ------------------------------------------------------------
    Overall Record Tabs
