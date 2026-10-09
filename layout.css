@@ -1,1128 +1,417 @@
-/* ============================================================
-   LAYOUT.CSS
-   Page-specific layouts, table sizing and responsive behaviour.
+/* ============================================================ LAYOUT.CSS Page-specific layouts, table sizing and responsive behaviour.
 
-   Load this AFTER styles.css.
-   ============================================================ */
+Load this AFTER styles.css. ============================================================ */
 
+/* ============================================================ HOME PAGE ============================================================ */
 
-/* ============================================================
-   HOME PAGE
-   ============================================================ */
+body.page-home .intro { max-width: 720px; margin: 20px auto 0; padding: 28px 32px; text-align: left; font-size: 15px; line-height: 1.7; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
 
-body.page-home .intro {
-  max-width: 720px;
-  margin: 20px auto 0;
-  padding: 28px 32px;
-  text-align: left;
-  font-size: 15px;
-  line-height: 1.7;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
+body.page-home .intro p { margin: 0 0 1em; }
 
-body.page-home .intro p {
-  margin: 0 0 1em;
-}
+body.page-home .intro p:last-child { margin-bottom: 0; }
 
-body.page-home .intro p:last-child {
-  margin-bottom: 0;
-}
+body.page-home .intro a { color: var(--accent); font-weight: 600; text-decoration: none; }
 
-body.page-home .intro a {
-  color: var(--accent);
-  font-weight: 600;
-  text-decoration: none;
-}
+body.page-home .intro a:hover { text-decoration: underline; }
 
-body.page-home .intro a:hover {
-  text-decoration: underline;
-}
+/* ============================================================ CENTRED PAGES ============================================================ */
 
+body.centered .controls { justify-content: center; }
 
-/* ============================================================
-   CENTRED PAGES
-   ============================================================ */
+body.centered .controls > div { text-align: center; }
 
-body.centered .controls {
-  justify-content: center;
-}
+body.centered h2, body.centered h3, body.centered #status { text-align: center; }
 
-body.centered .controls > div {
-  text-align: center;
-}
+body.centered #root > div > input { display: inline-block; margin-bottom: 10px; }
 
-body.centered h2,
-body.centered h3,
-body.centered #status {
-  text-align: center;
-}
+/* ============================================================ GENERAL TABLE LAYOUT ============================================================ */
 
+body.centered table { width: 1250px; max-width: 100%; margin-left: auto; margin-right: auto; table-layout: fixed; }
 
-/* Search input created by sortableTable() */
+body.centered .wrap { width: 1250px; max-width: 100%; margin-left: auto; margin-right: auto; }
 
-body.centered #root > div > input {
-  display: inline-block;
-  margin-bottom: 10px;
-}
+body.centered th, body.centered td { overflow: hidden; text-overflow: ellipsis; }
 
+body.centered #root > div { text-align: center; justify-content: center; }
 
-/* ============================================================
-   GENERAL TABLE LAYOUT
-   ============================================================ */
+/* ============================================================ POKÉMON RECORDS ============================================================ */
 
-body.centered table {
-  width: 1250px;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  table-layout: fixed;
-}
+body.page-pokemon #root > div { max-width: 1250px; margin-left: auto; margin-right: auto; }
 
-body.centered .wrap {
-  width: 1250px;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
+body.page-pokemon #root > div > div { flex: 1 1 calc(50% - 16px); min-width: 0; }
 
-body.centered th,
-body.centered td {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+body.page-pokemon .wrap, body.page-pokemon table { width: 100%; max-width: 100%; }
 
-body.centered #root > div {
-  text-align: center;
-  justify-content: center;
-}
+/* Three-column tables: Sprite | Pokémon | Value */
 
+body.page-pokemon th:first-child:nth-last-child(3) { width: 22%; }
 
-/* ============================================================
-   POKÉMON RECORDS
-   ============================================================ */
+body.page-pokemon th:first-child:nth-last-child(3) + th { width: 48%; }
 
-/*
- * Pokémon Records uses two groups of tables side-by-side
- * on desktop.
- */
+body.page-pokemon th:first-child:nth-last-child(3) + th + th { width: 30%; }
 
-body.page-pokemon #root > div {
-  max-width: 1250px;
-  margin-left: auto;
-  margin-right: auto;
-}
+/* Seven-column Pokémon tables */
 
-body.page-pokemon #root > div > div {
-  flex: 1 1 calc(50% - 16px);
-  min-width: 0;
-}
+body.page-pokemon th { width: 11.6667%; }
 
-body.page-pokemon .wrap,
-body.page-pokemon table {
-  width: 100%;
-  max-width: 100%;
-}
+body.page-pokemon th:nth-child(2) { width: 30%; }
 
+body.page-pokemon th:not(:nth-child(2)), body.page-pokemon td:not(:nth-child(2)) { text-align: center; }
 
-/*
- * Three-column Pokémon Records tables:
- * Sprite | Pokémon | Value
- */
+body.page-pokemon td:nth-child(1) img { display: block; margin-left: auto; margin-right: auto; }
 
-body.page-pokemon th:first-child:nth-last-child(3) {
-  width: 22%;
-}
+/* ============================================================ GEN 9 STATS ============================================================ */
 
-body.page-pokemon th:first-child:nth-last-child(3) + th {
-  width: 48%;
-}
+body.page-stats th:nth-child(1), body.page-stats th:nth-child(2) { width: 6%; }
 
-body.page-pokemon th:first-child:nth-last-child(3) + th + th {
-  width: 30%;
-}
+body.page-stats th:nth-child(3) { width: 19.2%; }
 
+body.page-stats th:nth-child(n+4) { width: 6.88%; }
 
-/*
- * Seven-column Pokémon tables:
- * second column gets 30%, remaining six share 70%.
- */
+body.page-stats th, body.page-stats td { padding-left: 10px; padding-right: 10px; }
 
-body.page-pokemon th {
-  width: 11.6667%;
-}
+body.page-stats th:not(:nth-child(3)), body.page-stats td:not(:nth-child(3)) { text-align: center; }
 
-body.page-pokemon th:nth-child(2) {
-  width: 30%;
-}
+/* ============================================================ INDIVIDUAL RECORDS ============================================================ */
 
-body.page-pokemon th:not(:nth-child(2)),
-body.page-pokemon td:not(:nth-child(2)) {
-  text-align: center;
-}
+/* Shared border styling: match the Coach/Battler tabs. */
 
-body.page-pokemon td:nth-child(1) img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
+body.page-individual { --individual-border: var(--accent); --individual-border-width: 2px; }
 
+body.page-individual th:nth-child(1), body.page-individual th:nth-child(2) { width: 30%; }
 
-/* ============================================================
-   GEN 9 STATS
-   ============================================================ */
-
-body.page-stats th:nth-child(1) {
-  width: 6%;
-}
-
-body.page-stats th:nth-child(2) {
-  width: 6%;
-}
-
-body.page-stats th:nth-child(3) {
-  width: 19.2%;
-}
-
-body.page-stats th:nth-child(n+4) {
-  width: 6.88%;
-}
-
-body.page-stats th,
-body.page-stats td {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-body.page-stats th:not(:nth-child(3)),
-body.page-stats td:not(:nth-child(3)) {
-  text-align: center;
-}
-
-
-/* ============================================================
-   INDIVIDUAL RECORDS
-   ============================================================ */
-
-body.page-individual th:nth-child(1) {
-  width: 30%;
-}
-
-body.page-individual th:nth-child(2) {
-  width: 30%;
-}
-
-body.page-individual th:nth-child(3) {
-  width: 20%;
-}
-
-body.page-individual th:nth-child(4) {
-  width: 20%;
-}
+body.page-individual th:nth-child(3), body.page-individual th:nth-child(4) { width: 20%; }
 
 /* ------------------------------------------------------------ Player Overview — Totals + Coach MVP ------------------------------------------------------------ */
 
-body.page-individual .player-overview { display: flex; align-items: stretch; gap: 4px;
+body.page-individual .player-overview { display: flex; align-items: stretch; gap: 8px; width: 1250px; max-width: 100%; box-sizing: border-box; margin: 16px auto 0; }
 
-width: 1250px; max-width: 100%; box-sizing: border-box;
-
-margin: 16px auto 0; }
-
-body.page-individual .player-overview .totals-block { flex: 4 1 0; min-width: 0; margin: 0; }
+body.page-individual .player-overview .totals-block { flex: 1 1 0; min-width: 0; width: auto; max-width: none; margin: 0; }
 
 body.page-individual .player-overview #totals { width: 100%; max-width: 100%; margin: 0; table-layout: fixed; }
 
-body.page-individual .player-overview .coach-mvp { flex: 1 1 0; min-width: 0; min-height: 160px;
+/* Totals table border */
 
-display: flex; flex-direction: column; flex-wrap: nowrap; align-items: center; justify-content: center; gap: 0;
-
-padding: 0; margin: 0; text-align: center; box-sizing: border-box; }
-
-body.page-individual .player-overview .coach-mvp img { display: block; flex: 0 0 auto; width: auto; height: 160px; max-width: 100%; margin: 0; padding: 0; border: 0; object-fit: contain; image-rendering: pixelated; }
-
-body.page-individual .player-overview .coach-mvp p { display: block; flex: 0 0 auto; margin: 6px 0 0; text-align: center; }
-
-/* Mobile layout */
-
-@media (max-width: 600px) { body.page-individual .player-overview { flex-direction: column; gap: 12px; }
-
-body.page-individual .player-overview .totals-block { flex: none; width: 100%; }
-
-body.page-individual .player-overview .coach-mvp { flex: none; width: 100%; min-height: 0; } }
+body.page-individual #totals { border: var(--individual-border-width) solid var(--individual-border); border-radius: var(--radius); border-collapse: separate; border-spacing: 0; }
 
 /* ------------------------------------------------------------ Coach MVP — Compact Pastel Card ------------------------------------------------------------ */
 
-body.page-individual .player-overview .coach-mvp { flex: 1 1 0; min-width: 0; min-height: 0;
+body.page-individual .player-overview .coach-mvp { flex: 0 0 auto; width: fit-content; min-width: 0; min-height: 0; align-self: stretch; box-sizing: border-box;
 
-display: flex; flex-direction: column; flex-wrap: nowrap; align-items: center; justify-content: center; gap: 0;
+display: flex; flex-direction: column; flex-wrap: nowrap; align-items: center; justify-content: center; gap: 2px;
 
-box-sizing: border-box; padding: 2px;
+padding: 4px 6px; margin: 0;
 
-background: #eee8fa; border: 1px solid var(--border); border-radius: var(--radius);
-
-text-align: center; }
-
-/* MVP sprite */ body.page-individual .player-overview .coach-mvp img { display: block; flex: 0 1 auto;
-
-width: auto; height: 120px; max-width: 100%; max-height: 100%;
-
-margin: 0; padding: 0; border: 0;
-
-object-fit: contain; image-rendering: pixelated; }
-
-/* MVP caption */ body.page-individual .player-overview .coach-mvp p { display: block; flex: 0 0 auto;
-
-margin: 2px 0 0; padding: 0;
-
-color: var(--text); font-weight: 700; text-align: center; }
-
-/* ------------------------------------------------------------ Player Overview — Compact Coach MVP ------------------------------------------------------------ */
-
-body.page-individual .player-overview { display: flex; align-items: stretch; gap: 8px; }
-
-/* Let the totals table occupy the available space. */ body.page-individual .player-overview .totals-block { flex: 1 1 0; min-width: 0; }
-
-/* Compact MVP panel, stretching only to match the table height. */ body.page-individual .player-overview .coach-mvp { flex: 0 0 auto; width: fit-content; min-width: 0; min-height: 0; align-self: stretch; box-sizing: border-box;
-
-display: flex; flex-direction: column; align-items: center; justify-content: center;
-
-padding: 4px 6px; gap: 2px;
-
-background: #cbbce8; border: 1px solid var(--border); border-radius: var(--radius);
+background: #cbbce8; border: var(--individual-border-width) solid var(--individual-border); border-radius: var(--radius);
 
 text-align: center; }
 
-/* Match the main Pokémon lookup sprite size. */ body.page-individual .coach-mvp img { display: block; width: auto; height: 110px; max-width: none; max-height: none; object-fit: contain; margin: 0; padding: 0; border: none; }
-
-/* Keep the caption directly underneath the sprite. */ body.page-individual .coach-mvp p { margin: 0; padding: 0; line-height: 1.2; }
-
-/* Stack the overview on narrow screens. */ @media (max-width: 600px) { body.page-individual .player-overview { flex-direction: column; align-items: stretch; }
-
-body.page-individual .player-overview .coach-mvp { align-self: center; }
-
-body.page-individual .player-overview .totals-block { flex: none; width: 100%; } }
-
-
-/* ------------------------------------------------------------
-   Commonly Drafted
-   ------------------------------------------------------------ */
-
-body.page-individual #repeatDrafts th:nth-child(1) {
-  width: 25%;
-}
-
-body.page-individual #repeatDrafts th:nth-child(2) {
-  width: 15%;
-}
-
-body.page-individual #repeatDrafts th:nth-child(3) {
-  width: 20%;
-}
-
-body.page-individual #repeatDrafts th:nth-child(4) {
-  width: 40%;
-}
-
-body.page-individual #repeatDrafts td:nth-child(2) img {
-  margin: 0 auto;
-}
-
-body.page-individual #repeatDrafts td:nth-child(4) {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  overflow-wrap: anywhere;
-}
-
-
-/* ------------------------------------------------------------
-   Totals + Role Tabs
-   ------------------------------------------------------------ */
-
-body.page-individual .totals-block {
-  width: 1250px;
-  max-width: 100%;
-  margin: 16px auto 0;
-}
-
-body.page-individual .totals-block table {
-  width: 100%;
-  margin-top: 0;
-}
-
-body.page-individual .totals-block.has-tabs table {
-  border-top-left-radius: 0;
-}
-
-body.page-individual .role-tabs {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  gap: 1px;
-  position: relative;
-  z-index: 1;
-}
-
-body.page-individual .role-tabs .role-tab {
-  padding: 8px 22px;
-  border: 2px solid var(--accent);
-  border-bottom: none;
-  border-radius: 10px 10px 0 0;
-  background: var(--surface-2);
-  color: var(--muted);
-  cursor: pointer;
-  font: inherit;
-  font-weight: 700;
-  transition: filter 0.15s, color 0.15s;
-}
-
-body.page-individual .role-tabs .role-tab:hover {
-  filter: brightness(1.06);
-  color: var(--text);
-}
-
-body.page-individual .role-tabs .role-tab.active {
-  background: #e06666;
-  color: var(--text);
-  margin-bottom: -2px;
-  padding-bottom: 10px;
-  filter: none;
-}
-
-
-/* ------------------------------------------------------------
-   Inactive Tabs
-   ------------------------------------------------------------ */
-
-body.page-individual .role-tabs .role-tab:not(.active),
-.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active) {
-  background: #d9d0f0;
-  color: var(--muted);
-}
-
-body.page-individual .role-tabs .role-tab:not(.active):hover,
-.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active):hover {
-  background: #e4ddf6;
-  filter: none;
-  color: var(--text);
-}
-
-
-/* ------------------------------------------------------------
-   Nested Draft Tables
-   ------------------------------------------------------------ */
-
-body.page-individual #seasons .season-draft-row > td {
-  padding: 8px;
-  background: #d7dae1;
-  overflow: visible;
-}
-
-body.page-individual #seasons .season-draft-wrapper {
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-body.page-individual #seasons .individual-draft-table {
-  width: 100%;
-  min-width: 800px;
-  margin-top: 0;
-  table-layout: fixed;
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-body.page-individual #seasons .individual-draft-table th,
-body.page-individual #seasons .individual-draft-table td {
-  width: auto;
-  padding: 6px 10px;
-  white-space: nowrap;
-  overflow: visible;
-  text-overflow: clip;
-}
-
-body.page-individual
-#seasons
-.individual-draft-table
-thead tr:first-child
-th:first-child {
-  border-top-left-radius: var(--radius);
-}
-
-body.page-individual
-#seasons
-.individual-draft-table
-thead tr:first-child
-th:last-child {
-  border-top-right-radius: var(--radius);
-}
-
-body.page-individual #seasons tr.season-draft-row:hover > td {
-  filter: none;
-}
-
-body.page-individual #seasons .individual-draft-table tbody tr:hover td {
-  filter: saturate(1.05) brightness(1.015);
-}
-
-body.page-individual #seasons tr.season-row[title] {
-  cursor: pointer;
-}
-
-body.page-individual #seasons .individual-draft-table th:hover {
-  filter: brightness(1.03);
-}
-
-body.page-individual #seasons .season-draft-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 18px 0;
-  color: var(--muted);
-  font-size: 0.9em;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-body.page-individual #seasons .season-draft-loading::before {
-  content: '';
-  width: 14px;
-  height: 14px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: season-draft-spin 0.8s linear infinite;
-}
-
-body.page-individual #seasons .individual-draft-table th:first-child,
-body.page-individual #seasons .individual-draft-table td:first-child {
-  width: 22%;
-}
-
-body.page-individual #seasons .individual-draft-table th:nth-child(n+2),
-body.page-individual #seasons .individual-draft-table td:nth-child(n+2) {
-  width: 9.75%;
-  text-align: center;
-}
-
-body.page-individual #seasons .individual-draft-table td:nth-child(2) img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@keyframes season-draft-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-
-/* ============================================================
-   PAIRING RECORDS
-   ============================================================ */
-
-body.page-pairing th:nth-child(1) {
-  width: 50%;
-}
-
-body.page-pairing th:nth-child(n+2) {
-  width: 16.66%;
-}
-
-
-/* ============================================================
-   NON-SORTABLE TABLES
-   ============================================================ */
-
-table.nosort th {
-  cursor: default;
-}
-
-table.nosort th:hover {
-  filter: none;
-}
-
-
-/* ============================================================
-   HALL OF FAME
-   ============================================================ */
-
-body.page-hof th:nth-child(1) {
-  width: 11%;
-}
-
-body.page-hof th:nth-child(2),
-body.page-hof th:nth-child(3),
-body.page-hof th:nth-child(4),
-body.page-hof th:nth-child(5) {
-  width: 13%;
-}
-
-body.page-hof th:nth-child(6) {
-  width: 17%;
-}
-
-body.page-hof th:nth-child(7) {
-  width: 20%;
-}
-
-body.page-hof td {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-
-/* ============================================================
-   PAGE NOTES
-   ============================================================ */
-
-body.centered .page-note {
-  max-width: 720px;
-  margin: 12px auto 0;
-  text-align: center;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-
-/* ============================================================
-   SEASON SHEETS
-   ============================================================ */
-
-body.page-sheets table {
-  width: 640px;
-  table-layout: fixed;
-}
-
-body.page-sheets th:nth-child(1) {
-  width: 28%;
-}
-
-body.page-sheets th:nth-child(2),
-body.page-sheets th:nth-child(3) {
-  width: 36%;
-}
-
-body.page-sheets td.season {
-  font-weight: 700;
-}
-
-
-/* ============================================================
-   MOBILE RESPONSIVE FOUNDATION
-   ============================================================ */
+body.page-individual .player-overview .coach-mvp img { display: block; flex: 0 1 auto; width: auto; height: 110px; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; object-fit: contain; image-rendering: pixelated; }
+
+body.page-individual .player-overview .coach-mvp p { display: block; flex: 0 0 auto; margin: 0; padding: 0; color: var(--text); font-weight: 700; line-height: 1.2; text-align: center; }
+
+/* ------------------------------------------------------------ Commonly Drafted ------------------------------------------------------------ */
+
+body.page-individual #repeatDrafts th:nth-child(1) { width: 25%; }
+
+body.page-individual #repeatDrafts th:nth-child(2) { width: 15%; }
+
+body.page-individual #repeatDrafts th:nth-child(3) { width: 20%; }
+
+body.page-individual #repeatDrafts th:nth-child(4) { width: 40%; }
+
+body.page-individual #repeatDrafts td:nth-child(2) img { margin: 0 auto; }
+
+body.page-individual #repeatDrafts td:nth-child(4) { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
+
+/* ------------------------------------------------------------ Totals + Role Tabs + Season Records ------------------------------------------------------------ */
+
+body.page-individual .totals-block { width: 1250px; max-width: 100%; margin: 16px auto 0; }
+
+body.page-individual .totals-block table { width: 100%; margin-top: 0; }
+
+/* Shared borders for the lower tables. */
+
+body.page-individual #seasons, body.page-individual #results, body.page-individual #repeatDrafts { border: var(--individual-border-width) solid var(--individual-border); border-radius: var(--radius); border-collapse: separate; border-spacing: 0; }
+
+/* Keep the tabbed table connected visually to its tabs. */
+
+body.page-individual .totals-block.has-tabs table { border-top-left-radius: 0; }
+
+body.page-individual .role-tabs { display: flex; justify-content: flex-start; align-items: flex-end; gap: 1px; position: relative; z-index: 1; }
+
+body.page-individual .role-tabs .role-tab { padding: 8px 22px; border: var(--individual-border-width) solid var(--individual-border); border-bottom: none; border-radius: 10px 10px 0 0; background: var(--surface-2); color: var(--muted); cursor: pointer; font: inherit; font-weight: 700; transition: filter 0.15s, color 0.15s; }
+
+body.page-individual .role-tabs .role-tab:hover { filter: brightness(1.06); color: var(--text); }
+
+body.page-individual .role-tabs .role-tab.active { background: #e06666; color: var(--text); margin-bottom: -2px; padding-bottom: 10px; filter: none; }
+
+/* ------------------------------------------------------------ Inactive Tabs ------------------------------------------------------------ */
+
+body.page-individual .role-tabs .role-tab:not(.active), .page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active) { background: #d9d0f0; color: var(--muted); }
+
+body.page-individual .role-tabs .role-tab:not(.active):hover, .page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active):hover { background: #e4ddf6; filter: none; color: var(--text); }
+
+/* ------------------------------------------------------------ Nested Draft Tables ------------------------------------------------------------ */
+
+body.page-individual #seasons .season-draft-row > td { padding: 8px; background: #d7dae1; overflow: visible; }
+
+body.page-individual #seasons .season-draft-wrapper { max-width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+
+body.page-individual #seasons .individual-draft-table { width: 100%; min-width: 800px; margin-top: 0; table-layout: fixed; border: var(--individual-border-width) solid var(--individual-border); border-radius: var(--radius); border-collapse: separate; border-spacing: 0; overflow: hidden; }
+
+body.page-individual #seasons .individual-draft-table th, body.page-individual #seasons .individual-draft-table td { width: auto; padding: 6px 10px; white-space: nowrap; overflow: visible; text-overflow: clip; }
+
+body.page-individual #seasons .individual-draft-table thead tr:first-child th:first-child { border-top-left-radius: var(--radius); }
+
+body.page-individual #seasons .individual-draft-table thead tr:first-child th:last-child { border-top-right-radius: var(--radius); }
+
+body.page-individual #seasons tr.season-draft-row:hover > td { filter: none; }
+
+body.page-individual #seasons .individual-draft-table tbody tr:hover td { filter: saturate(1.05) brightness(1.015); }
+
+body.page-individual #seasons tr.season-row[title] { cursor: pointer; }
+
+body.page-individual #seasons .individual-draft-table th:hover { filter: brightness(1.03); }
+
+body.page-individual #seasons .season-draft-loading { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 18px 0; color: var(--muted); font-size: 0.9em; font-weight: 600; letter-spacing: 0.04em; }
+
+body.page-individual #seasons .season-draft-loading::before { content: ''; width: 14px; height: 14px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: season-draft-spin 0.8s linear infinite; }
+
+body.page-individual #seasons .individual-draft-table th:first-child, body.page-individual #seasons .individual-draft-table td:first-child { width: 22%; }
+
+body.page-individual #seasons .individual-draft-table th:nth-child(n+2), body.page-individual #seasons .individual-draft-table td:nth-child(n+2) { width: 9.75%; text-align: center; }
+
+body.page-individual #seasons .individual-draft-table td:nth-child(2) img { display: block; margin-left: auto; margin-right: auto; }
+
+@keyframes season-draft-spin { to { transform: rotate(360deg); } }
+
+/* ============================================================ PAIRING RECORDS ============================================================ */
+
+body.page-pairing th:nth-child(1) { width: 50%; }
+
+body.page-pairing th:nth-child(n+2) { width: 16.66%; }
+
+/* ============================================================ NON-SORTABLE TABLES ============================================================ */
+
+table.nosort th { cursor: default; }
+
+table.nosort th:hover { filter: none; }
+
+/* ============================================================ HALL OF FAME ============================================================ */
+
+body.page-hof th:nth-child(1) { width: 11%; }
+
+body.page-hof th:nth-child(2), body.page-hof th:nth-child(3), body.page-hof th:nth-child(4), body.page-hof th:nth-child(5) { width: 13%; }
+
+body.page-hof th:nth-child(6) { width: 17%; }
+
+body.page-hof th:nth-child(7) { width: 20%; }
+
+body.page-hof td { white-space: normal; overflow-wrap: anywhere; }
+
+/* ============================================================ PAGE NOTES ============================================================ */
+
+body.centered .page-note { max-width: 720px; margin: 12px auto 0; text-align: center; font-size: 13px; color: var(--muted); }
+
+/* ============================================================ SEASON SHEETS ============================================================ */
+
+body.page-sheets table { width: 640px; table-layout: fixed; }
+
+body.page-sheets th:nth-child(1) { width: 28%; }
+
+body.page-sheets th:nth-child(2), body.page-sheets th:nth-child(3) { width: 36%; }
+
+body.page-sheets td.season { font-weight: 700; }
+
+/* ============================================================ MOBILE RESPONSIVE FOUNDATION ============================================================ */
 
 @media (max-width: 700px) {
 
-  html,
-  body {
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
-  body {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-
-  /* ----------------------------------------------------------
-     Controls
-     ---------------------------------------------------------- */
-
-  .controls {
-    width: 100%;
-    gap: 12px;
-  }
-
-  .controls > div {
-    width: 100%;
-  }
-
-  select,
-  input {
-    width: 100%;
-    min-width: 0;
-  }
-
-
-  /* ----------------------------------------------------------
-     General Tables
-     ---------------------------------------------------------- */
-
-  body.centered table {
-    width: 100%;
-    max-width: none;
-  }
-
-  body.centered .wrap {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  body.centered th,
-  body.centered td {
-    padding: 8px 9px;
-    font-size: 12px;
-  }
-
-  body.centered th {
-    font-size: 10px;
-  }
-
-
-  /* ----------------------------------------------------------
-     Pairing Records
-     ---------------------------------------------------------- */
-
-  .pairing-totals-wrap {
-    margin-top: 1.5rem;
-  }
-
-  .page-pairing #totals {
-    margin-top: 0;
-  }
-
-
-  /* ----------------------------------------------------------
-     Gen 9 Stats
-     ---------------------------------------------------------- */
-
-  .page-stats #root {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 1rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .page-stats #root > div {
-    width: max-content;
-    min-width: 100%;
-    max-width: none;
-  }
-
-  .page-stats #root table {
-    width: 1250px;
-    min-width: 1250px;
-    max-width: none;
-    table-layout: fixed;
-  }
-
-  .page-stats #root table th:nth-child(3),
-  .page-stats #root table td:nth-child(3) {
-    width: 240px;
-  }
-
-  .page-stats #root table td img {
-    height: 30px;
-    width: auto;
-  }
-
-  .page-stats #root table th,
-  .page-stats #root table td {
-    padding-left: 10px;
-    padding-right: 10px;
-    white-space: nowrap;
-  }
-
-  .page-stats .page-note {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-
-  /* ----------------------------------------------------------
-     Hall of Fame
-     ---------------------------------------------------------- */
-
-  body.page-hof .wrap {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  body.page-hof table {
-    width: 850px;
-    min-width: 850px;
-    max-width: none;
-  }
-
-  body.page-hof th,
-  body.page-hof td {
-    white-space: nowrap;
-  }
-
-
-  /* ----------------------------------------------------------
-     Pokémon Records
-     ---------------------------------------------------------- */
-
-  body.page-pokemon #root > div {
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  body.page-pokemon #root > div > div {
-    width: 100%;
-    max-width: 100%;
-    flex: none;
-  }
-
-  body.page-pokemon .wrap {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  body.page-pokemon table {
-    width: 600px;
-    min-width: 600px;
-    max-width: none;
-  }
-
-  body.page-pokemon table th:first-child:nth-last-child(3) {
-    width: 22%;
-  }
-
-  body.page-pokemon table th:first-child:nth-last-child(3) + th {
-    width: 48%;
-  }
-
-  body.page-pokemon table th:first-child:nth-last-child(3) + th + th {
-    width: 30%;
-  }
-
-  body.page-pokemon table:has(th:first-child:nth-last-child(3)) {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
-}
-
-
-/* ============================================================
-   POKÉMON LOOK UP
-   ============================================================ */
-
-.page-pokemon-lookup .pokemon-lookup {
-  width: 100%;
-}
-
-.page-pokemon-lookup .pokemon-lookup-controls {
-  margin-top: 8px;
-}
-
-
-/* ------------------------------------------------------------
-   Lookup Header
-   ------------------------------------------------------------ */
-
-.page-pokemon-lookup .pokemon-lookup-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 24px;
-}
-
-.page-pokemon-lookup .pokemon-lookup-header h1 {
-  margin: 0 0 8px;
-  font-size: 28px;
-  font-weight: 700;
-}
-
-.page-pokemon-lookup .pokemon-lookup-sprite {
-  width: auto;
-  height: 160px;
-  image-rendering: pixelated;
-  margin: 4px 0 8px;
-}
-
-.page-pokemon-lookup .pokemon-legality {
-  margin: 4px 0 12px;
-  text-align: center;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-
-/* ------------------------------------------------------------
-   Lookup Record Tables
-   ------------------------------------------------------------ */
-
-.page-pokemon-lookup .pokemon-section {
-  margin-top: 28px;
-}
-
-.page-pokemon-lookup .pokemon-section h3 {
-  margin-bottom: 10px;
-}
-
-.page-pokemon-lookup .pokemon-draft-table,
-.page-pokemon-lookup .pokemon-record-table {
-  margin-top: 0;
-}
-
-.page-pokemon-lookup .pokemon-record-table td {
-  font-weight: 700;
-}
-
-.pokemon-draft-table {
-  table-layout: fixed;
-  width: 100%;
-}
-
-.pokemon-draft-table th:nth-child(1),
-.pokemon-draft-table td:nth-child(1) {
-  width: 20%;
-}
-
-.pokemon-draft-table th:nth-child(2),
-.pokemon-draft-table td:nth-child(2) {
-  width: 20%;
-}
-
-.pokemon-draft-table th:nth-child(3),
-.pokemon-draft-table td:nth-child(3),
-.pokemon-draft-table th:nth-child(4),
-.pokemon-draft-table td:nth-child(4),
-.pokemon-draft-table th:nth-child(5),
-.pokemon-draft-table td:nth-child(5),
-.pokemon-draft-table th:nth-child(6),
-.pokemon-draft-table td:nth-child(6),
-.pokemon-draft-table th:nth-child(7),
-.pokemon-draft-table td:nth-child(7),
-.pokemon-draft-table th:nth-child(8),
-.pokemon-draft-table td:nth-child(8),
-.pokemon-draft-table th:nth-child(9),
-.pokemon-draft-table td:nth-child(9) {
-  width: 7%;
-}
-
-.pokemon-draft-table th:nth-child(10),
-.pokemon-draft-table td:nth-child(10) {
-  width: 11%;
-}
-
-.page-pokemon-lookup .pokemon-draft-table th:nth-child(n+3):nth-child(-n+9),
-.page-pokemon-lookup .pokemon-draft-table td:nth-child(n+3):nth-child(-n+9) {
-  text-align: center;
-}
-
-
-/* ------------------------------------------------------------
-   Overall Record — Centre All Columns
-   ------------------------------------------------------------ */
-
-.page-pokemon-lookup .pokemon-record-table th,
-.page-pokemon-lookup .pokemon-record-table td {
-  text-align: center;
-}
-
-
-/* ------------------------------------------------------------
-   Filing-style Record Tabs
-   ------------------------------------------------------------ */
-
-.page-pokemon-lookup .pokemon-record-tabs {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  gap: 1px;
-  margin: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab {
-  padding: 8px 22px;
-  border: 2px solid var(--accent);
-  border-bottom: none;
-  border-radius: 10px 10px 0 0;
-  background: var(--surface-2);
-  color: var(--muted);
-  cursor: pointer;
-  font: inherit;
-  font-weight: 700;
-  transition: filter 0.15s, color 0.15s;
-}
-
-.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:hover {
-  filter: brightness(1.06);
-  color: var(--text);
-}
-
-.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab.active {
-  background: #e06666;
-  color: var(--text);
-  margin-bottom: -2px;
-  padding-bottom: 10px;
-  filter: none;
-}
-
-.page-pokemon-lookup .pokemon-record-table {
-  border-top-left-radius: 0;
-}
-
-
-/* ------------------------------------------------------------
-   Commonly Drafted With
-   ------------------------------------------------------------ */
-
-.page-pokemon-lookup .pokemon-partners-table th:nth-child(1) {
-  width: 30%;
-}
-
-.page-pokemon-lookup .pokemon-partners-table th:nth-child(2) {
-  width: 20%;
-}
-
-.page-pokemon-lookup .pokemon-partners-table th:nth-child(3) {
-  width: 20%;
-}
-
-.page-pokemon-lookup .pokemon-partners-table th:nth-child(4) {
-  width: 30%;
-}
-
-.page-pokemon-lookup .pokemon-partners-table td:nth-child(2) {
-  text-align: center;
-}
-
-.page-pokemon-lookup .pokemon-partners-table td:nth-child(2) img {
-  height: 45px;
-  width: auto;
-  margin: 0 auto;
-}
-
-.page-pokemon-lookup .pokemon-partners-table td:nth-child(4) {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  overflow-wrap: anywhere;
-  line-height: 1.4;
-}
-
-.page-pokemon-lookup .pokemon-partners-table td:nth-child(4) a {
-  display: inline;
-}
-
-
-/* ------------------------------------------------------------
-   Championships — Player and Pokémon Lookup
-   ------------------------------------------------------------ */
-
-.page-pokemon-lookup .pokemon-championships,
-body.page-individual .pokemon-championships {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  margin: 8px 0;
-}
-
-.page-pokemon-lookup .pokemon-trophy-row,
-body.page-individual .pokemon-trophy-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.page-pokemon-lookup .pokemon-trophy,
-body.page-individual .pokemon-trophy {
-  font-size: 3rem;
-  line-height: 1;
-}
-
-.page-pokemon-lookup .pokemon-winner-list,
-body.page-individual .pokemon-winner-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.page-pokemon-lookup .pokemon-winner,
-body.page-individual .pokemon-winner {
-  font-size: 0.775rem;
-  text-align: center;
-}
-
-.page-pokemon-lookup .pokemon-medal,
-body.page-individual .pokemon-medal {
-  font-size: 1.5rem;
-}
-
-/* ------------------------------------------------------------
-   Pokémon Look Up — Mobile
-   ------------------------------------------------------------ */
+html, body { max-width: 100%; overflow-x: hidden; }
+
+body { padding-left: 10px; padding-right: 10px; }
+
+/* Controls */
+
+.controls { width: 100%; gap: 12px; }
+
+.controls > div { width: 100%; }
+
+select, input { width: 100%; min-width: 0; }
+
+/* General tables */
+
+body.centered table { width: 100%; max-width: none; }
+
+body.centered .wrap { width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+
+body.centered th, body.centered td { padding: 8px 9px; font-size: 12px; }
+
+body.centered th { font-size: 10px; }
+
+/* Pairing records */
+
+.pairing-totals-wrap { margin-top: 1.5rem; }
+
+.page-pairing #totals { margin-top: 0; }
+
+/* Gen 9 stats */
+
+.page-stats #root { width: 100%; max-width: 100%; margin-top: 1rem; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+
+.page-stats #root > div { width: max-content; min-width: 100%; max-width: none; }
+
+.page-stats #root table { width: 1250px; min-width: 1250px; max-width: none; table-layout: fixed; }
+
+.page-stats #root table th:nth-child(3), .page-stats #root table td:nth-child(3) { width: 240px; }
+
+.page-stats #root table td img { height: 30px; width: auto; }
+
+.page-stats #root table th, .page-stats #root table td { padding-left: 10px; padding-right: 10px; white-space: nowrap; }
+
+.page-stats .page-note { margin-top: 1rem; margin-bottom: 1rem; }
+
+/* Hall of Fame */
+
+body.page-hof .wrap { width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+
+body.page-hof table { width: 850px; min-width: 850px; max-width: none; }
+
+body.page-hof th, body.page-hof td { white-space: nowrap; }
+
+/* Pokémon records */
+
+body.page-pokemon #root > div { width: 100%; max-width: 100%; display: flex; flex-direction: column; gap: 24px; }
+
+body.page-pokemon #root > div > div { width: 100%; max-width: 100%; flex: none; }
+
+body.page-pokemon .wrap { width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+
+body.page-pokemon table { width: 600px; min-width: 600px; max-width: none; }
+
+body.page-pokemon table th:first-child:nth-last-child(3) { width: 22%; }
+
+body.page-pokemon table th:first-child:nth-last-child(3) + th { width: 48%; }
+
+body.page-pokemon table th:first-child:nth-last-child(3) + th + th { width: 30%; }
+
+body.page-pokemon table:has(th:first-child:nth-last-child(3)) { width: 100%; min-width: 0; max-width: 100%; }
+
+/* Individual player overview */
+
+body.page-individual .player-overview { gap: 8px; }
+
+body.page-individual .player-overview .totals-block { flex: 1 1 0; width: auto; }
+
+body.page-individual .player-overview .coach-mvp { flex: 0 0 auto; align-self: stretch; padding: 4px; }
+
+body.page-individual .player-overview .coach-mvp img { height: 90px; }
+
+body.page-individual .player-overview .coach-mvp p { font-size: 12px; } }
+
+/* ============================================================ POKÉMON LOOK UP ============================================================ */
+
+.page-pokemon-lookup .pokemon-lookup { width: 100%; }
+
+.page-pokemon-lookup .pokemon-lookup-controls { margin-top: 8px; }
+
+/* ------------------------------------------------------------ Lookup Header ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-lookup-header { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 24px; }
+
+.page-pokemon-lookup .pokemon-lookup-header h1 { margin: 0 0 8px; font-size: 28px; font-weight: 700; }
+
+.page-pokemon-lookup .pokemon-lookup-sprite { width: auto; height: 160px; image-rendering: pixelated; margin: 4px 0 8px; }
+
+.page-pokemon-lookup .pokemon-legality { margin: 4px 0 12px; text-align: center; font-size: 0.9rem; line-height: 1.5; color: var(--muted); }
+
+/* ------------------------------------------------------------ Lookup Record Tables ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-section { margin-top: 28px; }
+
+.page-pokemon-lookup .pokemon-section h3 { margin-bottom: 10px; }
+
+.page-pokemon-lookup .pokemon-draft-table, .page-pokemon-lookup .pokemon-record-table { margin-top: 0; }
+
+.page-pokemon-lookup .pokemon-record-table td { font-weight: 700; }
+
+.pokemon-draft-table { table-layout: fixed; width: 100%; }
+
+.pokemon-draft-table th:nth-child(1), .pokemon-draft-table td:nth-child(1), .pokemon-draft-table th:nth-child(2), .pokemon-draft-table td:nth-child(2) { width: 20%; }
+
+.pokemon-draft-table th:nth-child(n+3):nth-child(-n+9), .pokemon-draft-table td:nth-child(n+3):nth-child(-n+9) { width: 7%; }
+
+.pokemon-draft-table th:nth-child(10), .pokemon-draft-table td:nth-child(10) { width: 11%; }
+
+.page-pokemon-lookup .pokemon-draft-table th:nth-child(n+3):nth-child(-n+9), .page-pokemon-lookup .pokemon-draft-table td:nth-child(n+3):nth-child(-n+9) { text-align: center; }
+
+/* ------------------------------------------------------------ Overall Record — Centre All Columns ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-record-table th, .page-pokemon-lookup .pokemon-record-table td { text-align: center; }
+
+/* ------------------------------------------------------------ Filing-style Record Tabs ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-record-tabs { display: flex; justify-content: flex-start; align-items: flex-end; gap: 1px; margin: 0; position: relative; z-index: 1; }
+
+.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab { padding: 8px 22px; border: 2px solid var(--accent); border-bottom: none; border-radius: 10px 10px 0 0; background: var(--surface-2); color: var(--muted); cursor: pointer; font: inherit; font-weight: 700; transition: filter 0.15s, color 0.15s; }
+
+.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:hover { filter: brightness(1.06); color: var(--text); }
+
+.page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab.active { background: #e06666; color: var(--text); margin-bottom: -2px; padding-bottom: 10px; filter: none; }
+
+.page-pokemon-lookup .pokemon-record-table { border-top-left-radius: 0; }
+
+/* ------------------------------------------------------------ Commonly Drafted With ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-partners-table th:nth-child(1) { width: 30%; }
+
+.page-pokemon-lookup .pokemon-partners-table th:nth-child(2) { width: 20%; }
+
+.page-pokemon-lookup .pokemon-partners-table th:nth-child(3) { width: 20%; }
+
+.page-pokemon-lookup .pokemon-partners-table th:nth-child(4) { width: 30%; }
+
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(2) { text-align: center; }
+
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(2) img { height: 45px; width: auto; margin: 0 auto; }
+
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(4) { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; line-height: 1.4; }
+
+.page-pokemon-lookup .pokemon-partners-table td:nth-child(4) a { display: inline; }
+
+/* ------------------------------------------------------------ Championships — Player and Pokémon Lookup ------------------------------------------------------------ */
+
+.page-pokemon-lookup .pokemon-championships, body.page-individual .pokemon-championships { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 8px 0; }
+
+.page-pokemon-lookup .pokemon-trophy-row, body.page-individual .pokemon-trophy-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 4px; }
+
+.page-pokemon-lookup .pokemon-trophy, body.page-individual .pokemon-trophy { font-size: 3rem; line-height: 1; }
+
+.page-pokemon-lookup .pokemon-winner-list, body.page-individual .pokemon-winner-list { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+
+.page-pokemon-lookup .pokemon-winner, body.page-individual .pokemon-winner { font-size: 0.775rem; text-align: center; }
+
+.page-pokemon-lookup .pokemon-medal, body.page-individual .pokemon-medal { font-size: 1.5rem; }
+
+/* ------------------------------------------------------------ Pokémon Look Up — Mobile ------------------------------------------------------------ */
 
 @media (max-width: 700px) {
 
-  .page-pokemon-lookup .pokemon-record-table {
-    min-width: 760px;
-  }
+.page-pokemon-lookup .pokemon-record-table { min-width: 760px; }
 
-  .page-pokemon-lookup .pokemon-draft-table {
-    min-width: 650px;
-  }
+.page-pokemon-lookup .pokemon-draft-table { min-width: 650px; }
 
-  .page-pokemon-lookup .pokemon-partners-table {
-    min-width: 650px;
-  }
+.page-pokemon-lookup .pokemon-partners-table { min-width: 650px; } }
 
-}
+/* ------------------------------------------------------------ Record Note ------------------------------------------------------------ */
 
+.pokemon-record-note { margin: -8px 0 10px; color: #666; font-size: 0.9rem; text-align: center; }
 
-/* ------------------------------------------------------------
-   Record Note
-   ------------------------------------------------------------ */
+/* ------------------------------------------------------------ Not Found ------------------------------------------------------------ */
 
-.pokemon-record-note {
-  margin: -8px 0 10px;
-  color: #666;
-  font-size: 0.9rem;
-  text-align: center;
-}
+.pokemon-not-found { text-align: center; margin-top: 30px; }
 
+.pokemon-not-found img { display: block; width: 160px; max-width: 100%; height: auto; margin: 0 auto 15px; }
 
-/* ------------------------------------------------------------
-   Not Found
-   ------------------------------------------------------------ */
-
-.pokemon-not-found {
-  text-align: center;
-  margin-top: 30px;
-}
-
-.pokemon-not-found img {
-  display: block;
-  width: 160px;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto 15px;
-}
-
-.pokemon-not-found p {
-  margin: 0;
-}
+.pokemon-not-found p { margin: 0; }
