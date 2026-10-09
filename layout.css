@@ -985,6 +985,11 @@ body.page-individual .pokemon-winner {
   text-align: center;
 }
 
+.page-pokemon-lookup .pokemon-medal,
+body.page-individual .pokemon-medal {
+  font-size: 1.5rem;
+}
+
 /* ------------------------------------------------------------
    Pokémon Look Up — Mobile
    ------------------------------------------------------------ */
