@@ -48,12 +48,20 @@
     style="display:none"
   ></div>
   
-  <!-- Overall totals (Coach / Battler / Combined) -->
- <div id="playerOverview" class="player-overview">
+ <!-- Overall totals and Coach MVP -->
+<div id="playerOverview" class="player-overview">
 
-  <div id="totalsBlock" class="totals-block">
+  <div id="totalsBlock" class="totals-block" style="display:none">
     <table id="totals" class="totals nosort">
-      <!-- Keep your existing table content here -->
+      <thead>
+        <tr>
+          <th id="totalsName">Player</th>
+          <th class="num">Wins</th>
+          <th class="num">Losses</th>
+          <th class="num">Net</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
   </div>
 
