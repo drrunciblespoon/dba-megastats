@@ -967,7 +967,7 @@ body.page-individual .pokemon-trophy-row {
 
 .page-pokemon-lookup .pokemon-trophy,
 body.page-individual .pokemon-trophy {
-  font-size: 4rem;
+  font-size: 3rem;
   line-height: 1;
 }
 
@@ -981,7 +981,7 @@ body.page-individual .pokemon-winner-list {
 
 .page-pokemon-lookup .pokemon-winner,
 body.page-individual .pokemon-winner {
-  font-size: 0.475rem;
+  font-size: 0.775rem;
   text-align: center;
 }
 
