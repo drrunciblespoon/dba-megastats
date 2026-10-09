@@ -110,6 +110,10 @@ body.page-individual .player-overview .coach-mvp img { display: block; flex: 0 1
 
 body.page-individual .player-overview .coach-mvp p { display: block; flex: 0 0 auto; margin: 0; padding: 0; color: var(--text); font-weight: 700; line-height: 1.2; text-align: center; }
 
+body.page-individual .player-overview .coach-mvp p {
+  margin-top: 5px;
+}
+
 /* ------------------------------------------------------------ Commonly Drafted ------------------------------------------------------------ */
 
 body.page-individual #repeatDrafts th:nth-child(1) { width: 25%; }
@@ -151,6 +155,26 @@ body.page-individual .role-tabs .role-tab.active { background: #e06666; color: v
 body.page-individual .role-tabs .role-tab:not(.active), .page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active) { background: #d9d0f0; color: var(--muted); }
 
 body.page-individual .role-tabs .role-tab:not(.active):hover, .page-pokemon-lookup .pokemon-record-tabs .pokemon-record-tab:not(.active):hover { background: #e4ddf6; filter: none; color: var(--text); }
+
+/* ------------------------------------------------------------
+   Season Records — Join Tab to Table
+   ------------------------------------------------------------ */
+
+body.page-individual .totals-block.has-tabs table {
+  border-top-left-radius: 0 !important;
+}
+
+body.page-individual .totals-block.has-tabs .role-tabs {
+  gap: 0;
+}
+
+body.page-individual .totals-block.has-tabs .role-tab.active {
+  position: relative;
+  z-index: 2;
+  border-bottom: 2px solid #e06666;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 
 /* ------------------------------------------------------------ Nested Draft Tables ------------------------------------------------------------ */
 
