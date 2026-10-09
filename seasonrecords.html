@@ -130,8 +130,26 @@
         row.forEach((value, index) => {
           const td = document.createElement('td');
           td.dataset.c = index;
-          td.textContent = value == null ? '' : value;
-          tr.appendChild(td);
+          const text = value == null ? '' : String(value);
+
+const isPlayerColumn =
+  (className === 'season-main-table' && index === 0) ||
+  (className === 'season-playoff-table' &&
+    (index === 1 || index === 9));
+
+if (isPlayerColumn && text.trim()) {
+  const link = DBA.playerLink(text);
+
+  if (link) {
+    td.appendChild(link);
+  } else {
+    td.textContent = text;
+  }
+} else {
+  td.textContent = text;
+}
+
+tr.appendChild(td);
         });
 
         tbody.appendChild(tr);
