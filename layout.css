@@ -980,6 +980,38 @@ body.page-sheets td.season {
   text-align: center;
 }
 
+body.page-individual .pokemon-championships {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+body.page-individual .pokemon-trophy-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+body.page-individual .pokemon-trophy {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+body.page-individual .pokemon-winner-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+body.page-individual .pokemon-winner {
+  font-size: 0.95rem;
+  text-align: center;
+}
+
 
 /* ------------------------------------------------------------
    Pokémon Look Up — Mobile
