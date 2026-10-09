@@ -525,6 +525,9 @@ const runnersUp = [];
 
 });
 
+  // Display all championships first, then all runner-ups.
+const awards = [...championships, ...runnersUp];
+
   // Hide the section if there are no awards.
   if (awards.length === 0) {
     playerChampionships.style.display = 'none';
