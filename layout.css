@@ -1090,6 +1090,14 @@ body.page-individual .pokemon-medal {
     min-width: 650px;
   }
 
+   .page-pokemon-lookup .pokemon-record-table {
+    border-top-left-radius: 0 !important;
+  }
+
+  .page-pokemon-lookup .pokemon-record-table thead tr:first-child th:first-child {
+    border-top-left-radius: 0 !important;
+  }
+
 
   /* Individual Player Overview */
 
