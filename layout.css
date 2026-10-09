@@ -1007,6 +1007,160 @@ body.page-season-records .season-main-table th:nth-child(n+3) {
   }
 }
 
+/* ============================================================
+   SEASON RECORDS — PLAYOFF BRACKET
+   ============================================================ */
+
+.page-season-records .season-bracket {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 28px;
+  margin-top: 20px;
+  padding: 18px;
+  overflow-x: auto;
+  align-items: stretch;
+}
+
+.page-season-records .season-bracket-round {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-season-records .season-bracket-round-title {
+  margin: 0 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border-color, #444);
+  text-align: center;
+}
+
+.page-season-records .season-bracket-matches {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 22px;
+}
+
+.page-season-records .season-bracket-match {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border-color, #444);
+  border-radius: 8px;
+  background: var(--card-background, rgba(127, 127, 127, 0.07));
+}
+
+.page-season-records .season-bracket-player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 5px;
+  background: var(--table-row-background, rgba(127, 127, 127, 0.08));
+}
+
+.page-season-records .season-bracket-player + .season-bracket-versus {
+  margin: 5px 0;
+}
+
+.page-season-records .season-bracket-player-details {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.page-season-records .season-bracket-player-name {
+  font-weight: 600;
+}
+
+.page-season-records .season-bracket-player-name a {
+  color: inherit;
+}
+
+.page-season-records .season-bracket-pseudonym {
+  margin-top: 3px;
+  font-size: 0.85em;
+  opacity: 0.75;
+  overflow-wrap: anywhere;
+}
+
+.page-season-records .season-bracket-player-meta {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-season-records .season-bracket-score {
+  min-width: 28px;
+  text-align: center;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.page-season-records .season-bracket-result {
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  border: 1px solid var(--border-color, #555);
+}
+
+.page-season-records .season-bracket-result.is-winner {
+  font-weight: 700;
+}
+
+.page-season-records .season-bracket-result.is-loser {
+  opacity: 0.65;
+}
+
+.page-season-records .season-bracket-versus {
+  text-align: center;
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+.page-season-records .season-bracket-player.is-tbd {
+  opacity: 0.65;
+}
+
+.page-season-records .season-bracket-empty {
+  padding: 12px;
+  text-align: center;
+  opacity: 0.7;
+  font-size: 0.9em;
+}
+
+.page-season-records .season-bracket-other {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+}
+
+.page-season-records .season-bracket-other-matches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.page-season-records .season-bracket-other-round {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.page-season-records .season-bracket-other-match {
+  min-width: 0;
+}
+
+@media (max-width: 760px) {
+  .page-season-records .season-bracket {
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    padding: 10px;
+    gap: 16px;
+  }
+}
+
 
 /* ============================================================
    MOBILE RESPONSIVE FOUNDATION
