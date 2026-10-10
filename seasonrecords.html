@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,14 +48,18 @@
     let activeRole = 'coach';
     let requestToken = 0;
 
+    function selectedOption() {
+      return options.find(option =>
+        option.season === seasonSel.value &&
+        option.division === divisionSel.value
+      );
+    }
+
     /* =========================================================
-       URL SEASON PARAMETER
+       URL HELPERS
 
-       Examples:
-       ?season=onefrontier
-       ?season=sixtower
-
-       The selected division is also stored in the URL.
+       A single URL parameter identifies both the season and
+       division, e.g. ?season=onefrontier or ?season=sixtower.
        ========================================================= */
 
     function normaliseSeasonKey(value) {
@@ -64,50 +69,39 @@
     }
 
     function getSeasonKey(option) {
-      const seasonText = String(option.season || '').trim();
-      const divisionText = String(option.division || '').trim();
-
+      const seasonText = String(option.season || '');
       const seasonNumber = seasonText.match(/\d+/)?.[0];
 
       const seasonWords = {
-        '1': 'one',
-        '2': 'two',
-        '3': 'three',
-        '4': 'four',
-        '5': 'five',
-        '6': 'six',
-        '7': 'seven',
-        '8': 'eight',
-        '9': 'nine',
-        '10': 'ten',
-        '11': 'eleven',
-        '12': 'twelve',
-        '13': 'thirteen',
-        '14': 'fourteen',
-        '15': 'fifteen',
-        '16': 'sixteen',
-        '17': 'seventeen',
-        '18': 'eighteen',
-        '19': 'nineteen',
-        '20': 'twenty'
+        1: 'one',
+        2: 'two',
+        3: 'three',
+        4: 'four',
+        5: 'five',
+        6: 'six',
+        7: 'seven',
+        8: 'eight',
+        9: 'nine',
+        10: 'ten'
       };
 
-      const seasonKey = seasonWords[seasonNumber] ||
-        normaliseSeasonKey(seasonText);
+      const seasonKey = seasonNumber
+        ? (seasonWords[seasonNumber] || seasonNumber)
+        : normaliseSeasonKey(seasonText);
 
-      return normaliseSeasonKey(seasonKey + divisionText);
+      return seasonKey + normaliseSeasonKey(option.division);
     }
 
     function getRequestedSeasonOption() {
       const params = new URLSearchParams(window.location.search);
-      const requestedSeason = params.get('season');
+      const requestedKey = normaliseSeasonKey(
+        params.get('season')
+      );
 
-      if (!requestedSeason) return null;
-
-      const key = normaliseSeasonKey(requestedSeason);
+      if (!requestedKey) return null;
 
       return options.find(option =>
-        getSeasonKey(option) === key
+        getSeasonKey(option) === requestedKey
       ) || null;
     }
 
@@ -117,7 +111,6 @@
       const params = new URLSearchParams(window.location.search);
 
       params.set('season', getSeasonKey(selection));
-      params.set('division', String(selection.division || ''));
 
       const query = params.toString();
 
@@ -126,19 +119,12 @@
         (query ? '?' + query : '') +
         window.location.hash;
 
-      window.history.replaceState({}, '', newUrl);
+      window.history.replaceState(null, '', newUrl);
     }
 
     /* =========================================================
-       SEASON AND DIVISION SELECTORS
+       SELECTOR POPULATION
        ========================================================= */
-
-    function selectedOption() {
-      return options.find(option =>
-        option.season === seasonSel.value &&
-        option.division === divisionSel.value
-      );
-    }
 
     function populateSeasons() {
       const seasons = [...new Set(
@@ -246,47 +232,16 @@
           td.dataset.c = index;
 
           const isPlayerColumn =
-            hasRank && index === 0;
+            (hasRank && index === 0);
 
           if (isPlayerColumn && text.trim()) {
-            const player = document.createElement('span');
-
-            player.style.setProperty('display', 'inline-flex', 'important');
-            player.style.setProperty('align-items', 'center', 'important');
-            player.style.setProperty('white-space', 'nowrap', 'important');
-            player.style.setProperty('flex-wrap', 'nowrap', 'important');
-
             const link = DBA.playerLink(text);
 
             if (link) {
-              player.appendChild(link);
+              td.appendChild(link);
             } else {
-              player.appendChild(document.createTextNode(text));
+              td.textContent = text;
             }
-
-            const winners = getPlayoffWinners();
-
-            if (
-              winners &&
-              (
-                text.trim() === winners.coach ||
-                text.trim() === winners.battler
-              )
-            ) {
-              const trophy = document.createElement('span');
-
-              trophy.textContent = ' 🏆';
-              trophy.title = 'Play Offs champion';
-
-              trophy.style.setProperty('display', 'inline-block', 'important');
-              trophy.style.setProperty('white-space', 'nowrap', 'important');
-              trophy.style.setProperty('flex-shrink', '0', 'important');
-              trophy.style.setProperty('margin-left', '6px', 'important');
-
-              player.appendChild(trophy);
-            }
-
-            td.appendChild(player);
           } else {
             td.textContent = text;
           }
@@ -372,6 +327,24 @@
        PLAYOFF BRACKET
        ========================================================= */
 
+    /*
+      Backend row format (L:U):
+
+      0  ROUND
+      1  PLAYER 1
+      2  PSEUDONYM 1
+      3  RESULT 1
+      4  SCORE 1
+      5  VS.
+      6  SCORE 2
+      7  RESULT 2
+      8  PSEUDONYM 2
+      9  PLAYER 2
+
+      The renderer groups matches using the ROUND value.
+      It does not assume that a particular player won.
+    */
+
     function normaliseRound(value) {
       return String(value || '')
         .toLowerCase()
@@ -411,14 +384,7 @@
       return 'other';
     }
 
-    function makePlayerCard(
-      coachName,
-      coachPseudonym,
-      battlerName,
-      battlerPseudonym,
-      score,
-      result
-    ) {
+    function makePlayerCard(name, pseudonym, score, result) {
       const card = document.createElement('div');
       card.className = 'season-bracket-player';
 
@@ -428,42 +394,26 @@
       const playerName = document.createElement('div');
       playerName.className = 'season-bracket-player-name';
 
-      const coach = String(coachName || '').trim();
-      const battler = String(battlerName || '').trim();
-      const names = [coach || 'TBD', battler || 'TBD'];
-
-      names.forEach((name, index) => {
-        if (index) {
-          playerName.appendChild(document.createTextNode(' / '));
-        }
-
-        if (name === 'TBD') {
-          playerName.appendChild(document.createTextNode(name));
-          card.classList.add('is-tbd');
-          return;
-        }
-
-        const link = DBA.playerLink(name);
+      if (String(name || '').trim()) {
+        const link = DBA.playerLink(String(name).trim());
 
         if (link) {
           playerName.appendChild(link);
         } else {
-          playerName.appendChild(document.createTextNode(name));
+          playerName.textContent = name;
         }
-      });
+      } else {
+        playerName.textContent = 'TBD';
+        card.classList.add('is-tbd');
+      }
 
       details.appendChild(playerName);
 
-      const aliases = [
-        String(coachPseudonym || '').trim(),
-        String(battlerPseudonym || '').trim()
-      ];
-
-      if (aliases.some(Boolean)) {
+      if (String(pseudonym || '').trim()) {
         const alias = document.createElement('div');
 
         alias.className = 'season-bracket-pseudonym';
-        alias.textContent = aliases.map(value => value || '—').join(' / ');
+        alias.textContent = pseudonym;
 
         details.appendChild(alias);
       }
@@ -510,64 +460,53 @@
       return card;
     }
 
-    function makeMatch(match) {
-      const article = document.createElement('article');
-      article.className = 'season-bracket-match';
+    function makeMatch(row) {
+      const match = document.createElement('article');
+      match.className = 'season-bracket-match';
 
-      article.appendChild(makePlayerCard(
-        match.coach1,
-        match.coachAlias1,
-        match.battler1,
-        match.battlerAlias1,
-        match.score1,
-        match.result1
-      ));
+      const player1 = makePlayerCard(
+        row[1],
+        row[2],
+        row[4],
+        row[3]
+      );
+
+      const player2 = makePlayerCard(
+        row[9],
+        row[8],
+        row[6],
+        row[7]
+      );
+
+      match.appendChild(player1);
 
       const versus = document.createElement('div');
-
       versus.className = 'season-bracket-versus';
       versus.textContent = 'VS';
 
-      article.appendChild(versus);
+      match.appendChild(versus);
+      match.appendChild(player2);
 
-      article.appendChild(makePlayerCard(
-        match.coach2,
-        match.coachAlias2,
-        match.battler2,
-        match.battlerAlias2,
-        match.score2,
-        match.result2
-      ));
-
-      return article;
+      return match;
     }
 
-    function makeBracketColumn(title, rows, emptyText, roundKey) {
+    function makeBracketColumn(title, rows, emptyText) {
       const column = document.createElement('div');
 
       column.className = 'season-bracket-round';
-      column.dataset.round = roundKey;
-      column.dataset.matchCount = String(rows.length);
 
       const heading = document.createElement('h4');
-
       heading.className = 'season-bracket-round-title';
       heading.textContent = title;
 
       column.appendChild(heading);
 
       const matches = document.createElement('div');
-
       matches.className = 'season-bracket-matches';
-      matches.dataset.round = roundKey;
-      matches.dataset.matchCount = String(rows.length);
 
       if (rows.length) {
-        rows.forEach((row, index) => {
-          const match = makeMatch(row);
-
-          match.dataset.matchIndex = String(index);
-          matches.appendChild(match);
+        rows.forEach(row => {
+          matches.appendChild(makeMatch(row));
         });
       } else {
         const empty = document.createElement('p');
@@ -594,38 +533,39 @@
         other: []
       };
 
-      rows.forEach(match => {
-        const type = roundType(match.round);
-        groups[type].push(match);
+      rows.forEach(row => {
+        const type = roundType(row[0]);
+
+        groups[type].push(row);
       });
 
-      bracket.dataset.quarterCount = String(groups.quarters.length);
-      bracket.dataset.semiCount = String(groups.semis.length);
-      bracket.dataset.finalCount = String(groups.final.length);
+      bracket.appendChild(
+        makeBracketColumn(
+          'Quarter-finals',
+          groups.quarters,
+          'No quarter-final matches recorded.'
+        )
+      );
 
-      bracket.appendChild(makeBracketColumn(
-        'Quarters',
-        groups.quarters,
-        'No quarter-final matches recorded.',
-        'quarters'
-      ));
+      bracket.appendChild(
+        makeBracketColumn(
+          'Semi-finals',
+          groups.semis,
+          'No semi-final matches recorded.'
+        )
+      );
 
-      bracket.appendChild(makeBracketColumn(
-        'Semis',
-        groups.semis,
-        'No semi-final matches recorded.',
-        'semis'
-      ));
-
-      bracket.appendChild(makeBracketColumn(
-        'Final',
-        groups.final,
-        'No final recorded.',
-        'final'
-      ));
+      bracket.appendChild(
+        makeBracketColumn(
+          'Final',
+          groups.final,
+          'No final recorded.'
+        )
+      );
 
       if (groups.other.length) {
         const otherSection = document.createElement('section');
+
         otherSection.className = 'season-bracket-other';
 
         const heading = document.createElement('h4');
@@ -636,16 +576,16 @@
         const matches = document.createElement('div');
         matches.className = 'season-bracket-other-matches';
 
-        groups.other.forEach(match => {
+        groups.other.forEach(row => {
           const wrapper = document.createElement('div');
           wrapper.className = 'season-bracket-other-match';
 
           const round = document.createElement('div');
           round.className = 'season-bracket-other-round';
-          round.textContent = match.round || 'Match';
+          round.textContent = row[0] || 'Match';
 
           wrapper.appendChild(round);
-          wrapper.appendChild(makeMatch(match));
+          wrapper.appendChild(makeMatch(row));
           matches.appendChild(wrapper);
         });
 
@@ -654,36 +594,6 @@
       }
 
       return bracket;
-    }
-
-    function getPlayoffWinners() {
-      const rows = Array.isArray(currentData?.playoffs)
-        ? currentData.playoffs
-        : [];
-
-      const finalMatches = rows.filter(
-        match => roundType(match.round) === 'final'
-      );
-
-      if (finalMatches.length !== 1) return null;
-
-      const match = finalMatches[0];
-
-      const isWinner = result =>
-        ['w', 'win', 'won', 'winner', 'advanced'].includes(
-          String(result || '').trim().toLowerCase()
-        );
-
-      if (isWinner(match.result1) === isWinner(match.result2)) {
-        return null;
-      }
-
-      const winnerSide = isWinner(match.result1) ? '1' : '2';
-
-      return {
-        coach: String(match[`coach${winnerSide}`] || '').trim(),
-        battler: String(match[`battler${winnerSide}`] || '').trim()
-      };
     }
 
     /* =========================================================
@@ -695,6 +605,7 @@
 
       root.replaceChildren();
 
+      // Main Season.
       const mainSection = document.createElement('section');
       mainSection.className = 'season-record-section';
 
@@ -715,6 +626,7 @@
       mainSection.appendChild(makeTableWrapper(mainTable));
       root.appendChild(mainSection);
 
+      // Play Offs bracket.
       const playoffSection = document.createElement('section');
       playoffSection.className = 'season-record-section';
 
@@ -723,9 +635,11 @@
 
       playoffSection.appendChild(playoffHeading);
 
-      const playoffRows = Array.isArray(currentData.playoffs)
-        ? currentData.playoffs
-        : [];
+      const playoffRows =
+        currentData.playoffs &&
+        currentData.playoffs[activeRole]
+          ? currentData.playoffs[activeRole]
+          : [];
 
       if (playoffRows.length) {
         playoffSection.appendChild(renderBracket(playoffRows));
@@ -733,7 +647,10 @@
         const empty = document.createElement('p');
 
         empty.className = 'season-record-empty';
-        empty.textContent = 'No Play Offs data available.';
+        empty.textContent =
+          'No Play Offs data available for ' +
+          activeRole.charAt(0).toUpperCase() +
+          activeRole.slice(1) + '.';
 
         playoffSection.appendChild(empty);
       }
@@ -750,7 +667,7 @@
 
       if (!selection) return;
 
-      // Keep the URL in sync with the current dropdown selections.
+      // Keep the URL in sync with both dropdowns.
       updateSeasonUrl(selection);
 
       const mine = ++requestToken;
@@ -783,10 +700,6 @@
       }
     }
 
-    /* =========================================================
-       SELECTOR EVENTS
-       ========================================================= */
-
     seasonSel.addEventListener('change', () => {
       populateDivisions();
 
@@ -809,9 +722,6 @@
 
     /* =========================================================
        INITIALISE
-
-       If ?season=... matches an available season/division,
-       select it automatically. Otherwise use the first option.
        ========================================================= */
 
     async function initialise() {
@@ -835,32 +745,21 @@
 
         populateSeasons();
 
-        const params = new URLSearchParams(window.location.search);
+        // If the URL contains a valid combined key, select both
+        // the matching season and its division.
         const requestedOption = getRequestedSeasonOption();
-        const requestedDivision = params.get('division');
 
         if (requestedOption) {
           seasonSel.value = requestedOption.season;
-
-          populateDivisions(
-            requestedDivision || requestedOption.division
-          );
+          populateDivisions(requestedOption.division);
         } else {
           populateDivisions();
         }
 
         seasonSel.disabled = false;
 
-        if (
-          requestedOption &&
-          requestedDivision &&
-          divisionSel.value !== requestedDivision
-        ) {
-          statusEl.textContent =
-            'The requested division is not available for this season.';
-          return;
-        }
-
+        // loadSelected() also writes the canonical combined key
+        // into the URL, including when no valid key was supplied.
         await loadSelected();
       } catch (error) {
         statusEl.textContent =
