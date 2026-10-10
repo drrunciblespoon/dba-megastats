@@ -1024,12 +1024,41 @@ body.page-season-records .season-record-empty {
   text-align: center;
 }
 
-.page-season-records .season-bracket-matches {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-around;
+body.page-season-records .season-bracket-matches {
+  display: grid;
+  grid-template-rows: repeat(var(--match-count, 1), minmax(0, 1fr));
+  align-content: stretch;
   gap: 22px;
+  flex: 1;
+  min-width: 0;
+}
+
+body.page-season-records .season-bracket-match {
+display: flex;
+flex-direction: column;
+justify-content: center;
+min-width: 0;
+min-height: 0;
+padding: 10px;
+border: var(--container-border-width) solid var(--container-border);
+border-radius: var(--radius);
+background: var(--surface);
+}
+
+body.page-season-records .season-bracket-player {
+  min-width: 0;
+  align-items: center;
+}
+
+body.page-season-records .season-bracket-player-details {
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+body.page-season-records .season-bracket-player-meta {
+  flex-shrink: 0;
 }
 
 .page-season-records .season-bracket-match {
@@ -1163,6 +1192,16 @@ body.page-season-records .season-bracket-round-title {
   background: var(--bracket-surface-2);
   color: var(--bracket-ink);
   font-weight: 700;
+}
+
+/* Round containers: match the site's standard table border */
+
+body.page-season-records .season-bracket-round {
+  padding: 12px;
+  border: var(--container-border-width) solid var(--container-border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  min-width: 0;
 }
 
 /* Remove the individual round colours */
