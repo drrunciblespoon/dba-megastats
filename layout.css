@@ -422,6 +422,7 @@ body.page-individual #repeatDrafts td:nth-child(4) {
 }
 
 
+```css
 /* ------------------------------------------------------------
    06.5. Nested Season Draft Tables
    ------------------------------------------------------------ */
@@ -444,8 +445,24 @@ body.page-individual #seasons .individual-draft-table {
   min-width: 800px;
   margin-top: 0;
   table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
   overflow: hidden;
 }
+
+/* Keep the header backgrounds inside the rounded outer border. */
+
+body.page-individual #seasons .individual-draft-table thead tr:first-child th:first-child {
+  border-top-left-radius: calc(var(--radius) - 2px);
+  background-clip: padding-box;
+}
+
+body.page-individual #seasons .individual-draft-table thead tr:first-child th:last-child {
+  border-top-right-radius: calc(var(--radius) - 2px);
+  background-clip: padding-box;
+}
+
+/* Cell sizing and alignment. */
 
 body.page-individual #seasons .individual-draft-table th,
 body.page-individual #seasons .individual-draft-table td {
@@ -456,29 +473,31 @@ body.page-individual #seasons .individual-draft-table td {
   text-overflow: clip;
 }
 
-body.page-individual #seasons .individual-draft-table thead tr:first-child th:first-child {
-  border-top-left-radius: var(--radius);
-}
-
-body.page-individual #seasons .individual-draft-table thead tr:first-child th:last-child {
-  border-top-right-radius: var(--radius);
-}
+/* Remove hover effects from the expanded season row itself. */
 
 body.page-individual #seasons tr.season-draft-row:hover > td {
   filter: none;
 }
 
+/* Apply a subtle hover effect to draft table rows. */
+
 body.page-individual #seasons .individual-draft-table tbody tr:hover td {
   filter: saturate(1.05) brightness(1.015);
 }
+
+/* Indicate that season rows can be expanded. */
 
 body.page-individual #seasons tr.season-row[title] {
   cursor: pointer;
 }
 
+/* Keep header hover effects subtle. */
+
 body.page-individual #seasons .individual-draft-table th:hover {
   filter: brightness(1.03);
 }
+
+/* Column widths. */
 
 body.page-individual #seasons .individual-draft-table th:first-child,
 body.page-individual #seasons .individual-draft-table td:first-child {
@@ -491,14 +510,12 @@ body.page-individual #seasons .individual-draft-table td:nth-child(n+2) {
   text-align: center;
 }
 
+/* Centre Pokémon sprites. */
+
 body.page-individual #seasons .individual-draft-table td:nth-child(2) img {
   display: block;
   margin-left: auto;
   margin-right: auto;
-}
-
-body.page-individual #seasons .individual-draft-table {
-  overflow: hidden;
 }
 
 /* Loading indicator. */
@@ -530,6 +547,7 @@ body.page-individual #seasons .season-draft-loading::before {
     transform: rotate(360deg);
   }
 }
+```
 
 
 /* ============================================================
