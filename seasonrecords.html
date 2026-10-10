@@ -122,6 +122,36 @@
       );
     }
 
+ /* =========================================================
+       ERROR PAGE
+       ========================================================= */
+
+function showSeasonError(message) {
+  requestToken++;
+  currentData = null;
+
+  root.replaceChildren();
+
+  seasonSel.disabled = true;
+  divisionSel.disabled = true;
+  statusEl.textContent = '';
+
+  const error = document.createElement('div');
+  error.className = 'season-record-error';
+
+  const image = document.createElement('img');
+  image.src =
+    'https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/oopspikachu.png';
+  image.alt = '';
+
+  const text = document.createElement('p');
+  text.textContent = message;
+
+  error.append(image, text);
+  root.appendChild(error);
+}
+
+    
     /* =========================================================
        SELECTOR POPULATION
        ========================================================= */
@@ -845,48 +875,60 @@
 
     divisionSel.addEventListener('change', loadSelected);
 
-    /* =========================================================
-       INITIALISE
-       ========================================================= */
+/* =========================================================
+   INITIALISE
+   ========================================================= */
 
-    async function initialise() {
-      statusEl.textContent = 'Loading available seasons...';
+async function initialise() {
+  statusEl.textContent = 'Loading available seasons...';
 
-      try {
-        options = await DBA.call('seasonRecordsGetOptions');
+  try {
+    options = await DBA.call('seasonRecordsGetOptions');
 
-        if (!options.length) {
-          seasonSel.replaceChildren();
-          divisionSel.replaceChildren();
+    if (!options.length) {
+      seasonSel.replaceChildren();
+      divisionSel.replaceChildren();
 
-          seasonSel.disabled = true;
-          divisionSel.disabled = true;
+      seasonSel.disabled = true;
+      divisionSel.disabled = true;
 
-          statusEl.textContent =
-            'No season records were found in SeasonInput.';
+      statusEl.textContent =
+        'No season records were found in SeasonInput.';
 
-          return;
-        }
-
-        populateSeasons();
-
-        const requestedOption = getRequestedSeasonOption();
-
-        if (requestedOption) {
-          seasonSel.value = requestedOption.season;
-          populateDivisions(requestedOption.division);
-        } else {
-          populateDivisions();
-        }
-
-        seasonSel.disabled = false;
-
-        await loadSelected();
-      } catch (error) {
-        statusEl.textContent =
-          'Error loading seasons: ' + error.message;
-      }
+      return;
     }
+
+    populateSeasons();
+
+    // Check whether a season was explicitly requested in the URL.
+    const params = new URLSearchParams(window.location.search);
+    const hasSeasonParam = params.has('season');
+    const requestedOption = getRequestedSeasonOption();
+
+    // If the URL specifies an invalid season, display the error image.
+    if (hasSeasonParam && !requestedOption) {
+      showSeasonError('Sorry, that season could not be found.');
+      return;
+    }
+
+    // Select the requested season and division, if valid.
+    if (requestedOption) {
+      seasonSel.value = requestedOption.season;
+      populateDivisions(requestedOption.division);
+    } else {
+      // No season parameter: use the default selection.
+      populateDivisions();
+    }
+
+    seasonSel.disabled = false;
+
+    await loadSelected();
+
+  } catch (error) {
+    statusEl.textContent =
+      'Error loading seasons: ' + error.message;
+  }
+}
 
     initialise();
   </script>
