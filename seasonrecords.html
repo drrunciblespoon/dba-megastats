@@ -164,7 +164,10 @@
           
 if (isPlayerColumn && text.trim()) {
   const player = document.createElement('span');
-  player.style.whiteSpace = 'nowrap';
+  player.style.setProperty('display', 'inline-flex', 'important');
+player.style.setProperty('align-items', 'center', 'important');
+player.style.setProperty('white-space', 'nowrap', 'important');
+player.style.setProperty('flex-wrap', 'nowrap', 'important');
 
   const link = DBA.playerLink(text);
 
@@ -186,6 +189,9 @@ if (isPlayerColumn && text.trim()) {
     const trophy = document.createElement('span');
     trophy.textContent = ' 🏆';
     trophy.title = 'Play Offs champion';
+    trophy.style.setProperty('display', 'inline-block', 'important');
+trophy.style.setProperty('white-space', 'nowrap', 'important');
+trophy.style.setProperty('flex-shrink', '0', 'important');
     player.appendChild(trophy);
   }
 
