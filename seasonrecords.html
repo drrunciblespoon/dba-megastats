@@ -508,25 +508,43 @@ function makePlayerCard(
 }
 
 
-    function makeMatch(matchData) {
-      const match = document.createElement('article');
-      match.className = 'season-bracket-match';
+  
+function makeMatch(matchData) {
+  const match = document.createElement('article');
+  match.className = 'season-bracket-match';
 
-      if (matchData.pairingComplete === false) {
-        match.classList.add('season-bracket-incomplete');
-      }
+  if (matchData.pairingComplete === false) {
+    match.classList.add('season-bracket-incomplete');
+  }
 
-      match.appendChild(makePlayerCard(matchData, 1));
+  // First Coach/Battler pairing.
+  match.appendChild(makePlayerCard(
+    matchData.coach1,
+    matchData.coachAlias1,
+    matchData.battler1,
+    matchData.battlerAlias1,
+    matchData.score1,
+    matchData.result1
+  ));
 
-      const versus = document.createElement('div');
-      versus.className = 'season-bracket-versus';
-      versus.textContent = 'VS';
+  const versus = document.createElement('div');
+  versus.className = 'season-bracket-versus';
+  versus.textContent = 'VS';
+  match.appendChild(versus);
 
-      match.appendChild(versus);
-      match.appendChild(makePlayerCard(matchData, 2));
+  // Opposing Coach/Battler pairing.
+  match.appendChild(makePlayerCard(
+    matchData.coach2,
+    matchData.coachAlias2,
+    matchData.battler2,
+    matchData.battlerAlias2,
+    matchData.score2,
+    matchData.result2
+  ));
 
-      return match;
-    }
+  return match;
+}
+
 
     function makeBracketColumn(title, rows, emptyText) {
       const column = document.createElement('div');
