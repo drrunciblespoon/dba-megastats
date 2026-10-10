@@ -387,75 +387,113 @@
       return article;
     }
 
-    function makeBracketColumn(title, rows, emptyText) {
-      const column = document.createElement('div');
+    function makeBracketColumn(title, rows, emptyText, roundKey) {
+  const column = document.createElement('div');
+  column.className = 'season-bracket-round';
+  column.dataset.round = roundKey;
+  column.dataset.matchCount = String(rows.length);
 
-      column.className = 'season-bracket-round';
+  const heading = document.createElement('h4');
+  heading.className = 'season-bracket-round-title';
+  heading.textContent = title;
+  column.appendChild(heading);
 
-      const heading = document.createElement('h4');
-      heading.className = 'season-bracket-round-title';
-      heading.textContent = title;
+  const matches = document.createElement('div');
+  matches.className = 'season-bracket-matches';
+  matches.dataset.round = roundKey;
+  matches.dataset.matchCount = String(rows.length);
 
-      column.appendChild(heading);
+  if (rows.length) {
+    rows.forEach((row, index) => {
+      const match = makeMatch(row);
+      match.dataset.matchIndex = String(index);
+      matches.appendChild(match);
+    });
+  } else {
+    const empty = document.createElement('p');
+    empty.className = 'season-bracket-empty';
+    empty.textContent = emptyText;
+    matches.appendChild(empty);
+  }
 
-      const matches = document.createElement('div');
-      matches.className = 'season-bracket-matches';
-
-      if (rows.length) {
-        rows.forEach(row => {
-          matches.appendChild(makeMatch(row));
-        });
-      } else {
-        const empty = document.createElement('p');
-
-        empty.className = 'season-bracket-empty';
-        empty.textContent = emptyText;
-
-        matches.appendChild(empty);
-      }
-
-      column.appendChild(matches);
-
-      return column;
-    }
+  column.appendChild(matches);
+  return column;
+}
 
     function renderBracket(rows) {
-      const bracket = document.createElement('div');
-      bracket.className = 'season-bracket';
-      const groups = { quarters: [], semis: [], final: [], other: [] };
+  const bracket = document.createElement('div');
+  bracket.className = 'season-bracket';
 
-      rows.forEach(match => {
-        const type = roundType(match.round);
-        (groups[type] || groups.other).push(match);
-      });
+  const groups = {
+    quarters: [],
+    semis: [],
+    final: [],
+    other: []
+  };
 
-      bracket.appendChild(makeBracketColumn('Quarter-finals', groups.quarters, 'No quarter-final matches recorded.'));
-      bracket.appendChild(makeBracketColumn('Semi-finals', groups.semis, 'No semi-final matches recorded.'));
-      bracket.appendChild(makeBracketColumn('Final', groups.final, 'No final recorded.'));
+  rows.forEach(match => {
+    const type = roundType(match.round);
+    groups[type].push(match);
+  });
 
-      if (groups.other.length) {
-        const otherSection = document.createElement('section');
-        otherSection.className = 'season-bracket-other';
-        const heading = document.createElement('h4');
-        heading.textContent = 'Other matches';
-        otherSection.appendChild(heading);
-        const matches = document.createElement('div');
-        matches.className = 'season-bracket-other-matches';
-        groups.other.forEach(match => {
-          const wrapper = document.createElement('div');
-          wrapper.className = 'season-bracket-other-match';
-          const round = document.createElement('div');
-          round.className = 'season-bracket-other-round';
-          round.textContent = match.round || 'Match';
-          wrapper.appendChild(round);
-          wrapper.appendChild(makeMatch(match));
-          matches.appendChild(wrapper);
-        });
-        otherSection.appendChild(matches);
-        bracket.appendChild(otherSection);
-      }
-      return bracket;
-    }
+  // Keep the API's existing order for matches within each round.
+  // We don't yet have confirmed match identifiers or feeder links
+  // to safely reorder them by bracket position.
+  bracket.dataset.quarterCount = String(groups.quarters.length);
+  bracket.dataset.semiCount = String(groups.semis.length);
+  bracket.dataset.finalCount = String(groups.final.length);
+
+  bracket.appendChild(makeBracketColumn(
+    'Quarter-finals',
+    groups.quarters,
+    'No quarter-final matches recorded.',
+    'quarters'
+  ));
+
+  bracket.appendChild(makeBracketColumn(
+    'Semi-finals',
+    groups.semis,
+    'No semi-final matches recorded.',
+    'semis'
+  ));
+
+  bracket.appendChild(makeBracketColumn(
+    'Final',
+    groups.final,
+    'No final recorded.',
+    'final'
+  ));
+
+  if (groups.other.length) {
+    const otherSection = document.createElement('section');
+    otherSection.className = 'season-bracket-other';
+
+    const heading = document.createElement('h4');
+    heading.textContent = 'Other matches';
+    otherSection.appendChild(heading);
+
+    const matches = document.createElement('div');
+    matches.className = 'season-bracket-other-matches';
+
+    groups.other.forEach(match => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'season-bracket-other-match';
+
+      const round = document.createElement('div');
+      round.className = 'season-bracket-other-round';
+      round.textContent = match.round || 'Match';
+
+      wrapper.appendChild(round);
+      wrapper.appendChild(makeMatch(match));
+      matches.appendChild(wrapper);
+    });
+
+    otherSection.appendChild(matches);
+    bracket.appendChild(otherSection);
+  }
+
+  return bracket;
+}
 
     /* =========================================================
        RENDER THE PAGE
