@@ -426,6 +426,7 @@
     }
 
     
+
 function makePlayerCard(
   coachName,
   coachPseudonym,
@@ -440,37 +441,36 @@ function makePlayerCard(
   const details = document.createElement('div');
   details.className = 'season-bracket-player-details';
 
-  function appendRoleLine(name, pseudonym) {
+  function addPlayerLine(name, pseudonym) {
     const line = document.createElement('div');
     line.className = 'season-bracket-player-name';
 
-    const cleanName = String(name || '').trim();
-    const cleanPseudonym = String(pseudonym || '').trim();
+    const player = String(name || '').trim();
+    const alias = String(pseudonym || '').trim();
 
-    if (cleanName) {
-      const link = DBA.playerLink(cleanName);
+    if (player) {
+      const link = DBA.playerLink(player);
 
       if (link) {
         line.appendChild(link);
       } else {
-        line.appendChild(document.createTextNode(cleanName));
+        line.appendChild(document.createTextNode(player));
       }
     } else {
       line.appendChild(document.createTextNode('TBD'));
       card.classList.add('is-tbd');
     }
 
-    if (cleanPseudonym) {
-      line.appendChild(document.createTextNode(' / '));
-      line.appendChild(document.createTextNode(cleanPseudonym));
+    if (alias) {
+      line.appendChild(document.createTextNode(' / ' + alias));
     }
 
     details.appendChild(line);
   }
 
-  // Each name stays on the same line as its own alias.
-  appendRoleLine(coachName, coachPseudonym);
-  appendRoleLine(battlerName, battlerPseudonym);
+  // One line per role, with its own pseudonym.
+  addPlayerLine(coachName, coachPseudonym);
+  addPlayerLine(battlerName, battlerPseudonym);
 
   card.appendChild(details);
 
