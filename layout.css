@@ -997,57 +997,88 @@ body.page-season-records .season-record-empty {
 }
 
 
+```css
 /* ------------------------------------------------------------
    12.3. Playoff Bracket Layout
    ------------------------------------------------------------ */
 
-.page-season-records .season-bracket {
+body.page-season-records .season-bracket {
   display: grid;
   grid-template-columns: repeat(3, minmax(220px, 1fr));
   gap: 28px;
   margin-top: 20px;
-  padding: 18px;
+  padding: 0;
   overflow-x: auto;
-  align-items: stretch;
+  align-items: start;
 }
 
-.page-season-records .season-bracket-round {
-  min-width: 0;
+body.page-season-records .season-bracket-round {
   display: flex;
   flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+
+  /* No outer container around the entire round */
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
 }
 
-.page-season-records .season-bracket-round-title {
-  margin: 0 0 18px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--border-color, #444);
+/* Round headings: Quarters, Semis, Final */
+
+body.page-season-records .season-bracket-round-title {
+  margin: 0;
+  padding: 10px 8px;
+
+  /* Match the site's standard table border */
+  border: var(--container-border-width) solid var(--container-border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text);
+
+  font-weight: 700;
   text-align: center;
 }
 
+/* Matches are not surrounded by additional bordered containers */
+
 body.page-season-records .season-bracket-matches {
-  display: grid;
-  grid-template-rows: repeat(var(--match-count, 1), minmax(0, 1fr));
-  align-content: stretch;
+  display: flex;
+  flex-direction: column;
   gap: 22px;
-  flex: 1;
   min-width: 0;
 }
+
+/* Individual match cards */
 
 body.page-season-records .season-bracket-match {
-display: flex;
-flex-direction: column;
-justify-content: center;
-min-width: 0;
-min-height: 0;
-padding: 10px;
-border: var(--container-border-width) solid var(--container-border);
-border-radius: var(--radius);
-background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 10px;
+
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
+/* Player rows */
+
 body.page-season-records .season-bracket-player {
-  min-width: 0;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  transition: background 0.15s, border-color 0.15s;
 }
 
 body.page-season-records .season-bracket-player-details {
@@ -1057,199 +1088,9 @@ body.page-season-records .season-bracket-player-details {
   overflow-wrap: anywhere;
 }
 
-body.page-season-records .season-bracket-player-meta {
-  flex-shrink: 0;
-}
-
-.page-season-records .season-bracket-match {
-  min-width: 0;
-  padding: 12px;
-  border: 1px solid var(--border-color, #444);
-  border-radius: 8px;
-  background: var(--card-background, rgba(127, 127, 127, 0.07));
-}
-
-.page-season-records .season-bracket-player {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  min-width: 0;
-  padding: 10px;
-  border-radius: 5px;
-  background: var(--table-row-background, rgba(127, 127, 127, 0.08));
-}
-
-.page-season-records .season-bracket-player + .season-bracket-versus {
-  margin: 5px 0;
-}
-
-.page-season-records .season-bracket-player-details {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.page-season-records .season-bracket-player-name {
-  font-weight: 600;
-}
-
-.page-season-records .season-bracket-player-name a {
-  color: inherit;
-}
-
-.page-season-records .season-bracket-player-meta {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 6px;
-}
-
-.page-season-records .season-bracket-score {
-  min-width: 28px;
-  text-align: center;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.page-season-records .season-bracket-result {
-  padding: 3px 6px;
-  border-radius: 4px;
-  font-size: 0.75em;
-  border: 1px solid var(--border-color, #555);
-}
-
-.page-season-records .season-bracket-result.is-winner {
-  font-weight: 700;
-}
-
-.page-season-records .season-bracket-result.is-loser {
-  opacity: 0.65;
-}
-
-.page-season-records .season-bracket-versus {
-  text-align: center;
-  font-size: 0.7em;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  opacity: 0.6;
-}
-
-.page-season-records .season-bracket-player.is-tbd {
-  opacity: 0.65;
-}
-
-.page-season-records .season-bracket-empty {
-  padding: 12px;
-  text-align: center;
-  opacity: 0.7;
-  font-size: 0.9em;
-}
-
-.page-season-records .season-bracket-other {
-  grid-column: 1 / -1;
-  margin-top: 12px;
-}
-
-.page-season-records .season-bracket-other-matches {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-.page-season-records .season-bracket-other-round {
-  margin-bottom: 8px;
-  font-weight: 600;
-}
-
-.page-season-records .season-bracket-other-match {
-  min-width: 0;
-}
-
-
-
-/* ============================================================
-   12.4. Playoff Bracket — Unified Site Theme
-   ============================================================ */
-
-body.page-season-records .season-bracket {
-  --bracket-ink: var(--text);
-  --bracket-muted: var(--muted);
-  --bracket-surface: var(--surface);
-  --bracket-surface-2: var(--surface-2);
-  --bracket-border: var(--border);
-  --bracket-accent: var(--accent);
-  --bracket-winner-bg: #e8e4fb;
-  --bracket-winner-border: #c4b9f5;
-}
-
-/* Round headings: one consistent style */
-
-body.page-season-records .season-bracket-round-title {
-  padding: 10px 8px;
-  border: 1px solid var(--bracket-border);
-  border-bottom: 2px solid var(--bracket-accent);
-  border-radius: var(--radius-sm);
-  background: var(--bracket-surface-2);
-  color: var(--bracket-ink);
-  font-weight: 700;
-}
-
-/* Round containers: match the site's standard table border */
-
-body.page-season-records .season-bracket-round {
-  padding: 12px;
-  border: var(--container-border-width) solid var(--container-border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  min-width: 0;
-}
-
-/* Remove the individual round colours */
-
-body.page-season-records .season-bracket-round:nth-child(1)
-.season-bracket-round-title,
-body.page-season-records .season-bracket-round:nth-child(2)
-.season-bracket-round-title,
-body.page-season-records .season-bracket-round:nth-child(3)
-.season-bracket-round-title {
-  background: var(--bracket-surface-2);
-  border-color: var(--bracket-border);
-  border-bottom-color: var(--bracket-accent);
-}
-
-/* Match containers */
-
-body.page-season-records .season-bracket-match {
-  padding: 10px;
-  border: var(--container-border-width) solid var(--container-border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  box-shadow: none;
-}
-
-/* All rounds share the same match styling */
-
-body.page-season-records .season-bracket-round:nth-child(1)
-.season-bracket-match,
-body.page-season-records .season-bracket-round:nth-child(2)
-.season-bracket-match,
-body.page-season-records .season-bracket-round:nth-child(3)
-.season-bracket-match {
-  background: var(--surface);
-  border-color: var(--container-border);
-}
-
-/* Player cards */
-
-body.page-season-records .season-bracket-player {
-  background: var(--bracket-surface-2);
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  transition: background 0.15s, border-color 0.15s;
-}
-
 body.page-season-records .season-bracket-player-name {
-  color: var(--bracket-ink);
+  color: var(--text);
+  font-weight: 600;
 }
 
 body.page-season-records .season-bracket-player-name a {
@@ -1258,83 +1099,139 @@ body.page-season-records .season-bracket-player-name a {
 }
 
 body.page-season-records .season-bracket-player-name a:hover {
-  color: var(--bracket-accent);
+  color: var(--accent);
   text-decoration: underline;
 }
 
-/* Winner: subtle accent tint */
+body.page-season-records .season-bracket-player-meta {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+}
 
-body.page-season-records
-.season-bracket-player:has(.season-bracket-result.is-winner) {
-  background: var(--bracket-winner-bg);
-  border-color: var(--bracket-winner-border);
+body.page-season-records .season-bracket-score {
+  min-width: 28px;
+  color: var(--text);
+  text-align: center;
+  font-size: 1.05em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Results */
+
+body.page-season-records .season-bracket-result {
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.75em;
 }
 
 body.page-season-records .season-bracket-result.is-winner {
-  background: var(--bracket-accent);
-  border-color: var(--bracket-accent);
-  color: #ffffff;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
   opacity: 1;
   font-weight: 700;
 }
 
-/* Loser: muted, without losing readability */
-
-body.page-season-records
-.season-bracket-player:has(.season-bracket-result.is-loser) {
-  background: var(--bracket-surface-2);
-  border-color: var(--bracket-border);
-}
-
-body.page-season-records
-.season-bracket-player:has(.season-bracket-result.is-loser)
-.season-bracket-player-name {
-  color: var(--bracket-muted);
-}
-
-body.page-season-records
-.season-bracket-player:has(.season-bracket-result.is-loser)
-.season-bracket-pseudonym {
-  color: var(--bracket-muted);
-  opacity: 0.8;
-}
-
 body.page-season-records .season-bracket-result.is-loser {
-  background: var(--bracket-surface);
-  border-color: var(--bracket-border);
-  color: var(--bracket-muted);
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--muted);
   opacity: 1;
 }
 
-/* Scores and versus labels */
-
-body.page-season-records .season-bracket-score {
-  color: var(--bracket-ink);
-  font-size: 1.05em;
+body.page-season-records
+.season-bracket-player:has(.season-bracket-result.is-winner) {
+  background: #e8e4fb;
+  border-color: #c4b9f5;
 }
 
-body.page-season-records .season-bracket-versus {
-  color: var(--bracket-muted);
+body.page-season-records
+.season-bracket-player:has(.season-bracket-result.is-loser) {
+  background: var(--surface-2);
+  border-color: var(--border);
 }
 
-/* Players awaiting confirmation */
+body.page-season-records
+.season-bracket-player:has(.season-bracket-result.is-loser)
+.season-bracket-player-name,
+body.page-season-records
+.season-bracket-player:has(.season-bracket-result.is-loser)
+.season-bracket-pseudonym {
+  color: var(--muted);
+}
 
 body.page-season-records .season-bracket-player.is-tbd {
-  background: var(--bracket-surface);
-  border: 1px dashed var(--bracket-border);
+  border: 1px dashed var(--border);
+  background: var(--surface);
+  opacity: 0.65;
+}
+
+/* Versus label */
+
+body.page-season-records .season-bracket-versus {
+  margin: 5px 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+/* Empty states */
+
+body.page-season-records .season-bracket-empty {
+  padding: 12px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.9em;
+  opacity: 0.7;
 }
 
 /* Other playoff rounds */
 
+body.page-season-records .season-bracket-other {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+}
+
+body.page-season-records .season-bracket-other-matches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
 body.page-season-records .season-bracket-other-round {
-  color: var(--bracket-ink);
+  margin-bottom: 8px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+body.page-season-records .season-bracket-other-match {
+  min-width: 0;
 }
 
 body.page-season-records .season-bracket-other-match
 .season-bracket-match {
-  background: var(--bracket-surface);
-  border-color: var(--bracket-border);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
+
+/* Mobile bracket layout */
+
+@media (max-width: 700px) {
+  body.page-season-records .season-bracket {
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 16px;
+    padding: 0;
+  }
+}
+```
 
 /* ============================================================
    13. MOBILE RESPONSIVE FOUNDATION
