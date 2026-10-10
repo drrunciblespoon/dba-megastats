@@ -45,6 +45,10 @@
     let options = [];
     let currentData = null;
     let activeRole = 'coach';
+    let seasonWinners = {
+  coach: new Set(),
+  battler: new Set()
+};
     let requestToken = 0;
 
     function selectedOption() {
@@ -175,6 +179,49 @@
        MAIN SEASON TABLE
        ========================================================= */
 
+    
+function getPlayoffWinners(playoffs) {
+  const winners = {
+    coach: new Set(),
+    battler: new Set()
+  };
+
+  const finals = (Array.isArray(playoffs) ? playoffs : [])
+    .filter(matchData => roundType(matchData.round) === 'final');
+
+  // Only award trophies when there is one identifiable Final.
+  if (finals.length !== 1) return winners;
+
+  const finalMatch = finals[0];
+
+  function isWin(result) {
+    return ['w', 'win', 'won', 'winner', 'advanced']
+      .includes(String(result || '').trim().toLowerCase());
+  }
+
+  const side1Won = isWin(finalMatch.result1);
+  const side2Won = isWin(finalMatch.result2);
+
+  // The Final must have exactly one winning side.
+  if (side1Won === side2Won) return winners;
+
+  const winningSide = side1Won ? '1' : '2';
+
+  [
+    ['coach', finalMatch['coach' + winningSide]],
+    ['battler', finalMatch['battler' + winningSide]]
+  ].forEach(([role, name]) => {
+    const playerName = String(name || '').trim();
+
+    if (playerName) {
+      winners[role].add(playerName.toLowerCase());
+    }
+  });
+
+  return winners;
+}
+
+    
     function makeTable(headers, rows, className) {
       const table = document.createElement('table');
 
@@ -231,17 +278,32 @@
 
           const isPlayerColumn = hasRank && index === 0;
 
-          if (isPlayerColumn && text.trim()) {
-            const link = DBA.playerLink(text);
+          
+if (isPlayerColumn && text.trim()) {
+  const link = DBA.playerLink(text);
 
-            if (link) {
-              td.appendChild(link);
-            } else {
-              td.textContent = text;
-            }
-          } else {
-            td.textContent = text;
-          }
+  if (link) {
+    td.appendChild(link);
+  } else {
+    td.appendChild(document.createTextNode(text));
+  }
+
+  const winningNames = seasonWinners[activeRole];
+
+  if (winningNames.has(text.trim().toLowerCase())) {
+    const trophy = document.createElement('span');
+    trophy.className = 'season-winner-trophy';
+    trophy.textContent = '🏆';
+    trophy.style.marginLeft = '6px';
+    trophy.setAttribute('aria-label', 'Season winner');
+    trophy.title = 'Season winner';
+
+    td.appendChild(trophy);
+  }
+} else {
+  td.textContent = text;
+}
+
 
           tr.appendChild(td);
         });
@@ -595,7 +657,7 @@ function makeMatch(matchData) {
 
       bracket.appendChild(
         makeBracketColumn(
-          'Quarter-finals',
+          'Quarters',
           groups.quarters,
           'No quarter-final matches recorded.'
         )
@@ -603,7 +665,7 @@ function makeMatch(matchData) {
 
       bracket.appendChild(
         makeBracketColumn(
-          'Semi-finals',
+          'Semis',
           groups.semis,
           'No semi-final matches recorded.'
         )
@@ -655,6 +717,8 @@ function makeMatch(matchData) {
 
     function renderTables() {
       if (!currentData) return;
+
+      seasonWinners = getPlayoffWinners(currentData.playoffs);
 
       root.replaceChildren();
 
