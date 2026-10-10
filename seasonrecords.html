@@ -162,17 +162,30 @@
           const isPlayerColumn =
             (hasRank && index === 0);
 
-          if (isPlayerColumn && text.trim()) {
-            const link = DBA.playerLink(text);
+if (isPlayerColumn && text.trim()) {
+  const link = DBA.playerLink(text);
 
-            if (link) {
-              td.appendChild(link);
-            } else {
-              td.textContent = text;
-            }
-          } else {
-            td.textContent = text;
-          }
+  if (link) {
+    td.appendChild(link);
+  } else {
+    td.appendChild(document.createTextNode(text));
+  }
+
+  const winners = getPlayoffWinners();
+
+  if (
+    winners &&
+    (
+      text.trim() === winners.coach ||
+      text.trim() === winners.battler
+    )
+  ) {
+    td.appendChild(document.createTextNode(' 🏆'));
+    td.title = 'Play Offs champion';
+  }
+} else {
+  td.textContent = text;
+}
 
           tr.appendChild(td);
         });
@@ -493,6 +506,37 @@
   }
 
   return bracket;
+}
+
+    function getPlayoffWinners() {
+  const rows = Array.isArray(currentData?.playoffs)
+    ? currentData.playoffs
+    : [];
+
+  const finalMatches = rows.filter(
+    match => roundType(match.round) === 'final'
+  );
+
+  // Only award trophies when there is exactly one recorded Final.
+  if (finalMatches.length !== 1) return null;
+
+  const match = finalMatches[0];
+
+  const isWinner = result =>
+    ['w', 'win', 'won', 'winner', 'advanced'].includes(
+      String(result || '').trim().toLowerCase()
+    );
+
+  if (isWinner(match.result1) === isWinner(match.result2)) {
+    return null;
+  }
+
+  const winnerSide = isWinner(match.result1) ? '1' : '2';
+
+  return {
+    coach: String(match[`coach${winnerSide}`] || '').trim(),
+    battler: String(match[`battler${winnerSide}`] || '').trim()
+  };
 }
 
     /* =========================================================
