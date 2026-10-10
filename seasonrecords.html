@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,6 +54,8 @@
        Examples:
        ?season=onefrontier
        ?season=sixtower
+
+       The selected division is also stored in the URL.
        ========================================================= */
 
     function normaliseSeasonKey(value) {
@@ -108,6 +110,24 @@
       return options.find(option =>
         getSeasonKey(option) === key
       ) || null;
+    }
+
+    function updateSeasonUrl(selection) {
+      if (!selection) return;
+
+      const params = new URLSearchParams(window.location.search);
+
+      params.set('season', getSeasonKey(selection));
+      params.set('division', String(selection.division || ''));
+
+      const query = params.toString();
+
+      const newUrl =
+        window.location.pathname +
+        (query ? '?' + query : '') +
+        window.location.hash;
+
+      window.history.replaceState({}, '', newUrl);
     }
 
     /* =========================================================
@@ -676,7 +696,6 @@
 
       root.replaceChildren();
 
-      // Main Season.
       const mainSection = document.createElement('section');
       mainSection.className = 'season-record-section';
 
@@ -697,7 +716,6 @@
       mainSection.appendChild(makeTableWrapper(mainTable));
       root.appendChild(mainSection);
 
-      // Play Offs bracket.
       const playoffSection = document.createElement('section');
       playoffSection.className = 'season-record-section';
 
@@ -732,6 +750,9 @@
       const selection = selectedOption();
 
       if (!selection) return;
+
+      // Keep the URL in sync with the current dropdown selections.
+      updateSeasonUrl(selection);
 
       const mine = ++requestToken;
 
@@ -815,11 +836,16 @@
 
         populateSeasons();
 
+        const params = new URLSearchParams(window.location.search);
         const requestedOption = getRequestedSeasonOption();
+        const requestedDivision = params.get('division');
 
         if (requestedOption) {
           seasonSel.value = requestedOption.season;
-          populateDivisions(requestedOption.division);
+
+          populateDivisions(
+            requestedDivision || requestedOption.division
+          );
         } else {
           populateDivisions();
         }
@@ -828,10 +854,11 @@
 
         if (
           requestedOption &&
-          divisionSel.value !== requestedOption.division
+          requestedDivision &&
+          divisionSel.value !== requestedDivision
         ) {
           statusEl.textContent =
-            'The requested season and division could not be selected.';
+            'The requested division is not available for this season.';
           return;
         }
 
@@ -847,3 +874,4 @@
 
 </body>
 </html>
+```
