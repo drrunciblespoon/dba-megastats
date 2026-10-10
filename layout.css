@@ -1282,14 +1282,17 @@ body.page-season-records .season-record-error {
 body.page-season-records .season-record-error img {
   display: block;
   float: none;
-  width: 75%;
+  width: auto;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
   border: none;
   border-radius: 0;
   image-rendering: pixelated;
+  transform: scale(0.75);
+  transform-origin: center;
 }
+
 
 body.page-season-records .season-record-error p {
   margin: 0;
@@ -1318,12 +1321,15 @@ body.page-individual #playerNotFound[hidden] {
 
 body.page-individual #playerNotFound img {
   display: block;
-  float: none;  
-   width: 50%;
+  float: none;
+  width: auto;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
+  transform: scale(0.5);
+  transform-origin: center;
 }
+
 
 body.page-individual #playerNotFound p {
   margin: 0;
