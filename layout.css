@@ -1051,17 +1051,17 @@ body.page-season-records .season-bracket-matches {
   min-width: 0;
 }
 
-/* Match containers remain unboxed. */
+/* Match containers: restore the bordered table-style cards. */
 
 body.page-season-records .season-bracket-match {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
-  padding: 8px 0;
-  border: none;
-  border-radius: 0;
-  background: transparent;
+  padding: 10px;
+  border: var(--container-border-width) solid var(--container-border);
+  border-radius: var(--radius);
+  background: var(--surface);
   box-shadow: none;
 }
 
