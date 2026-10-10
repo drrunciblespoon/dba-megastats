@@ -998,6 +998,7 @@ body.page-season-records .season-record-empty {
 
 
 
+
 /* ------------------------------------------------------------
    12.3. Playoff Bracket Layout
    ------------------------------------------------------------ */
@@ -1005,18 +1006,21 @@ body.page-season-records .season-record-empty {
 body.page-season-records .season-bracket {
   display: grid;
   grid-template-columns: repeat(3, minmax(220px, 1fr));
-  gap: 28px;
+  grid-template-rows: auto;
+  grid-auto-rows: minmax(0, auto);
+  column-gap: 28px;
+  row-gap: 0;
   margin-top: 20px;
   padding: 0;
   overflow-x: auto;
-  align-items: start;
+  align-items: stretch;
 }
 
-/* Keep round columns unboxed and let their heights vary naturally. */
+/* Keep round columns unboxed. */
 
 body.page-season-records .season-bracket-round {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 18px;
   min-width: 0;
   padding: 0;
@@ -1025,7 +1029,7 @@ body.page-season-records .season-bracket-round {
   background: transparent;
 }
 
-/* Table-style border around the round title only. */
+/* Table-style border around each round title. */
 
 body.page-season-records .season-bracket-round-title {
   margin: 0;
@@ -1038,8 +1042,7 @@ body.page-season-records .season-bracket-round-title {
   text-align: center;
 }
 
-/* Matches flow naturally; renderBracket() can later provide
-   the information needed to align rounds precisely. */
+/* Matches use natural flow by default. */
 
 body.page-season-records .season-bracket-matches {
   display: flex;
@@ -1048,7 +1051,7 @@ body.page-season-records .season-bracket-matches {
   min-width: 0;
 }
 
-/* Match containers have no outer border or background. */
+/* Match containers remain unboxed. */
 
 body.page-season-records .season-bracket-match {
   display: flex;
@@ -1222,13 +1225,13 @@ body.page-season-records .season-bracket-other-match
   border-radius: var(--radius);
 }
 
-/* Mobile: keep the three rounds side by side with horizontal scrolling. */
+/* Mobile: retain three columns with horizontal scrolling. */
 
 @media (max-width: 700px) {
   body.page-season-records .season-bracket {
     grid-template-columns: repeat(3, minmax(220px, 1fr));
-    gap: 16px;
-    padding: 0;
+    column-gap: 16px;
+    overflow-x: auto;
   }
 }
 
