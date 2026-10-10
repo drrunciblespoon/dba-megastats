@@ -997,7 +997,7 @@ body.page-season-records .season-record-empty {
 }
 
 
-```css
+
 /* ------------------------------------------------------------
    12.3. Playoff Bracket Layout
    ------------------------------------------------------------ */
@@ -1012,36 +1012,34 @@ body.page-season-records .season-bracket {
   align-items: start;
 }
 
+/* Keep round columns unboxed and let their heights vary naturally. */
+
 body.page-season-records .season-bracket-round {
   display: flex;
   flex-direction: column;
   gap: 18px;
   min-width: 0;
-
-  /* No outer container around the entire round */
   padding: 0;
   border: none;
   border-radius: 0;
   background: transparent;
 }
 
-/* Round headings: Quarters, Semis, Final */
+/* Table-style border around the round title only. */
 
 body.page-season-records .season-bracket-round-title {
   margin: 0;
   padding: 10px 8px;
-
-  /* Match the site's standard table border */
   border: var(--container-border-width) solid var(--container-border);
   border-radius: var(--radius);
   background: var(--surface-2);
   color: var(--text);
-
   font-weight: 700;
   text-align: center;
 }
 
-/* Matches are not surrounded by additional bordered containers */
+/* Matches flow naturally; renderBracket() can later provide
+   the information needed to align rounds precisely. */
 
 body.page-season-records .season-bracket-matches {
   display: flex;
@@ -1050,22 +1048,21 @@ body.page-season-records .season-bracket-matches {
   min-width: 0;
 }
 
-/* Individual match cards */
+/* Match containers have no outer border or background. */
 
 body.page-season-records .season-bracket-match {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
-  padding: 10px;
-
+  padding: 8px 0;
   border: none;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
 }
 
-/* Player rows */
+/* Player rows. */
 
 body.page-season-records .season-bracket-player {
   display: flex;
@@ -1074,7 +1071,6 @@ body.page-season-records .season-bracket-player {
   gap: 10px;
   min-width: 0;
   padding: 10px;
-
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   background: var(--surface-2);
@@ -1119,7 +1115,7 @@ body.page-season-records .season-bracket-score {
   font-variant-numeric: tabular-nums;
 }
 
-/* Results */
+/* Results. */
 
 body.page-season-records .season-bracket-result {
   padding: 3px 6px;
@@ -1164,13 +1160,15 @@ body.page-season-records
   color: var(--muted);
 }
 
+/* To-be-determined players. */
+
 body.page-season-records .season-bracket-player.is-tbd {
   border: 1px dashed var(--border);
   background: var(--surface);
   opacity: 0.65;
 }
 
-/* Versus label */
+/* Versus label. */
 
 body.page-season-records .season-bracket-versus {
   margin: 5px 0;
@@ -1182,9 +1180,10 @@ body.page-season-records .season-bracket-versus {
   opacity: 0.6;
 }
 
-/* Empty states */
+/* Empty states. */
 
 body.page-season-records .season-bracket-empty {
+  align-self: center;
   padding: 12px;
   color: var(--muted);
   text-align: center;
@@ -1192,7 +1191,7 @@ body.page-season-records .season-bracket-empty {
   opacity: 0.7;
 }
 
-/* Other playoff rounds */
+/* Other playoff rounds. */
 
 body.page-season-records .season-bracket-other {
   grid-column: 1 / -1;
@@ -1217,12 +1216,13 @@ body.page-season-records .season-bracket-other-match {
 
 body.page-season-records .season-bracket-other-match
 .season-bracket-match {
+  padding: 10px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
 
-/* Mobile bracket layout */
+/* Mobile: keep the three rounds side by side with horizontal scrolling. */
 
 @media (max-width: 700px) {
   body.page-season-records .season-bracket {
@@ -1231,7 +1231,7 @@ body.page-season-records .season-bracket-other-match
     padding: 0;
   }
 }
-```
+
 
 /* ============================================================
    13. MOBILE RESPONSIVE FOUNDATION
@@ -1498,12 +1498,6 @@ body.page-season-records .season-bracket-other-match
 
   body.page-season-records .season-playoff-table {
     min-width: 900px;
-  }
-
-  .page-season-records .season-bracket {
-    grid-template-columns: repeat(3, minmax(220px, 1fr));
-    padding: 10px;
-    gap: 16px;
   }
 
 }
