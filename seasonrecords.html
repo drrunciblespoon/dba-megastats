@@ -161,14 +161,17 @@
 
           const isPlayerColumn =
             (hasRank && index === 0);
-
+          
 if (isPlayerColumn && text.trim()) {
+  const player = document.createElement('span');
+  player.style.whiteSpace = 'nowrap';
+
   const link = DBA.playerLink(text);
 
   if (link) {
-    td.appendChild(link);
+    player.appendChild(link);
   } else {
-    td.appendChild(document.createTextNode(text));
+    player.appendChild(document.createTextNode(text));
   }
 
   const winners = getPlayoffWinners();
@@ -181,12 +184,12 @@ if (isPlayerColumn && text.trim()) {
     )
   ) {
     const trophy = document.createElement('span');
-trophy.textContent = ' 🏆';
-trophy.style.whiteSpace = 'nowrap';
-trophy.title = 'Play Offs champion';
-
-td.appendChild(trophy);
+    trophy.textContent = ' 🏆';
+    trophy.title = 'Play Offs champion';
+    player.appendChild(trophy);
   }
+
+  td.appendChild(player);
 } else {
   td.textContent = text;
 }
