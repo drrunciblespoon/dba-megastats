@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,6 +47,72 @@
     let currentData = null;
     let activeRole = 'coach';
     let requestToken = 0;
+
+    /* =========================================================
+       URL SEASON PARAMETER
+
+       Examples:
+       ?season=onefrontier
+       ?season=sixtower
+       ========================================================= */
+
+    function normaliseSeasonKey(value) {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '');
+    }
+
+    function getSeasonKey(option) {
+      const seasonText = String(option.season || '').trim();
+      const divisionText = String(option.division || '').trim();
+
+      const seasonNumber = seasonText.match(/\d+/)?.[0];
+
+      const seasonWords = {
+        '1': 'one',
+        '2': 'two',
+        '3': 'three',
+        '4': 'four',
+        '5': 'five',
+        '6': 'six',
+        '7': 'seven',
+        '8': 'eight',
+        '9': 'nine',
+        '10': 'ten',
+        '11': 'eleven',
+        '12': 'twelve',
+        '13': 'thirteen',
+        '14': 'fourteen',
+        '15': 'fifteen',
+        '16': 'sixteen',
+        '17': 'seventeen',
+        '18': 'eighteen',
+        '19': 'nineteen',
+        '20': 'twenty'
+      };
+
+      const seasonKey = seasonWords[seasonNumber] ||
+        normaliseSeasonKey(seasonText);
+
+      return normaliseSeasonKey(seasonKey + divisionText);
+    }
+
+    function getRequestedSeasonOption() {
+      const params = new URLSearchParams(window.location.search);
+      const requestedSeason = params.get('season');
+
+      if (!requestedSeason) return null;
+
+      const key = normaliseSeasonKey(requestedSeason);
+
+      return options.find(option =>
+        getSeasonKey(option) === key
+      ) || null;
+    }
+
+    /* =========================================================
+       SEASON AND DIVISION SELECTORS
+       ========================================================= */
 
     function selectedOption() {
       return options.find(option =>
@@ -160,46 +227,50 @@
           td.dataset.c = index;
 
           const isPlayerColumn =
-            (hasRank && index === 0);
-          
-if (isPlayerColumn && text.trim()) {
-  const player = document.createElement('span');
-  player.style.setProperty('display', 'inline-flex', 'important');
-player.style.setProperty('align-items', 'center', 'important');
-player.style.setProperty('white-space', 'nowrap', 'important');
-player.style.setProperty('flex-wrap', 'nowrap', 'important');
+            hasRank && index === 0;
 
-  const link = DBA.playerLink(text);
+          if (isPlayerColumn && text.trim()) {
+            const player = document.createElement('span');
 
-  if (link) {
-    player.appendChild(link);
-  } else {
-    player.appendChild(document.createTextNode(text));
-  }
+            player.style.setProperty('display', 'inline-flex', 'important');
+            player.style.setProperty('align-items', 'center', 'important');
+            player.style.setProperty('white-space', 'nowrap', 'important');
+            player.style.setProperty('flex-wrap', 'nowrap', 'important');
 
-  const winners = getPlayoffWinners();
+            const link = DBA.playerLink(text);
 
-  if (
-    winners &&
-    (
-      text.trim() === winners.coach ||
-      text.trim() === winners.battler
-    )
-  ) {
-    const trophy = document.createElement('span');
-    trophy.textContent = ' 🏆';
-    trophy.title = 'Play Offs champion';
-    trophy.style.setProperty('display', 'inline-block', 'important');
-trophy.style.setProperty('white-space', 'nowrap', 'important');
-trophy.style.setProperty('flex-shrink', '0', 'important');
-    trophy.style.setProperty('margin-left', '6px', 'important');
-    player.appendChild(trophy);
-  }
+            if (link) {
+              player.appendChild(link);
+            } else {
+              player.appendChild(document.createTextNode(text));
+            }
 
-  td.appendChild(player);
-} else {
-  td.textContent = text;
-}
+            const winners = getPlayoffWinners();
+
+            if (
+              winners &&
+              (
+                text.trim() === winners.coach ||
+                text.trim() === winners.battler
+              )
+            ) {
+              const trophy = document.createElement('span');
+
+              trophy.textContent = ' 🏆';
+              trophy.title = 'Play Offs champion';
+
+              trophy.style.setProperty('display', 'inline-block', 'important');
+              trophy.style.setProperty('white-space', 'nowrap', 'important');
+              trophy.style.setProperty('flex-shrink', '0', 'important');
+              trophy.style.setProperty('margin-left', '6px', 'important');
+
+              player.appendChild(trophy);
+            }
+
+            td.appendChild(player);
+          } else {
+            td.textContent = text;
+          }
 
           tr.appendChild(td);
         });
@@ -280,9 +351,6 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
 
     /* =========================================================
        PLAYOFF BRACKET
-
-       The API returns combined match objects. Each side contains
-       coach/battler names and pseudonyms plus one score/result.
        ========================================================= */
 
     function normaliseRound(value) {
@@ -291,40 +359,47 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
         .replace(/[^a-z0-9]/g, '');
     }
 
-  function roundType(value) {
-  const round = normaliseRound(value);
+    function roundType(value) {
+      const round = normaliseRound(value);
 
-  if (
-    round === 'quarters' ||
-    round === 'quarter' ||
-    round === 'quarterfinal' ||
-    round === 'quarterfinals' ||
-    round === 'qf'
-  ) {
-    return 'quarters';
-  }
+      if (
+        round === 'quarters' ||
+        round === 'quarter' ||
+        round === 'quarterfinal' ||
+        round === 'quarterfinals' ||
+        round === 'qf'
+      ) {
+        return 'quarters';
+      }
 
-  if (
-    round === 'semi' ||
-    round === 'semis' ||
-    round === 'semifinal' ||
-    round === 'semifinals' ||
-    round === 'sf'
-  ) {
-    return 'semis';
-  }
+      if (
+        round === 'semi' ||
+        round === 'semis' ||
+        round === 'semifinal' ||
+        round === 'semifinals' ||
+        round === 'sf'
+      ) {
+        return 'semis';
+      }
 
-  if (
-    round === 'final' ||
-    round === 'finals'
-  ) {
-    return 'final';
-  }
+      if (
+        round === 'final' ||
+        round === 'finals'
+      ) {
+        return 'final';
+      }
 
-  return 'other';
-}
+      return 'other';
+    }
 
-    function makePlayerCard(coachName, coachPseudonym, battlerName, battlerPseudonym, score, result) {
+    function makePlayerCard(
+      coachName,
+      coachPseudonym,
+      battlerName,
+      battlerPseudonym,
+      score,
+      result
+    ) {
       const card = document.createElement('div');
       card.className = 'season-bracket-player';
 
@@ -339,26 +414,38 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
       const names = [coach || 'TBD', battler || 'TBD'];
 
       names.forEach((name, index) => {
-        if (index) playerName.appendChild(document.createTextNode(' / '));
+        if (index) {
+          playerName.appendChild(document.createTextNode(' / '));
+        }
+
         if (name === 'TBD') {
           playerName.appendChild(document.createTextNode(name));
           card.classList.add('is-tbd');
           return;
         }
+
         const link = DBA.playerLink(name);
-        if (link) playerName.appendChild(link);
-        else playerName.appendChild(document.createTextNode(name));
+
+        if (link) {
+          playerName.appendChild(link);
+        } else {
+          playerName.appendChild(document.createTextNode(name));
+        }
       });
+
       details.appendChild(playerName);
 
       const aliases = [
         String(coachPseudonym || '').trim(),
         String(battlerPseudonym || '').trim()
       ];
+
       if (aliases.some(Boolean)) {
         const alias = document.createElement('div');
+
         alias.className = 'season-bracket-pseudonym';
         alias.textContent = aliases.map(value => value || '—').join(' / ');
+
         details.appendChild(alias);
       }
 
@@ -369,25 +456,38 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
 
       if (String(score == null ? '' : score).trim() !== '') {
         const scoreEl = document.createElement('span');
+
         scoreEl.className = 'season-bracket-score';
         scoreEl.textContent = String(score);
+
         meta.appendChild(scoreEl);
       }
 
       if (String(result || '').trim()) {
         const resultEl = document.createElement('span');
+
         resultEl.className = 'season-bracket-result';
         resultEl.textContent = result;
+
         const resultKey = String(result).trim().toLowerCase();
-        if (['w', 'win', 'won', 'winner', 'advanced'].includes(resultKey)) {
+
+        if (
+          ['w', 'win', 'won', 'winner', 'advanced'].includes(resultKey)
+        ) {
           resultEl.classList.add('is-winner');
-        } else if (['l', 'loss', 'lost', 'loser', 'eliminated'].includes(resultKey)) {
+        } else if (
+          ['l', 'loss', 'lost', 'loser', 'eliminated'].includes(resultKey)
+        ) {
           resultEl.classList.add('is-loser');
         }
+
         meta.appendChild(resultEl);
       }
 
-      if (meta.childNodes.length) card.appendChild(meta);
+      if (meta.childNodes.length) {
+        card.appendChild(meta);
+      }
+
       return card;
     }
 
@@ -396,162 +496,176 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
       article.className = 'season-bracket-match';
 
       article.appendChild(makePlayerCard(
-        match.coach1, match.coachAlias1,
-        match.battler1, match.battlerAlias1,
-        match.score1, match.result1
+        match.coach1,
+        match.coachAlias1,
+        match.battler1,
+        match.battlerAlias1,
+        match.score1,
+        match.result1
       ));
 
       const versus = document.createElement('div');
+
       versus.className = 'season-bracket-versus';
       versus.textContent = 'VS';
+
       article.appendChild(versus);
 
       article.appendChild(makePlayerCard(
-        match.coach2, match.coachAlias2,
-        match.battler2, match.battlerAlias2,
-        match.score2, match.result2
+        match.coach2,
+        match.coachAlias2,
+        match.battler2,
+        match.battlerAlias2,
+        match.score2,
+        match.result2
       ));
+
       return article;
     }
 
     function makeBracketColumn(title, rows, emptyText, roundKey) {
-  const column = document.createElement('div');
-  column.className = 'season-bracket-round';
-  column.dataset.round = roundKey;
-  column.dataset.matchCount = String(rows.length);
+      const column = document.createElement('div');
 
-  const heading = document.createElement('h4');
-  heading.className = 'season-bracket-round-title';
-  heading.textContent = title;
-  column.appendChild(heading);
+      column.className = 'season-bracket-round';
+      column.dataset.round = roundKey;
+      column.dataset.matchCount = String(rows.length);
 
-  const matches = document.createElement('div');
-  matches.className = 'season-bracket-matches';
-  matches.dataset.round = roundKey;
-  matches.dataset.matchCount = String(rows.length);
+      const heading = document.createElement('h4');
 
-  if (rows.length) {
-    rows.forEach((row, index) => {
-      const match = makeMatch(row);
-      match.dataset.matchIndex = String(index);
-      matches.appendChild(match);
-    });
-  } else {
-    const empty = document.createElement('p');
-    empty.className = 'season-bracket-empty';
-    empty.textContent = emptyText;
-    matches.appendChild(empty);
-  }
+      heading.className = 'season-bracket-round-title';
+      heading.textContent = title;
 
-  column.appendChild(matches);
-  return column;
-}
+      column.appendChild(heading);
+
+      const matches = document.createElement('div');
+
+      matches.className = 'season-bracket-matches';
+      matches.dataset.round = roundKey;
+      matches.dataset.matchCount = String(rows.length);
+
+      if (rows.length) {
+        rows.forEach((row, index) => {
+          const match = makeMatch(row);
+
+          match.dataset.matchIndex = String(index);
+          matches.appendChild(match);
+        });
+      } else {
+        const empty = document.createElement('p');
+
+        empty.className = 'season-bracket-empty';
+        empty.textContent = emptyText;
+
+        matches.appendChild(empty);
+      }
+
+      column.appendChild(matches);
+
+      return column;
+    }
 
     function renderBracket(rows) {
-  const bracket = document.createElement('div');
-  bracket.className = 'season-bracket';
+      const bracket = document.createElement('div');
+      bracket.className = 'season-bracket';
 
-  const groups = {
-    quarters: [],
-    semis: [],
-    final: [],
-    other: []
-  };
+      const groups = {
+        quarters: [],
+        semis: [],
+        final: [],
+        other: []
+      };
 
-  rows.forEach(match => {
-    const type = roundType(match.round);
-    groups[type].push(match);
-  });
+      rows.forEach(match => {
+        const type = roundType(match.round);
+        groups[type].push(match);
+      });
 
-  // Keep the API's existing order for matches within each round.
-  // We don't yet have confirmed match identifiers or feeder links
-  // to safely reorder them by bracket position.
-  bracket.dataset.quarterCount = String(groups.quarters.length);
-  bracket.dataset.semiCount = String(groups.semis.length);
-  bracket.dataset.finalCount = String(groups.final.length);
+      bracket.dataset.quarterCount = String(groups.quarters.length);
+      bracket.dataset.semiCount = String(groups.semis.length);
+      bracket.dataset.finalCount = String(groups.final.length);
 
-  bracket.appendChild(makeBracketColumn(
-    'Quarters',
-    groups.quarters,
-    'No quarter-final matches recorded.',
-    'quarters'
-  ));
+      bracket.appendChild(makeBracketColumn(
+        'Quarters',
+        groups.quarters,
+        'No quarter-final matches recorded.',
+        'quarters'
+      ));
 
-  bracket.appendChild(makeBracketColumn(
-    'Semis',
-    groups.semis,
-    'No semi-final matches recorded.',
-    'semis'
-  ));
+      bracket.appendChild(makeBracketColumn(
+        'Semis',
+        groups.semis,
+        'No semi-final matches recorded.',
+        'semis'
+      ));
 
-  bracket.appendChild(makeBracketColumn(
-    'Final',
-    groups.final,
-    'No final recorded.',
-    'final'
-  ));
+      bracket.appendChild(makeBracketColumn(
+        'Final',
+        groups.final,
+        'No final recorded.',
+        'final'
+      ));
 
-  if (groups.other.length) {
-    const otherSection = document.createElement('section');
-    otherSection.className = 'season-bracket-other';
+      if (groups.other.length) {
+        const otherSection = document.createElement('section');
+        otherSection.className = 'season-bracket-other';
 
-    const heading = document.createElement('h4');
-    heading.textContent = 'Other matches';
-    otherSection.appendChild(heading);
+        const heading = document.createElement('h4');
+        heading.textContent = 'Other matches';
 
-    const matches = document.createElement('div');
-    matches.className = 'season-bracket-other-matches';
+        otherSection.appendChild(heading);
 
-    groups.other.forEach(match => {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'season-bracket-other-match';
+        const matches = document.createElement('div');
+        matches.className = 'season-bracket-other-matches';
 
-      const round = document.createElement('div');
-      round.className = 'season-bracket-other-round';
-      round.textContent = match.round || 'Match';
+        groups.other.forEach(match => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'season-bracket-other-match';
 
-      wrapper.appendChild(round);
-      wrapper.appendChild(makeMatch(match));
-      matches.appendChild(wrapper);
-    });
+          const round = document.createElement('div');
+          round.className = 'season-bracket-other-round';
+          round.textContent = match.round || 'Match';
 
-    otherSection.appendChild(matches);
-    bracket.appendChild(otherSection);
-  }
+          wrapper.appendChild(round);
+          wrapper.appendChild(makeMatch(match));
+          matches.appendChild(wrapper);
+        });
 
-  return bracket;
-}
+        otherSection.appendChild(matches);
+        bracket.appendChild(otherSection);
+      }
+
+      return bracket;
+    }
 
     function getPlayoffWinners() {
-  const rows = Array.isArray(currentData?.playoffs)
-    ? currentData.playoffs
-    : [];
+      const rows = Array.isArray(currentData?.playoffs)
+        ? currentData.playoffs
+        : [];
 
-  const finalMatches = rows.filter(
-    match => roundType(match.round) === 'final'
-  );
+      const finalMatches = rows.filter(
+        match => roundType(match.round) === 'final'
+      );
 
-  // Only award trophies when there is exactly one recorded Final.
-  if (finalMatches.length !== 1) return null;
+      if (finalMatches.length !== 1) return null;
 
-  const match = finalMatches[0];
+      const match = finalMatches[0];
 
-  const isWinner = result =>
-    ['w', 'win', 'won', 'winner', 'advanced'].includes(
-      String(result || '').trim().toLowerCase()
-    );
+      const isWinner = result =>
+        ['w', 'win', 'won', 'winner', 'advanced'].includes(
+          String(result || '').trim().toLowerCase()
+        );
 
-  if (isWinner(match.result1) === isWinner(match.result2)) {
-    return null;
-  }
+      if (isWinner(match.result1) === isWinner(match.result2)) {
+        return null;
+      }
 
-  const winnerSide = isWinner(match.result1) ? '1' : '2';
+      const winnerSide = isWinner(match.result1) ? '1' : '2';
 
-  return {
-    coach: String(match[`coach${winnerSide}`] || '').trim(),
-    battler: String(match[`battler${winnerSide}`] || '').trim()
-  };
-}
+      return {
+        coach: String(match[`coach${winnerSide}`] || '').trim(),
+        battler: String(match[`battler${winnerSide}`] || '').trim()
+      };
+    }
 
     /* =========================================================
        RENDER THE PAGE
@@ -592,8 +706,6 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
 
       playoffSection.appendChild(playoffHeading);
 
-      // Play Offs are a shared Coach/Battler bracket, independent of
-      // the selected role in the Main Season standings.
       const playoffRows = Array.isArray(currentData.playoffs)
         ? currentData.playoffs
         : [];
@@ -602,8 +714,10 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
         playoffSection.appendChild(renderBracket(playoffRows));
       } else {
         const empty = document.createElement('p');
+
         empty.className = 'season-record-empty';
         empty.textContent = 'No Play Offs data available.';
+
         playoffSection.appendChild(empty);
       }
 
@@ -649,6 +763,10 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
       }
     }
 
+    /* =========================================================
+       SELECTOR EVENTS
+       ========================================================= */
+
     seasonSel.addEventListener('change', () => {
       populateDivisions();
 
@@ -668,6 +786,13 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
     });
 
     divisionSel.addEventListener('change', loadSelected);
+
+    /* =========================================================
+       INITIALISE
+
+       If ?season=... matches an available season/division,
+       select it automatically. Otherwise use the first option.
+       ========================================================= */
 
     async function initialise() {
       statusEl.textContent = 'Loading available seasons...';
@@ -689,9 +814,26 @@ trophy.style.setProperty('flex-shrink', '0', 'important');
         }
 
         populateSeasons();
-        populateDivisions();
+
+        const requestedOption = getRequestedSeasonOption();
+
+        if (requestedOption) {
+          seasonSel.value = requestedOption.season;
+          populateDivisions(requestedOption.division);
+        } else {
+          populateDivisions();
+        }
 
         seasonSel.disabled = false;
+
+        if (
+          requestedOption &&
+          divisionSel.value !== requestedOption.division
+        ) {
+          statusEl.textContent =
+            'The requested season and division could not be selected.';
+          return;
+        }
 
         await loadSelected();
       } catch (error) {
