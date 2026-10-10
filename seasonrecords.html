@@ -294,7 +294,7 @@ if (isPlayerColumn && text.trim()) {
     const trophy = document.createElement('span');
     trophy.className = 'season-winner-trophy';
     trophy.textContent = '🏆';
-    trophy.style.marginLeft = '6px';
+    trophy.style.cssText = 'display: inline-block; margin-left: 6px; white-space: nowrap; vertical-align: baseline;';
     trophy.setAttribute('aria-label', 'Season winner');
     trophy.title = 'Season winner';
 
