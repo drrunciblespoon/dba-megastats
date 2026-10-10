@@ -1262,35 +1262,30 @@ body.page-season-records .season-bracket-other-match
 }
 
 /* ------------------------------------------------------------
-   12.4. Error Page
+   Season Records error
    ------------------------------------------------------------ */
 
-
-```css
-/* ------------------------------------------------------------
-   Invalid Season / Lookup Error Messages
-   ------------------------------------------------------------ */
-
-/* Season Records error */
 body.page-season-records .season-record-error {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  width: 100%;
   max-width: 720px;
   margin: 24px auto;
-  text-align: center;
-
-  /* No border around the image's container */
+  padding: 0;
   border: none;
+  text-align: center;
 }
 
 body.page-season-records .season-record-error img {
   display: block;
+  float: none;
   width: auto;
   max-width: 100%;
   height: auto;
-  margin: 0;
+  margin: 0 auto;
   border: none;
   border-radius: 0;
   image-rendering: pixelated;
@@ -1298,47 +1293,65 @@ body.page-season-records .season-record-error img {
 
 body.page-season-records .season-record-error p {
   margin: 0;
-  color: var(--muted);
-  font-weight: 600;
   text-align: center;
 }
 
-/* Player Lookup error */
-body.page-player-lookup .pokemon-not-found {
+
+/* ------------------------------------------------------------
+   Player Lookup error
+   ------------------------------------------------------------ */
+
+body.page-individual #playerNotFound {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   width: 100%;
   margin: 24px auto;
   text-align: center;
 }
 
-body.page-player-lookup .pokemon-not-found img {
+body.page-individual #playerNotFound[hidden] {
+  display: none !important;
+}
+
+body.page-individual #playerNotFound img {
   display: block;
+  float: none;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
 }
 
-body.page-player-lookup .pokemon-not-found p {
+body.page-individual #playerNotFound p {
   margin: 0;
   text-align: center;
 }
 
-/* Pokémon Lookup error */
+
+/* ------------------------------------------------------------
+   Pokémon Lookup errors
+   ------------------------------------------------------------ */
+
 body.page-pokemon-lookup .pokemon-not-found {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   width: 100%;
   margin: 24px auto;
   text-align: center;
 }
 
+body.page-pokemon-lookup .pokemon-not-found[hidden] {
+  display: none !important;
+}
+
 body.page-pokemon-lookup .pokemon-not-found img {
   display: block;
+  float: none;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
@@ -1348,8 +1361,6 @@ body.page-pokemon-lookup .pokemon-not-found p {
   margin: 0;
   text-align: center;
 }
-```
-
 
 /* ============================================================
    13. MOBILE RESPONSIVE FOUNDATION
