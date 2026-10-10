@@ -1325,8 +1325,8 @@ body.page-individual #playerNotFound img {
   max-width: 100%;
   height: auto;
   margin: 0 auto;
-  transform: scale(0.5);
-  transform-origin: top center;
+  zoom: 0.5;
+  transform: none;
 }
 
 body.page-individual #playerNotFound p {
