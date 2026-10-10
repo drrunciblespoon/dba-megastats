@@ -189,6 +189,40 @@ const coachMvpCaption = DBA.$('coachMvpCaption');
       return m ? m[0] : String(season).trim();
     }
 
+    
+function getSeasonRecordsUrl(season, division) {
+  const seasonNumber = String(season || '').match(/\d+/)?.[0];
+
+  const seasonWords = {
+    1: 'one',
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+    6: 'six',
+    7: 'seven',
+    8: 'eight',
+    9: 'nine',
+    10: 'ten'
+  };
+
+  if (!seasonNumber) return null;
+
+  const seasonKey =
+    seasonWords[seasonNumber] || seasonNumber;
+
+  const divisionKey = String(division || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+
+  if (!divisionKey) return null;
+
+  return 'https://dbamegastats.xyz/seasonrecords.html?season='
+    + seasonKey
+    + divisionKey;
+}
+
+
     /* ============================================================
      * Hide everything
      * ============================================================ */
@@ -385,11 +419,26 @@ function toggleSeasonRow(row) {
         row.dataset.team = normaliseTeamName(pseudonym);
         row.dataset.season = normaliseSeason(season);
 
-        const seasonCell = document.createElement('td');
-        seasonCell.textContent =
-          division ? season + ' (' + division + ')' : season;
-        row.appendChild(seasonCell);
+        
+const seasonCell = document.createElement('td');
 
+const seasonLabel = division
+  ? season + ' (' + division + ')'
+  : season;
+
+const seasonUrl = getSeasonRecordsUrl(season, division);
+
+if (seasonUrl) {
+  const link = document.createElement('a');
+  link.href = seasonUrl;
+  link.textContent = seasonLabel;
+  seasonCell.appendChild(link);
+} else {
+  seasonCell.textContent = seasonLabel;
+}
+
+row.appendChild(seasonCell);
+        
         const pseudonymCell = document.createElement('td');
         pseudonymCell.textContent = pseudonym || '–';
         row.appendChild(pseudonymCell);
@@ -407,10 +456,15 @@ function toggleSeasonRow(row) {
             : playoff || '–';
         row.appendChild(playoffCell);
 
-        if (isCoach) {
-          row.title = 'Click to show draft';
-          row.addEventListener('click', () => toggleSeasonRow(row));
-        }
+        
+if (isCoach) {
+  row.title = 'Click to show draft';
+  row.addEventListener('click', event => {
+    if (event.target.closest('a')) return;
+    toggleSeasonRow(row);
+  });
+}
+
 
         tbody.appendChild(row);
 
