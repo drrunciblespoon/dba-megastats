@@ -425,79 +425,88 @@
       return line;
     }
 
-    function makePlayerCard(match, side) {
-      const card = document.createElement('div');
-      card.className = 'season-bracket-player';
+    
+function makePlayerCard(
+  coachName,
+  coachPseudonym,
+  battlerName,
+  battlerPseudonym,
+  score,
+  result
+) {
+  const card = document.createElement('div');
+  card.className = 'season-bracket-player';
 
-      const details = document.createElement('div');
-      details.className = 'season-bracket-player-details';
+  const details = document.createElement('div');
+  details.className = 'season-bracket-player-details';
 
-      const coachName = match['coach' + side];
-      const battlerName = match['battler' + side];
+  function appendRoleLine(name, pseudonym) {
+    const line = document.createElement('div');
+    line.className = 'season-bracket-player-name';
 
-      const coachAlias = match['coachAlias' + side];
-      const battlerAlias = match['battlerAlias' + side];
+    const cleanName = String(name || '').trim();
+    const cleanPseudonym = String(pseudonym || '').trim();
 
-      const hasCoach = String(coachName || '').trim() !== '';
-      const hasBattler = String(battlerName || '').trim() !== '';
+    if (cleanName) {
+      const link = DBA.playerLink(cleanName);
 
-      if (!hasCoach && !hasBattler) {
-        card.classList.add('is-tbd');
+      if (link) {
+        line.appendChild(link);
+      } else {
+        line.appendChild(document.createTextNode(cleanName));
       }
-
-      details.appendChild(
-        makeRoleLine('coach', coachName, coachAlias)
-      );
-
-      details.appendChild(
-        makeRoleLine('battler', battlerName, battlerAlias)
-      );
-
-      card.appendChild(details);
-
-      const meta = document.createElement('div');
-      meta.className = 'season-bracket-player-meta';
-
-      const score = match['score' + side];
-
-      if (String(score == null ? '' : score).trim() !== '') {
-        const scoreEl = document.createElement('span');
-
-        scoreEl.className = 'season-bracket-score';
-        scoreEl.textContent = String(score);
-
-        meta.appendChild(scoreEl);
-      }
-
-      const result = match['result' + side];
-
-      if (String(result || '').trim()) {
-        const resultEl = document.createElement('span');
-
-        resultEl.className = 'season-bracket-result';
-        resultEl.textContent = result;
-
-        const resultKey = String(result).trim().toLowerCase();
-
-        if (
-          ['w', 'win', 'won', 'winner', 'advanced'].includes(resultKey)
-        ) {
-          resultEl.classList.add('is-winner');
-        } else if (
-          ['l', 'loss', 'lost', 'loser', 'eliminated'].includes(resultKey)
-        ) {
-          resultEl.classList.add('is-loser');
-        }
-
-        meta.appendChild(resultEl);
-      }
-
-      if (meta.childNodes.length) {
-        card.appendChild(meta);
-      }
-
-      return card;
+    } else {
+      line.appendChild(document.createTextNode('TBD'));
+      card.classList.add('is-tbd');
     }
+
+    if (cleanPseudonym) {
+      line.appendChild(document.createTextNode(' / '));
+      line.appendChild(document.createTextNode(cleanPseudonym));
+    }
+
+    details.appendChild(line);
+  }
+
+  // Each name stays on the same line as its own alias.
+  appendRoleLine(coachName, coachPseudonym);
+  appendRoleLine(battlerName, battlerPseudonym);
+
+  card.appendChild(details);
+
+  const meta = document.createElement('div');
+  meta.className = 'season-bracket-player-meta';
+
+  if (String(score == null ? '' : score).trim() !== '') {
+    const scoreEl = document.createElement('span');
+    scoreEl.className = 'season-bracket-score';
+    scoreEl.textContent = String(score);
+    meta.appendChild(scoreEl);
+  }
+
+  if (String(result || '').trim()) {
+    const resultEl = document.createElement('span');
+    resultEl.className = 'season-bracket-result';
+    resultEl.textContent = result;
+
+    const resultKey = String(result).trim().toLowerCase();
+
+    if (['w', 'win', 'won', 'winner', 'advanced'].includes(resultKey)) {
+      resultEl.classList.add('is-winner');
+    } else if (['l', 'loss', 'lost', 'loser', 'eliminated'].includes(resultKey)) {
+      resultEl.classList.add('is-loser');
+    }
+
+    meta.appendChild(resultEl);
+  }
+
+  if (meta.childNodes.length) {
+    card.appendChild(meta);
+  }
+
+  return card;
+}
+
 
     function makeMatch(matchData) {
       const match = document.createElement('article');
