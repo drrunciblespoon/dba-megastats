@@ -100,7 +100,6 @@
       divisionSel.disabled = divisions.length === 0;
     }
 
-
     /* =========================================================
        MAIN SEASON TABLE
        ========================================================= */
@@ -160,7 +159,8 @@
 
           td.dataset.c = index;
 
-          const isPlayerColumn = hasRank && index === 0;
+          const isPlayerColumn =
+            (hasRank && index === 0);
 
           if (isPlayerColumn && text.trim()) {
             const link = DBA.playerLink(text);
@@ -205,7 +205,6 @@
 
       return wrapper;
     }
-
 
     /* =========================================================
        COACH / BATTLER TABS
@@ -252,9 +251,11 @@
       container.appendChild(tabs);
     }
 
-
     /* =========================================================
        PLAYOFF BRACKET
+
+       The API returns combined match objects. Each side contains
+       coach/battler names and pseudonyms plus one score/result.
        ========================================================= */
 
     function normaliseRound(value) {
@@ -263,50 +264,40 @@
         .replace(/[^a-z0-9]/g, '');
     }
 
-    function roundType(value) {
-      const round = normaliseRound(value);
+  function roundType(value) {
+  const round = normaliseRound(value);
 
-      if (
-        round === 'quarters' ||
-        round === 'quarter' ||
-        round === 'quarterfinal' ||
-        round === 'quarterfinals' ||
-        round === 'qf'
-      ) {
-        return 'quarters';
-      }
+  if (
+    round === 'quarters' ||
+    round === 'quarter' ||
+    round === 'quarterfinal' ||
+    round === 'quarterfinals' ||
+    round === 'qf'
+  ) {
+    return 'quarters';
+  }
 
-      if (
-        round === 'semi' ||
-        round === 'semis' ||
-        round === 'semifinal' ||
-        round === 'semifinals' ||
-        round === 'sf'
-      ) {
-        return 'semis';
-      }
+  if (
+    round === 'semi' ||
+    round === 'semis' ||
+    round === 'semifinal' ||
+    round === 'semifinals' ||
+    round === 'sf'
+  ) {
+    return 'semis';
+  }
 
-      if (
-        round === 'final' ||
-        round === 'finals'
-      ) {
-        return 'final';
-      }
+  if (
+    round === 'final' ||
+    round === 'finals'
+  ) {
+    return 'final';
+  }
 
-      return 'other';
-    }
+  return 'other';
+}
 
-    /**
-     * Renders one combined Coach / Battler entrant.
-     */
-    function makePlayerCard(
-      coachName,
-      coachPseudonym,
-      battlerName,
-      battlerPseudonym,
-      score,
-      result
-    ) {
+    function makePlayerCard(coachName, coachPseudonym, battlerName, battlerPseudonym, score, result) {
       const card = document.createElement('div');
       card.className = 'season-bracket-player';
 
@@ -318,54 +309,29 @@
 
       const coach = String(coachName || '').trim();
       const battler = String(battlerName || '').trim();
-
-      const names = [
-        coach || 'TBD',
-        battler || 'TBD'
-      ];
+      const names = [coach || 'TBD', battler || 'TBD'];
 
       names.forEach((name, index) => {
-        if (index) {
-          playerName.appendChild(
-            document.createTextNode(' / ')
-          );
-        }
-
+        if (index) playerName.appendChild(document.createTextNode(' / '));
         if (name === 'TBD') {
-          playerName.appendChild(
-            document.createTextNode(name)
-          );
-
+          playerName.appendChild(document.createTextNode(name));
           card.classList.add('is-tbd');
           return;
         }
-
         const link = DBA.playerLink(name);
-
-        if (link) {
-          playerName.appendChild(link);
-        } else {
-          playerName.appendChild(
-            document.createTextNode(name)
-          );
-        }
+        if (link) playerName.appendChild(link);
+        else playerName.appendChild(document.createTextNode(name));
       });
-
       details.appendChild(playerName);
 
       const aliases = [
         String(coachPseudonym || '').trim(),
         String(battlerPseudonym || '').trim()
       ];
-
       if (aliases.some(Boolean)) {
         const alias = document.createElement('div');
-
         alias.className = 'season-bracket-pseudonym';
-        alias.textContent = aliases
-          .map(value => value || '—')
-          .join(' / ');
-
+        alias.textContent = aliases.map(value => value || '—').join(' / ');
         details.appendChild(alias);
       }
 
@@ -376,71 +342,270 @@
 
       if (String(score == null ? '' : score).trim() !== '') {
         const scoreEl = document.createElement('span');
-
         scoreEl.className = 'season-bracket-score';
         scoreEl.textContent = String(score);
-
         meta.appendChild(scoreEl);
       }
 
       if (String(result || '').trim()) {
         const resultEl = document.createElement('span');
-
         resultEl.className = 'season-bracket-result';
         resultEl.textContent = result;
-
-        const resultKey = String(result)
-          .trim()
-          .toLowerCase();
-
-        if (
-          ['w', 'win', 'won', 'winner', 'advanced']
-            .includes(resultKey)
-        ) {
+        const resultKey = String(result).trim().toLowerCase();
+        if (['w', 'win', 'won', 'winner', 'advanced'].includes(resultKey)) {
           resultEl.classList.add('is-winner');
-        } else if (
-          ['l', 'loss', 'lost', 'loser', 'eliminated']
-            .includes(resultKey)
-        ) {
+        } else if (['l', 'loss', 'lost', 'loser', 'eliminated'].includes(resultKey)) {
           resultEl.classList.add('is-loser');
         }
-
         meta.appendChild(resultEl);
       }
 
-      if (meta.childNodes.length) {
-        card.appendChild(meta);
-      }
-
+      if (meta.childNodes.length) card.appendChild(meta);
       return card;
     }
 
-    /**
-     * Renders one match using the combined API response.
-     */
     function makeMatch(match) {
       const article = document.createElement('article');
       article.className = 'season-bracket-match';
 
-      const player1 = makePlayerCard(
-        match.coach1,
-        match.coachAlias1,
-        match.battler1,
-        match.battlerAlias1,
-        match.score1,
-        match.result1
-      );
-
-      const player2 = makePlayerCard(
-        match.coach2,
-        match.coachAlias2,
-        match.battler2,
-        match.battlerAlias2,
-        match.score2,
-        match.result2
-      );
-
-      article.appendChild(player1);
+      article.appendChild(makePlayerCard(
+        match.coach1, match.coachAlias1,
+        match.battler1, match.battlerAlias1,
+        match.score1, match.result1
+      ));
 
       const versus = document.createElement('div');
-      versus.className = 'season-bracket
+      versus.className = 'season-bracket-versus';
+      versus.textContent = 'VS';
+      article.appendChild(versus);
+
+      article.appendChild(makePlayerCard(
+        match.coach2, match.coachAlias2,
+        match.battler2, match.battlerAlias2,
+        match.score2, match.result2
+      ));
+      return article;
+    }
+
+    function makeBracketColumn(title, rows, emptyText) {
+      const column = document.createElement('div');
+
+      column.className = 'season-bracket-round';
+
+      const heading = document.createElement('h4');
+      heading.className = 'season-bracket-round-title';
+      heading.textContent = title;
+
+      column.appendChild(heading);
+
+      const matches = document.createElement('div');
+      matches.className = 'season-bracket-matches';
+
+      if (rows.length) {
+        rows.forEach(row => {
+          matches.appendChild(makeMatch(row));
+        });
+      } else {
+        const empty = document.createElement('p');
+
+        empty.className = 'season-bracket-empty';
+        empty.textContent = emptyText;
+
+        matches.appendChild(empty);
+      }
+
+      column.appendChild(matches);
+
+      return column;
+    }
+
+    function renderBracket(rows) {
+      const bracket = document.createElement('div');
+      bracket.className = 'season-bracket';
+      const groups = { quarters: [], semis: [], final: [], other: [] };
+
+      rows.forEach(match => {
+        const type = roundType(match.round);
+        (groups[type] || groups.other).push(match);
+      });
+
+      bracket.appendChild(makeBracketColumn('Quarter-finals', groups.quarters, 'No quarter-final matches recorded.'));
+      bracket.appendChild(makeBracketColumn('Semi-finals', groups.semis, 'No semi-final matches recorded.'));
+      bracket.appendChild(makeBracketColumn('Final', groups.final, 'No final recorded.'));
+
+      if (groups.other.length) {
+        const otherSection = document.createElement('section');
+        otherSection.className = 'season-bracket-other';
+        const heading = document.createElement('h4');
+        heading.textContent = 'Other matches';
+        otherSection.appendChild(heading);
+        const matches = document.createElement('div');
+        matches.className = 'season-bracket-other-matches';
+        groups.other.forEach(match => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'season-bracket-other-match';
+          const round = document.createElement('div');
+          round.className = 'season-bracket-other-round';
+          round.textContent = match.round || 'Match';
+          wrapper.appendChild(round);
+          wrapper.appendChild(makeMatch(match));
+          matches.appendChild(wrapper);
+        });
+        otherSection.appendChild(matches);
+        bracket.appendChild(otherSection);
+      }
+      return bracket;
+    }
+
+    /* =========================================================
+       RENDER THE PAGE
+       ========================================================= */
+
+    function renderTables() {
+      if (!currentData) return;
+
+      root.replaceChildren();
+
+      // Main Season.
+      const mainSection = document.createElement('section');
+      mainSection.className = 'season-record-section';
+
+      const mainHeading = document.createElement('h3');
+      mainHeading.textContent = 'Main Season';
+
+      mainSection.appendChild(mainHeading);
+      renderRoleTabs(mainSection);
+
+      const mainData = currentData[activeRole];
+
+      const mainTable = makeTable(
+        mainData.headers,
+        mainData.rows,
+        'season-main-table'
+      );
+
+      mainSection.appendChild(makeTableWrapper(mainTable));
+      root.appendChild(mainSection);
+
+      // Play Offs bracket.
+      const playoffSection = document.createElement('section');
+      playoffSection.className = 'season-record-section';
+
+      const playoffHeading = document.createElement('h3');
+      playoffHeading.textContent = 'Play Offs';
+
+      playoffSection.appendChild(playoffHeading);
+
+      // Play Offs are a shared Coach/Battler bracket, independent of
+      // the selected role in the Main Season standings.
+      const playoffRows = Array.isArray(currentData.playoffs)
+        ? currentData.playoffs
+        : [];
+
+      if (playoffRows.length) {
+        playoffSection.appendChild(renderBracket(playoffRows));
+      } else {
+        const empty = document.createElement('p');
+        empty.className = 'season-record-empty';
+        empty.textContent = 'No Play Offs data available.';
+        playoffSection.appendChild(empty);
+      }
+
+      root.appendChild(playoffSection);
+    }
+
+    /* =========================================================
+       LOAD SELECTED SEASON
+       ========================================================= */
+
+    async function loadSelected() {
+      const selection = selectedOption();
+
+      if (!selection) return;
+
+      const mine = ++requestToken;
+
+      statusEl.textContent = 'Loading season records...';
+
+      root.replaceChildren();
+      currentData = null;
+
+      try {
+        const data = await DBA.call(
+          'seasonRecordsGetData',
+          selection.season,
+          selection.division
+        );
+
+        if (mine !== requestToken) return;
+
+        currentData = data;
+        activeRole = 'coach';
+
+        renderTables();
+
+        statusEl.textContent = '';
+      } catch (error) {
+        if (mine !== requestToken) return;
+
+        statusEl.textContent =
+          'Error loading season records: ' + error.message;
+      }
+    }
+
+    seasonSel.addEventListener('change', () => {
+      populateDivisions();
+
+      if (divisionSel.disabled || !divisionSel.value) {
+        requestToken++;
+        currentData = null;
+
+        root.replaceChildren();
+
+        statusEl.textContent =
+          'No divisions available for this season.';
+
+        return;
+      }
+
+      loadSelected();
+    });
+
+    divisionSel.addEventListener('change', loadSelected);
+
+    async function initialise() {
+      statusEl.textContent = 'Loading available seasons...';
+
+      try {
+        options = await DBA.call('seasonRecordsGetOptions');
+
+        if (!options.length) {
+          seasonSel.replaceChildren();
+          divisionSel.replaceChildren();
+
+          seasonSel.disabled = true;
+          divisionSel.disabled = true;
+
+          statusEl.textContent =
+            'No season records were found in SeasonInput.';
+
+          return;
+        }
+
+        populateSeasons();
+        populateDivisions();
+
+        seasonSel.disabled = false;
+
+        await loadSelected();
+      } catch (error) {
+        statusEl.textContent =
+          'Error loading seasons: ' + error.message;
+      }
+    }
+
+    initialise();
+  </script>
+
+</body>
+</html>
