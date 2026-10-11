@@ -83,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
   header.className = 'site-header';
   const SPRITE = 'https://img.pokemondb.net/sprites/ruby-sapphire/normal/bayleef.png';
 
-
 header.innerHTML =
   '<img class="header-sprite header-sprite-left" src="' + SPRITE + '" alt="" aria-hidden="true">' +
   '<h1 class="site-title">' +
@@ -92,7 +91,9 @@ header.innerHTML =
   '</h1>' +
   '<img class="header-sprite header-sprite-right" src="' + SPRITE + '" alt="" aria-hidden="true">' +
   '<div class="header-support-links">' +
-    '<a class="header-support-link header-trans-flag" href="https://goodlawproject.org/campaign/trans-fighting-fund/" target="_blank" rel="noopener noreferrer" aria-label="Support the Trans Fighting Fund" title="Support the Trans Fighting Fund">🏳️‍⚧️</a>' +
+    '<a class="header-support-link header-trans-flag" href="https://goodlawproject.org/campaign/trans-fighting-fund/" target="_blank" rel="noopener noreferrer" aria-label="Support the Trans Fighting Fund" title="Support the Trans Fighting Fund">' +
+      '<img src="https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/transflagemoji.png" alt="Trans flag">' +
+    '</a>' +
     '<a class="header-support-link header-trans-football" href="https://www.crowdfunder.co.uk/p/inclusive11s-1" target="_blank" rel="noopener noreferrer" aria-label="Support Inclusive 11s" title="Support Inclusive 11s">' +
       '<img src="https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/transfootball.png" alt="Support Inclusive 11s">' +
     '</a>' +
