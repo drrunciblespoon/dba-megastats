@@ -333,6 +333,19 @@
         .toLowerCase();
     }
 
+function formatAccolade(text) {
+  const value = String(text || '').trim();
+
+  // Only reformat text that is entirely uppercase.
+  if (!/[A-Z]/.test(value) || value !== value.toUpperCase()) {
+    return value;
+  }
+
+  return value
+    .toLowerCase()
+    .replace(/\b[a-z]/g, letter => letter.toUpperCase());
+}
+
     /*
      * Display selected Pokémon
      */
@@ -497,7 +510,7 @@
 
           const caption = document.createElement('div');
           caption.className = 'pokemon-winner';
-          caption.textContent = topper;
+          caption.textContent = formatAccolade(topper);
 
           trophyList.appendChild(caption);
         });
