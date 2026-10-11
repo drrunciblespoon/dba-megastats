@@ -1709,22 +1709,6 @@ body.page-pokemon-lookup .pokemon-not-found p {
 
 }
 
-
-body.page-individual #seasons td:first-child {
-  background-image: none !important;
-}
-
-body.page-individual #seasons td:first-child::after {
-  content: "▼";
-  display: inline-block;
-  float: right;
-  color: #9aa0a8;
-  font-size: 12px;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-
 /* ============================================================
    END OF LAYOUT.CSS
    ============================================================ */
