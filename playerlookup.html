@@ -782,9 +782,34 @@ const countRealSeasons = player => {
 
 };
 
-const totalSeasons =
+let totalSeasons =
   countRealSeasons(group.coach) +
   countRealSeasons(group.battler);
+
+// If the player appeared in both roles during the same season,
+// count that season only once.
+if (hasBoth) {
+  const coachSeasons = new Set(
+    (group.coach.s || [])
+      .filter(([season]) =>
+        !String(season).trim().toUpperCase().startsWith('SUB')
+      )
+      .map(([season]) => normaliseSeason(season))
+  );
+
+  const battlerSeasons = new Set(
+    (group.battler.s || [])
+      .filter(([season]) =>
+        !String(season).trim().toUpperCase().startsWith('SUB')
+      )
+      .map(([season]) => normaliseSeason(season))
+  );
+
+  const sharedSeasons = [...coachSeasons]
+    .filter(season => battlerSeasons.has(season));
+
+  totalSeasons -= sharedSeasons.length;
+}
 
 
       // Keep the current tab if this player has it; otherwise fall back.
