@@ -188,6 +188,18 @@ body.page-home .intro a:hover {
    04. GEN 9 STATS
    ============================================================ */
 
+
+/* ------------------------------------------------------------
+   Stats page — sticky table headers
+   ------------------------------------------------------------ */
+
+body.page-stats #root table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--table-header-bg, #222);
+}
+
 body.page-stats th:nth-child(1),
 body.page-stats th:nth-child(2) {
   width: 6%;
