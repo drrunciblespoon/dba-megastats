@@ -938,33 +938,39 @@ body.page-sheets td.season {
 }
 
 
-/* ============================================================
-   12. SEASON RECORDS
-   ============================================================ */
 
-/* Main sections and headings. */
+/* ------------------------------------------------------------
+   12.0. Main Season Layout: Standings + MVP
+   ------------------------------------------------------------ */
 
-body.page-season-records .season-record-controls {
-  justify-content: center;
-  margin-top: 12px;
-}
-
-body.page-season-records .season-record-controls > div {
-  min-width: 240px;
-}
-
-body.page-season-records .season-record-section {
+body.page-season-records .season-main-content {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
   width: 100%;
-  max-width: 1250px;
-  margin: 28px auto 0;
-  text-align: left;
+  min-width: 0;
 }
 
-body.page-season-records .season-record-section h3 {
-  margin: 0 0 10px;
-  text-align: left;
+body.page-season-records .season-standings {
+  min-width: 0;
+  max-width: 100%;
 }
 
+body.page-season-records .season-mvp-aside {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+body.page-season-records .season-mvp-aside .season-mvp {
+  align-self: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+}
 
 /* ------------------------------------------------------------
    12.1. Main Season Layout: Standings + MVP
