@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,35 +30,20 @@
 
     <div id="status"></div>
 
-<div
-  id="pokemonNotFound"
-  class="pokemon-not-found"
-  hidden
->
-  <img
-    src="https://projectpokemon.org/home/uploads/monthly_2020_04/567051636_large.RTDXPortraitFaint.png.686a7c36c82ea0440c4b2fa7e01735cb.png"
-    alt=""
-  >
+    <div id="pokemonNotFound" class="pokemon-not-found" hidden>
+      <img
+        src="https://projectpokemon.org/home/uploads/monthly_2020_04/567051636_large.RTDXPortraitFaint.png.686a7c36c82ea0440c4b2fa7e01735cb.png"
+        alt=""
+      >
+      <p>Hmm, that Pokémon doesn't appear in our archives.</p>
+    </div>
 
-  <p>
-    Hmm, that Pokémon doesn't appear in our archives.
-  </p>
-</div>
+    <div id="notAPokemon" class="pokemon-not-found" hidden>
+      <img src="fakegrassmon.jpg" alt="">
+      <p>What? That's not even a Pokémon!</p>
+    </div>
 
-<div
-  id="notAPokemon"
-  class="pokemon-not-found"
-  hidden
->
-  <img src="fakegrassmon.jpg" alt="">
-
-  <p>
-    What? That's not even a Pokémon!
-  </p>
-</div>
-
-<section id="pokemonDetails" hidden>
-
+    <section id="pokemonDetails" hidden>
 
       <div class="pokemon-lookup-header">
 
@@ -83,11 +69,7 @@
 
       </div>
 
-
-      <!-- =========================================================
-           Draft History
-           ========================================================= -->
-
+      <!-- Draft History -->
       <section class="pokemon-section">
 
         <h3>Draft History</h3>
@@ -95,35 +77,29 @@
         <div class="wrap">
 
           <table class="nosort pokemon-draft-table">
-
-           <thead>
-  <tr>
-    <th>Player Name</th>
-    <th>Season</th>
-    <th>GP</th>
-    <th>Kills</th>
-    <th>Deaths</th>
-    <th>Diff</th>
-    <th>Wins</th>
-    <th>Losses</th>
-    <th>WR.</th>
-    <th>Tera</th>
-  </tr>
-</thead>
+            <thead>
+              <tr>
+                <th>Player Name</th>
+                <th>Season</th>
+                <th>GP</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+                <th>Diff</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>WR.</th>
+                <th>Tera</th>
+              </tr>
+            </thead>
 
             <tbody id="draftBody"></tbody>
-
           </table>
 
         </div>
 
       </section>
 
-
-      <!-- =========================================================
-           Commonly Drafted With
-           ========================================================= -->
-
+      <!-- Commonly Drafted With -->
       <section
         class="pokemon-section"
         id="commonPartnersSection"
@@ -135,7 +111,6 @@
         <div class="wrap">
 
           <table class="nosort pokemon-partners-table">
-
             <thead>
               <tr>
                 <th>Pokémon</th>
@@ -146,18 +121,13 @@
             </thead>
 
             <tbody id="commonPartnersBody"></tbody>
-
           </table>
 
         </div>
 
       </section>
 
-
-      <!-- =========================================================
-           Overall Record
-           ========================================================= -->
-
+      <!-- Overall Record -->
       <section class="pokemon-section">
 
         <h3>Overall Record</h3>
@@ -189,7 +159,6 @@
           </div>
 
           <table class="nosort totals pokemon-record-table">
-
             <thead>
               <tr>
                 <th>TD.</th>
@@ -206,7 +175,6 @@
             </thead>
 
             <tbody id="recordBody"></tbody>
-
           </table>
 
         </div>
@@ -217,13 +185,9 @@
 
   </main>
 
-
   <script>
-
     /*
-     * ============================================================
      * Elements
-     * ============================================================
      */
 
     const pokemonSel = DBA.$('pokemonSel');
@@ -242,22 +206,16 @@
     const commonPartnersSection = DBA.$('commonPartnersSection');
     const commonPartnersBody = DBA.$('commonPartnersBody');
 
-
     /*
-     * ============================================================
      * State
-     * ============================================================
      */
 
     let pokemonData = [];
     let selectedRecordType = 'regular';
     let selectedPokemon = null;
 
-
     /*
-     * ------------------------------------------------------------
      * Add a table cell
-     * ------------------------------------------------------------
      */
 
     function addCell(row, value, className) {
@@ -278,14 +236,10 @@
       row.appendChild(cell);
 
       return cell;
-
     }
 
-
     /*
-     * ------------------------------------------------------------
      * Draw Overall Record
-     * ------------------------------------------------------------
      */
 
     function drawRecord(record) {
@@ -301,7 +255,6 @@
         cell.textContent = 'No overall record found.';
 
         return;
-
       }
 
       const row = recordBody.insertRow();
@@ -316,14 +269,10 @@
       addCell(row, record.wr, 'num');
       addCell(row, record.kpg, 'num');
       addCell(row, record.sr, 'num');
-
     }
 
-
     /*
-     * ------------------------------------------------------------
      * Update Overall Record Tab
-     * ------------------------------------------------------------
      */
 
     function updateRecordTab() {
@@ -349,14 +298,10 @@
         'active',
         selectedRecordType === 'tera'
       );
-
     }
 
-
     /*
-     * ------------------------------------------------------------
      * Record Tab Buttons
-     * ------------------------------------------------------------
      */
 
     regularRecordTab.onclick = () => {
@@ -370,17 +315,15 @@
     };
 
     /*
-     * ------------------------------------------------------------
-     * Display selected Pokémon
-     * ------------------------------------------------------------
+     * Name helpers
      */
 
-        function hideNotFound() {
+    function hideNotFound() {
       pokemonNotFoundEl.hidden = true;
       notAPokemonEl.hidden = true;
     }
 
-    // Accent- and case-insensitive, so "flabebe" matches "Flabébé"
+    // Accent- and case-insensitive, so "flabebe" matches "Flabébé".
     function normaliseName(s) {
       return String(s)
         .normalize('NFD')
@@ -388,44 +331,39 @@
         .trim()
         .toLowerCase();
     }
-    
+
+    /*
+     * Display selected Pokémon
+     */
+
     function showPokemon(pokemon) {
-  
+
       hideNotFound();
 
       if (!pokemon) {
-
         selectedPokemon = null;
         detailsEl.hidden = true;
         recordBody.innerHTML = '';
-
         return;
-
       }
 
       selectedPokemon = pokemon;
       selectedRecordType = 'regular';
-
       detailsEl.hidden = false;
 
-
       /*
-       * ----------------------------------------------------------
        * Header
-       * ----------------------------------------------------------
        */
 
       pokemonNameEl.textContent = pokemon.name;
 
       pokemonSpriteEl.src = pokemon.sprite || '';
       pokemonSpriteEl.alt = pokemon.name;
-      pokemonSpriteEl.style.display = pokemon.sprite ? 'block' : 'none';
-
+      pokemonSpriteEl.style.display =
+        pokemon.sprite ? 'block' : 'none';
 
       /*
-       * ----------------------------------------------------------
        * Legality
-       * ----------------------------------------------------------
        */
 
       legalityEl.innerHTML = '';
@@ -437,14 +375,10 @@
 
       legalityEl.appendChild(legalItem);
 
-      /*
-       * Mega Pokémon do not need a Tera Banned line.
-       */
-
+      // Mega Pokémon do not need a Tera Banned line.
       if (!pokemon.name.includes('-Mega')) {
 
         const teraBannedItem = document.createElement('div');
-
         const teraBanned = Number(pokemon.teraBanned) || 0;
 
         teraBannedItem.textContent =
@@ -455,14 +389,10 @@
               }`;
 
         legalityEl.appendChild(teraBannedItem);
-
       }
 
-
       /*
-       * ----------------------------------------------------------
        * Championships
-       * ----------------------------------------------------------
        */
 
       championshipsEl.innerHTML = '';
@@ -472,21 +402,14 @@
           ? pokemon.championships
           : [];
 
-      /*
-       * Only display the championship container when
-       * the Pokémon actually has one or more trophies.
-       */
-
       championshipsEl.style.display =
         championships.length ? 'flex' : 'none';
 
       if (championships.length) {
 
-        // One row containing every trophy
         const trophyRow = document.createElement('div');
         trophyRow.className = 'pokemon-trophy-row';
 
-        // One line per winner underneath
         const winnerList = document.createElement('div');
         winnerList.className = 'pokemon-winner-list';
 
@@ -497,241 +420,97 @@
           trophy.textContent = '🏆';
           trophyRow.appendChild(trophy);
 
+          const winner = document.createElement('div');
+          winner.className = 'pokemon-winner';
+
+          const playerLink = DBA.playerLink(championship.player);
+
+          if (playerLink) {
+            playerLink.style.color = 'inherit';
+            playerLink.style.textDecoration = 'none';
+            winner.appendChild(playerLink);
+          } else {
+            winner.appendChild(
+              document.createTextNode(championship.player || '–')
+            );
+          }
+
           const teraText = championship.tera ? ' — Tera' : '';
 
-          const winner = document.createElement('div');
-winner.className = 'pokemon-winner';
+          winner.appendChild(
+            document.createTextNode(
+              ` - Season ${championship.season} (${championship.division})${teraText}`
+            )
+          );
 
-const playerLink =
-  DBA.playerLink(championship.player);
-
-if (playerLink) {
-
-  playerLink.style.color =
-    'inherit';
-
-  playerLink.style.textDecoration =
-    'none';
-
-  winner.appendChild(playerLink);
-
-} else {
-
-  winner.appendChild(
-    document.createTextNode(
-      championship.player || '–'
-    )
-  );
-
-}
-
-
-winner.appendChild(
-  document.createTextNode(
-    ` - Season ${championship.season} (${championship.division})${teraText}`
-  )
-);
-
-winnerList.appendChild(winner);
-
-
+          winnerList.appendChild(winner);
         });
 
         championshipsEl.appendChild(trophyRow);
         championshipsEl.appendChild(winnerList);
-
       }
 
+      /*
+       * Draft History
+       */
+
+      draftBody.innerHTML = '';
+
+      const drafts =
+        Array.isArray(pokemon.drafts)
+          ? pokemon.drafts
+          : [];
+
+      if (drafts.length === 0) {
+
+        const row = draftBody.insertRow();
+        const cell = row.insertCell();
+
+        cell.colSpan = 10;
+        cell.textContent = 'No draft history found.';
+
+      } else {
+
+        drafts.forEach(draft => {
+
+          const row = draftBody.insertRow();
+
+          // Player Name
+          const playerCell = row.insertCell();
+          const playerLink = DBA.playerLink(draft.player);
+
+          if (playerLink) {
+            playerCell.appendChild(playerLink);
+          } else {
+            playerCell.textContent = draft.player || '–';
+          }
+
+          // Season
+          const seasonText =
+            draft.season
+              ? `Season ${draft.season} (${draft.division})`
+              : draft.division
+                ? `(${draft.division})`
+                : '–';
+
+          addCell(row, seasonText);
+
+          // GP, Kills, Deaths, Diff, Wins, Losses, WR.
+          addCell(row, draft.appearances, 'num');
+          addCell(row, draft.kills, 'num');
+          addCell(row, draft.deaths, 'num');
+          addCell(row, draft.diff, 'num');
+          addCell(row, draft.wins, 'num');
+          addCell(row, draft.losses, 'num');
+          addCell(row, draft.wr, 'num');
+
+          // Tera
+          addCell(row, draft.tera ? 'Tera' : '');
+        });
+      }
 
       /*
- * ----------------------------------------------------------
- * Draft History
- * ----------------------------------------------------------
- */
-
-draftBody.innerHTML = '';
-
-const drafts =
-  Array.isArray(pokemon.drafts)
-    ? pokemon.drafts
-    : [];
-
-if (drafts.length === 0) {
-
-  const row = draftBody.insertRow();
-  const cell = row.insertCell();
-
-  cell.colSpan = 10;
-  cell.textContent = 'No draft history found.';
-
-} else {
-
-  drafts.forEach(draft => {
-
-    const row = draftBody.insertRow();
-
-
-    /*
-     * --------------------------------------------------------
-     * Player Name
-     * --------------------------------------------------------
-     */
-
-    const playerCell =
-      row.insertCell();
-
-    const playerLink =
-      DBA.playerLink(draft.player);
-
-    if (playerLink) {
-
-      playerCell.appendChild(
-        playerLink
-      );
-
-    } else {
-
-      playerCell.textContent =
-        draft.player || '–';
-
-    }
-
-
-    /*
-     * --------------------------------------------------------
-     * Season
-     * --------------------------------------------------------
-     *
-     * Display as:
-     *
-     * Season 4 (Frontier)
-     * Season 7 (Tower)
-     */
-
-    const seasonText =
-      draft.season
-        ? `Season ${draft.season} (${draft.division})`
-        : draft.division
-          ? `(${draft.division})`
-          : '–';
-
-    addCell(
-      row,
-      seasonText
-    );
-
-
-    /*
-     * --------------------------------------------------------
-     * GP
-     * --------------------------------------------------------
-     */
-
-    addCell(
-      row,
-      draft.appearances,
-      'num'
-    );
-
-
-    /*
-     * --------------------------------------------------------
-     * Kills
-     * --------------------------------------------------------
-     */
-
-    addCell(
-      row,
-      draft.kills,
-      'num'
-    );
-
-
-    /*
-     * --------------------------------------------------------
-     * Deaths
-     * --------------------------------------------------------
-     */
-
-    addCell(
-      row,
-      draft.deaths,
-      'num'
-    );
-
-
-    /*
-     * --------------------------------------------------------
-     * Diff
-     * --------------------------------------------------------
-     */
-
-    addCell(
-      row,
-      draft.diff,
-      'num'
-    );
-
-
-    /*
-     * --------------------------------------------------------
-     * Wins
-     * --------------------------------------------------------
-     */
-
-    addCell(
-      row,
-      draft.wins,
-      'num'
-    );
-
-
-    /*
-     * --------------------------------------------------------
-     * Losses
-     * --------------------------------------------------------
-     */
-
-    addCell(
-      row,
-      draft.losses,
-      'num'
-    );
-
-
-    /*
-     * --------------------------------------------------------
-     * WR.
-     * --------------------------------------------------------
-     */
-
-    addCell(
-      row,
-      draft.wr,
-      'num'
-    );
-
-
-    /*
-     * --------------------------------------------------------
-     * Tera
-     * --------------------------------------------------------
-     */
-
-    addCell(
-      row,
-      draft.tera ? 'Tera' : ''
-    );
-
-  });
-
-}
-
-
-      /*
-       * ----------------------------------------------------------
        * Commonly Drafted With
-       * ----------------------------------------------------------
        */
 
       commonPartnersBody.innerHTML = '';
@@ -787,53 +566,40 @@ if (drafts.length === 0) {
 
           const usersCell = row.insertCell();
 
-users.forEach((user, index) => {
+          users.forEach((user, index) => {
 
-  const link = DBA.playerLink(user);
+            const link = DBA.playerLink(user);
 
-  if (link) {
-    usersCell.appendChild(link);
-  } else {
-    usersCell.appendChild(
-      document.createTextNode(user)
-    );
-  }
+            if (link) {
+              usersCell.appendChild(link);
+            } else {
+              usersCell.appendChild(
+                document.createTextNode(user)
+              );
+            }
 
-  if (users.length === 2 && index === 0) {
+            if (users.length === 2 && index === 0) {
+              usersCell.appendChild(
+                document.createTextNode(' and ')
+              );
+            } else if (users.length > 2) {
 
-    usersCell.appendChild(
-      document.createTextNode(' and ')
-    );
-
-  } else if (users.length > 2) {
-
-    if (index < users.length - 2) {
-
-      usersCell.appendChild(
-        document.createTextNode(', ')
-      );
-
-    } else if (index === users.length - 2) {
-
-      usersCell.appendChild(
-        document.createTextNode(' and ')
-      );
-
-    }
-
-  }
-
-});
-
+              if (index < users.length - 2) {
+                usersCell.appendChild(
+                  document.createTextNode(', ')
+                );
+              } else if (index === users.length - 2) {
+                usersCell.appendChild(
+                  document.createTextNode(' and ')
+                );
+              }
+            }
+          });
         });
-
       }
 
-
       /*
-       * ----------------------------------------------------------
        * Tera Record Tab
-       * ----------------------------------------------------------
        *
        * Only show the Tera tab when this Pokémon has actually
        * been drafted as a Tera Pokémon.
@@ -845,304 +611,230 @@ users.forEach((user, index) => {
       teraRecordTab.style.display =
         hasTeraDraft ? '' : 'none';
 
-
       /*
-       * ----------------------------------------------------------
        * Overall Record
-       * ----------------------------------------------------------
        */
 
       updateRecordTab();
-
     }
 
-/*
- * ------------------------------------------------------------
- * Select Pokémon from URL parameter
- * ------------------------------------------------------------
- */
+    /*
+     * Select Pokémon from URL parameter
+     */
 
-function selectPokemonFromUrl() {
+    function selectPokemonFromUrl() {
 
-  const params = new URLSearchParams(window.location.search);
-  const requestedName = params.get('pokemon');
+      const params = new URLSearchParams(window.location.search);
+      const requestedName = params.get('pokemon');
 
-  if (!requestedName) {
-    return;
-  }
+      if (!requestedName) {
+        return;
+      }
 
-    const wanted =
-    normaliseName(requestedName);
+      const wanted = normaliseName(requestedName);
 
-  
-  let index =
-    pokemonData.findIndex(
-      pokemon =>
-        normaliseName(pokemon.name) === wanted
-    );
-
-  // If the base form isn't in the lookup data,
-  // try its (T) form instead.
-  if (index === -1) {
-    index =
-      pokemonData.findIndex(
-        pokemon =>
-          normaliseName(pokemon.name) === `${wanted} (t)`
+      // First try the exact requested name.
+      let index = pokemonData.findIndex(
+        pokemon => normaliseName(pokemon.name) === wanted
       );
-  }
 
+      // If the base form is absent, try its (T) form.
+      if (index === -1) {
+        index = pokemonData.findIndex(
+          pokemon => normaliseName(pokemon.name) === `${wanted} (t)`
+        );
+      }
 
-    if (index === -1) {
+      if (index === -1) {
 
-    console.warn(
-      'Pokémon from URL was not found:',
-      requestedName
-    );
+        console.warn(
+          'Pokémon from URL was not found:',
+          requestedName
+        );
 
-    detailsEl.hidden = true;
-    hideNotFound();
+        detailsEl.hidden = true;
+        hideNotFound();
 
-    DBA.call('pokemonNamesGetAll')
+        DBA.call('pokemonNamesGetAll')
+
+          .then(data => {
+
+            // The user may have picked something from the dropdown meanwhile.
+            if (selectedPokemon) return;
+
+            const names =
+              data && Array.isArray(data.names)
+                ? data.names
+                : [];
+
+            // Check both the requested name and its possible (T) form.
+            const isPokemon = names.some(n => {
+              const name = normaliseName(n);
+
+              return name === wanted ||
+                     name === `${wanted} (t)`;
+            });
+
+            if (isPokemon) {
+              pokemonNotFoundEl.hidden = false;
+            } else {
+              notAPokemonEl.hidden = false;
+            }
+          })
+
+          .catch(error => {
+
+            console.error(
+              'Pokémon name check failed:',
+              error
+            );
+
+            if (!selectedPokemon) {
+              pokemonNotFoundEl.hidden = false;
+            }
+          });
+
+        return;
+      }
+
+      hideNotFound();
+
+      pokemonSel.value = String(index);
+
+      handlePokemonSelection();
+    }
+
+    /*
+     * Update Pokémon URL
+     */
+
+    function updatePokemonUrl(pokemon) {
+
+      const url = new URL(window.location.href);
+
+      if (pokemon) {
+        url.searchParams.set('pokemon', pokemon.name);
+      } else {
+        url.searchParams.delete('pokemon');
+      }
+
+      window.history.replaceState({}, '', url);
+    }
+
+    /*
+     * Load all Pokémon lookup data
+     */
+
+    DBA.call('pokemonLookupGetAll')
 
       .then(data => {
 
-        // The user may have picked something from the dropdown meanwhile.
-        if (selectedPokemon) return;
+        console.log(
+          'pokemonLookupGetAll returned:',
+          data
+        );
 
-        const names =
-          data && Array.isArray(data.names)
-            ? data.names
-            : [];
+        pokemonData =
+          (data.pokemon || []).map(pokemon => ({
 
-        const isPokemon =
-          names.some(
-            n =>
-              normaliseName(n) ===
-              normaliseName(requestedName)
+            ...pokemon,
+
+            championships:
+              Array.isArray(pokemon.championships)
+                ? pokemon.championships
+                : [],
+
+            drafts:
+              Array.isArray(pokemon.drafts)
+                ? pokemon.drafts
+                : []
+          }));
+
+        pokemonSel.innerHTML = '';
+
+        const first = document.createElement('option');
+        first.value = '';
+        first.textContent = 'Select a Pokémon...';
+
+        pokemonSel.appendChild(first);
+
+        pokemonData.forEach((pokemon, index) => {
+
+          const option = document.createElement('option');
+
+          option.value = index;
+          option.textContent = pokemon.name;
+
+          pokemonSel.appendChild(option);
+        });
+
+        console.log(
+          'Loaded Pokémon:',
+          pokemonData.length
+        );
+
+        if (pokemonData.length === 0) {
+
+          console.error(
+            'No Pokémon were found in PokemonInput.'
           );
 
-        if (isPokemon) {
-          pokemonNotFoundEl.hidden = false;   // real Pokémon, not in the archives
-        } else {
-          notAPokemonEl.hidden = false;       // not a Pokémon at all
+          statusEl.textContent = 'No Pokémon data found.';
+
+          return;
         }
 
+        // Start with no Pokémon selected unless a URL parameter exists.
+        detailsEl.hidden = true;
+
+        selectPokemonFromUrl();
       })
 
       .catch(error => {
 
         console.error(
-          'Pokémon name check failed:',
+          'Error loading Pokémon data:',
           error
         );
 
-        // If the check fails, fall back to the standard message.
-        if (!selectedPokemon) {
-          pokemonNotFoundEl.hidden = false;
-        }
+        pokemonSel.innerHTML = '';
 
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Unable to load Pokémon';
+
+        pokemonSel.appendChild(option);
+
+        statusEl.textContent =
+          'Error loading Pokémon: ' + error.message;
       });
 
-    return;
-
-  }
-
-  hideNotFound();
-
-  pokemonSel.value = String(index);
-
-  handlePokemonSelection();
-
-}
-
-    function updatePokemonUrl(pokemon) {
-
-  const url =
-    new URL(window.location.href);
-
-  if (pokemon) {
-
-    url.searchParams.set(
-      'pokemon',
-      pokemon.name
-    );
-
-  } else {
-
-    url.searchParams.delete('pokemon');
-
-  }
-
-  window.history.replaceState(
-    {},
-    '',
-    url
-  );
-
-}
-
-
-   /*
- * ------------------------------------------------------------
- * Load all Pokémon lookup data
- * ------------------------------------------------------------
- */
-
-DBA.call('pokemonLookupGetAll')
-
-  .then(data => {
-
-    console.log(
-      'pokemonLookupGetAll returned:',
-      data
-    );
-
-    pokemonData =
-      (data.pokemon || []).map(pokemon => ({
-
-        ...pokemon,
-
-        championships:
-          Array.isArray(pokemon.championships)
-            ? pokemon.championships
-            : [],
-
-        drafts:
-          Array.isArray(pokemon.drafts)
-            ? pokemon.drafts
-            : []
-
-      }));
-
-    pokemonSel.innerHTML = '';
-
-    const first =
-      document.createElement('option');
-
-    first.value = '';
-    first.textContent =
-      'Select a Pokémon...';
-
-    pokemonSel.appendChild(first);
-
-
-    pokemonData.forEach((pokemon, index) => {
-
-      const option =
-        document.createElement('option');
-
-      option.value = index;
-      option.textContent = pokemon.name;
-
-      pokemonSel.appendChild(option);
-
-    });
-
-
-    console.log(
-      'Loaded Pokémon:',
-      pokemonData.length
-    );
-
-
-    if (pokemonData.length === 0) {
-
-      console.error(
-        'No Pokémon were found in PokemonInput.'
-      );
-
-      statusEl.textContent =
-        'No Pokémon data found.';
-
-      return;
-
-    }
-
-
     /*
-     * Start with no Pokémon selected unless
-     * a Pokémon was supplied in the URL.
-     */
-
-    detailsEl.hidden = true;
-
-
-    /*
-     * ----------------------------------------------------------
-     * If the URL contains ?pokemon=..., select it now.
-     * ----------------------------------------------------------
-     */
-
-    selectPokemonFromUrl();
-
-  })
-
-
-  .catch(error => {
-
-    console.error(
-      'Error loading Pokémon data:',
-      error
-    );
-
-    /*
-     * Don't leave the select permanently saying
-     * "Loading..." if the API call failed.
-     */
-
-    pokemonSel.innerHTML = '';
-
-    const option =
-      document.createElement('option');
-
-    option.value = '';
-    option.textContent =
-      'Unable to load Pokémon';
-
-    pokemonSel.appendChild(option);
-
-    statusEl.textContent =
-      'Error loading Pokémon: ' +
-      error.message;
-
-  });
-
-
-
-    /*
-     * ------------------------------------------------------------
      * Pokémon selection
-     * ------------------------------------------------------------
      */
 
     function handlePokemonSelection() {
 
-  const value =
-    pokemonSel.value;
+      const value = pokemonSel.value;
 
-  if (value === '') {
+      if (value === '') {
+        showPokemon(null);
+        updatePokemonUrl(null);
+        return;
+      }
 
-    showPokemon(null);
-    updatePokemonUrl(null);
+      const pokemon = pokemonData[Number(value)] || null;
 
-    return;
-  }
-
-  const pokemon =
-    pokemonData[Number(value)] || null;
-
-  showPokemon(pokemon);
-  updatePokemonUrl(pokemon);
-
-}
-
+      showPokemon(pokemon);
+      updatePokemonUrl(pokemon);
+    }
 
     pokemonSel.addEventListener(
       'change',
       handlePokemonSelection
     );
-
   </script>
 
 </body>
 </html>
+```
