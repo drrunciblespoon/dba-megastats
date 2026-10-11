@@ -829,8 +829,10 @@ if (hasBoth) {
 
       /* ---- Totals: Coach / Battler / Combined ---- */
 
-      totalsName.textContent =
-  `${group.name} (${totalSeasons} Seasons)`;
+      
+totalsName.textContent =
+  `${group.name} (${totalSeasons} ${totalSeasons === 1 ? 'Season' : 'Seasons'})`;
+
 
 
       const toItem = (label, rec) => {
