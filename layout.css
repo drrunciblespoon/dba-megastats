@@ -188,7 +188,8 @@ body.page-home .intro a:hover {
    04. GEN 9 STATS
    ============================================================ */
 
-/* Scrollable table with sticky headers */
+
+/* Gen 9 Stats: scrollable table with sticky headers */
 body.page-stats #root .wrap {
   max-height: 70vh;
   overflow: auto;
@@ -196,13 +197,15 @@ body.page-stats #root .wrap {
 
 body.page-stats #root table {
   margin-top: 0;
+  overflow: visible;
 }
 
 body.page-stats #root table thead th {
   position: sticky;
   top: 0;
-  z-index: 5;
+  z-index: 10;
 }
+
 
 
 body.page-stats th:nth-child(1),
