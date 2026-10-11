@@ -1295,11 +1295,12 @@ body.page-season-records .season-mvp-aside .season-mvp {
   align-self: center;
 }
 
+
 body.page-season-records .season-mvp img {
   display: block;
   flex: 0 1 auto;
   width: auto;
-  height: 110px;
+  height: 165px;
   max-width: 100%;
   margin: 0;
   padding: 0;
@@ -1307,6 +1308,7 @@ body.page-season-records .season-mvp img {
   object-fit: contain;
   image-rendering: pixelated;
 }
+
 
 body.page-season-records .season-mvp p {
   display: block;
