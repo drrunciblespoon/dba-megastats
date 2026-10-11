@@ -741,13 +741,14 @@ function renderBracket(rows) {
 
     let pokemonLookupPromise = null;
 
-    function normalisePokemonName(name) {
-      return String(name || '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim()
-        .toLowerCase();
-    }
+    
+function normalisePokemonName(name) {
+  return String(name || '')
+    .trim()
+    .replace(/\s*\(T\)\s*$/i, '')
+    .toLowerCase();
+}
+
 
     function getPokemonLookupData() {
       if (!pokemonLookupPromise) {
