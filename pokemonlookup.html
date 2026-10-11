@@ -60,12 +60,14 @@
           aria-label="Pokémon legality"
         ></div>
 
-        <div
-          id="championships"
-          class="pokemon-championships"
-          aria-label="Championships"
-        ></div>
+        
+<div
+  id="trophies"
+  class="pokemon-trophies"
+  aria-label="Trophies"
+></div>
 
+        
       </div>
 
       <!-- Draft History -->
@@ -196,7 +198,7 @@
     const notAPokemonEl = DBA.$('notAPokemon');
     const pokemonNameEl = DBA.$('pokemonName');
     const pokemonSpriteEl = DBA.$('pokemonSprite');
-    const championshipsEl = DBA.$('championships');
+    const trophiesEl = DBA.$('trophies');
     const legalityEl = DBA.$('legality');
     const draftBody = DBA.$('draftBody');
     const recordBody = DBA.$('recordBody');
@@ -390,28 +392,38 @@
         legalityEl.appendChild(teraBannedItem);
       }
 
+    
       /*
-       * Championships
+       * Trophies
        */
 
-      championshipsEl.innerHTML = '';
+      trophiesEl.innerHTML = '';
 
       const championships =
         Array.isArray(pokemon.championships)
           ? pokemon.championships
           : [];
 
-      championshipsEl.style.display =
-        championships.length ? 'flex' : 'none';
+      const mvps =
+        Array.isArray(pokemon.mvps)
+          ? pokemon.mvps
+          : [];
 
-      if (championships.length) {
+      const hasTrophies =
+        championships.length > 0 || mvps.length > 0;
+
+      trophiesEl.style.display =
+        hasTrophies ? 'flex' : 'none';
+
+      if (hasTrophies) {
 
         const trophyRow = document.createElement('div');
         trophyRow.className = 'pokemon-trophy-row';
 
-        const winnerList = document.createElement('div');
-        winnerList.className = 'pokemon-winner-list';
+        const trophyList = document.createElement('div');
+        trophyList.className = 'pokemon-winner-list';
 
+        // Championship trophies
         championships.forEach(championship => {
 
           const trophy = document.createElement('span');
@@ -419,35 +431,54 @@
           trophy.textContent = '🏆';
           trophyRow.appendChild(trophy);
 
-          const winner = document.createElement('div');
-          winner.className = 'pokemon-winner';
+          const caption = document.createElement('div');
+          caption.className = 'pokemon-winner';
 
           const playerLink = DBA.playerLink(championship.player);
 
           if (playerLink) {
             playerLink.style.color = 'inherit';
             playerLink.style.textDecoration = 'none';
-            winner.appendChild(playerLink);
+            caption.appendChild(playerLink);
           } else {
-            winner.appendChild(
+            caption.appendChild(
               document.createTextNode(championship.player || '–')
             );
           }
 
           const teraText = championship.tera ? ' — Tera' : '';
 
-          winner.appendChild(
+          caption.appendChild(
             document.createTextNode(
               ` - Season ${championship.season} (${championship.division})${teraText}`
             )
           );
 
-          winnerList.appendChild(winner);
+          trophyList.appendChild(caption);
         });
 
-        championshipsEl.appendChild(trophyRow);
-        championshipsEl.appendChild(winnerList);
+        // MVP trophies
+        mvps.forEach(mvp => {
+
+          const trophy = document.createElement('img');
+          trophy.className = 'pokemon-mvp-trophy';
+          trophy.src = 'MVPtrophy.png';
+          trophy.alt = 'MVP';
+          trophyRow.appendChild(trophy);
+
+          const caption = document.createElement('div');
+          caption.className = 'pokemon-winner';
+
+          caption.textContent =
+            `MVP - Season ${mvp.season} (${mvp.division})`;
+
+          trophyList.appendChild(caption);
+        });
+
+        trophiesEl.appendChild(trophyRow);
+        trophiesEl.appendChild(trophyList);
       }
+
 
       /*
        * Draft History
