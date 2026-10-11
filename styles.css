@@ -101,7 +101,7 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
   align-items: center;
   gap: 6px 10px;
   padding: 10px 1rem 12px;
-  margin: 0 0 1.25rem;
+  margin: 0;
 
   background: var(--header-bg);
   border-bottom: 2px solid var(--accent);
@@ -139,10 +139,11 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
 
 /* Home stays on its own row */
 .site-nav .nav-home {
-  flex-basis: 100%;
-  width: fit-content;
+  flex-basis: auto;
+  width: auto;
+  align-self: center;
   margin-bottom: 2px;
-  padding: 6px 22px;
+  padding: 6px 12px;
   border-color: var(--header-text);
 }
 
