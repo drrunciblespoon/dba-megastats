@@ -1862,11 +1862,16 @@ body.page-pokemon-lookup .pokemon-not-found p {
     min-width: 0;
   }
 
-  body.page-season-records .season-standings {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
+  
+body.page-season-records .season-standings {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 
   body.page-season-records .season-record-controls {
     width: 100%;
