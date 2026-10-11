@@ -432,6 +432,9 @@ if (seasonUrl) {
   const link = document.createElement('a');
   link.href = seasonUrl;
   link.textContent = seasonLabel;
+
+  // Keep the link confined to the text.
+  link.style.display = 'inline';
   seasonCell.appendChild(link);
 } else {
   seasonCell.textContent = seasonLabel;
