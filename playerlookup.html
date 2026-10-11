@@ -728,24 +728,35 @@ function renderPlayerChampionships(group) {
   const captionList = document.createElement('div');
   captionList.className = 'pokemon-winner-list';
 
-  awards.forEach(({ icon, isRunnerUp, caption }) => {
+  
+awards.forEach(({ icon, isRunnerUp, caption }) => {
 
-    const trophy = document.createElement('span');
+  let trophy;
 
-    // Apply the smaller medal class to runner-up awards.
+  if (icon === 'GoldTrophy.png') {
+    // Display the gold championship trophy image.
+    trophy = document.createElement('img');
+    trophy.src = icon;
+    trophy.alt = 'Champion';
+    trophy.className = 'pokemon-trophy pokemon-gold-trophy';
+  } else {
+    // Keep the existing runner-up medal emoji.
+    trophy = document.createElement('span');
     trophy.className = isRunnerUp
       ? 'pokemon-trophy pokemon-medal'
       : 'pokemon-trophy';
-
     trophy.textContent = icon;
-    trophyRow.appendChild(trophy);
+  }
 
-    const captionEl = document.createElement('div');
-    captionEl.className = 'pokemon-winner';
-    captionEl.textContent = caption;
-    captionList.appendChild(captionEl);
+  trophyRow.appendChild(trophy);
 
-  });
+  const captionEl = document.createElement('div');
+  captionEl.className = 'pokemon-winner';
+  captionEl.textContent = caption;
+  captionList.appendChild(captionEl);
+
+});
+
 
   playerChampionships.appendChild(trophyRow);
   playerChampionships.appendChild(captionList);
