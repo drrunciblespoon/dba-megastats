@@ -944,14 +944,16 @@ body.page-sheets td.season {
    12.0. Main Season Layout: Standings + MVP
    ------------------------------------------------------------ */
 
+
 body.page-season-records .season-main-content {
   display: grid;
- grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 1fr);
   align-items: center;
-  gap: 18px;
+  gap: 12px;
   width: 100%;
   min-width: 0;
 }
+
 
 body.page-season-records .season-standings {
   width: 100%;
@@ -1282,12 +1284,13 @@ body.page-season-records .season-mvp {
   box-sizing: border-box;
   align-self: center;
   margin: 0;
-  padding: 4px 6px;
+  padding: 12px 14px;
   background: #cbbce8;
   border: var(--container-border-width) solid var(--container-border);
   border-radius: var(--radius);
   text-align: center;
 }
+
 
 body.page-season-records .season-mvp-aside .season-mvp {
   width: fit-content;
