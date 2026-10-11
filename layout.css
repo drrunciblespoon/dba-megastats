@@ -1495,12 +1495,30 @@ body.page-season-records .season-mvp img {
 
 body.page-season-records .season-mvp p {
   display: block;
-  margin: 5px 0 0;
+  margin: 0;
   padding: 0;
   color: var(--text);
-  font-weight: 700;
   line-height: 1.2;
   text-align: center;
+}
+
+body.page-season-records .season-mvp .season-mvp-heading {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+body.page-season-records .season-mvp .season-mvp-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 5px;
+}
+
+body.page-season-records .season-mvp .season-mvp-pokemon,
+body.page-season-records .season-mvp .season-mvp-player,
+body.page-season-records .season-mvp .season-mvp-record {
+  font-weight: 700;
 }
 
 /* ------------------------------------------------------------
