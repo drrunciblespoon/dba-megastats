@@ -424,12 +424,13 @@
         trophyList.className = 'pokemon-winner-list';
 
         // Championship trophies
-        championships.forEach(championship => {
+       championships.forEach(championship => {
 
-          const trophy = document.createElement('span');
-          trophy.className = 'pokemon-trophy';
-          trophy.textContent = '🏆';
-          trophyRow.appendChild(trophy);
+  const trophy = document.createElement('img');
+  trophy.className = 'pokemon-gold-trophy';
+  trophy.src = 'GoldTrophy.png';
+  trophy.alt = 'Championship';
+  trophyRow.appendChild(trophy);
 
           const caption = document.createElement('div');
           caption.className = 'pokemon-winner';
