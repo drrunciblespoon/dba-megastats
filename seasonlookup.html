@@ -669,89 +669,71 @@
 
       return column;
     }
+    
+function renderBracket(rows) {
+  const bracket = document.createElement('div');
 
-    function renderBracket(rows) {
-      const bracket = document.createElement('div');
+  bracket.className = 'season-bracket';
 
-      bracket.className = 'season-bracket';
+  const groups = {
+    quarters: [],
+    semis: [],
+    final: [],
+    other: []
+  };
 
-      const groups = {
-        quarters: [],
-        semis: [],
-        final: [],
-        other: []
-      };
+  rows.forEach(matchData => {
+    groups[roundType(matchData.round)].push(matchData);
+  });
 
-      rows.forEach(matchData => {
-        groups[roundType(matchData.round)].push(matchData);
-      });
+  bracket.appendChild(makeBracketColumn(
+    'Quarters',
+    groups.quarters,
+    'No quarter-final matches recorded.'
+  ));
 
-      bracket.appendChild(makeBracketColumn(
-        'Quarters',
-        groups.quarters,
-        'No quarter-final matches recorded.'
-      ));
+  bracket.appendChild(makeBracketColumn(
+    'Semis',
+    groups.semis,
+    'No semi-final matches recorded.'
+  ));
 
-      bracket.appendChild(makeBracketColumn(
-        'Semis',
-        groups.semis,
-        'No semi-final matches recorded.'
-      ));
+  bracket.appendChild(makeBracketColumn(
+    'Final',
+    groups.final,
+    'No final recorded.'
+  ));
 
-      const finalColumn = makeBracketColumn(
-        'Final',
-        groups.final,
-        'No final recorded.'
-      );
+  if (groups.other.length) {
+    const otherSection = document.createElement('section');
+    otherSection.className = 'season-bracket-other';
 
-      const mvpContainer = renderSeasonMvp(currentData.mvp);
+    const heading = document.createElement('h4');
+    heading.textContent = 'Other matches';
+    otherSection.appendChild(heading);
 
-      if (mvpContainer) {
-        const finalMatches = finalColumn.querySelector(
-          '.season-bracket-matches'
-        );
+    const matches = document.createElement('div');
+    matches.className = 'season-bracket-other-matches';
 
-        finalMatches.appendChild(mvpContainer);
-      }
+    groups.other.forEach(matchData => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'season-bracket-other-match';
 
-      bracket.appendChild(finalColumn);
+      const round = document.createElement('div');
+      round.className = 'season-bracket-other-round';
+      round.textContent = matchData.round || 'Match';
 
-      if (groups.other.length) {
-        const otherSection = document.createElement('section');
+      wrapper.appendChild(round);
+      wrapper.appendChild(makeMatch(matchData));
+      matches.appendChild(wrapper);
+    });
 
-        otherSection.className = 'season-bracket-other';
+    otherSection.appendChild(matches);
+    bracket.appendChild(otherSection);
+  }
 
-        const heading = document.createElement('h4');
-
-        heading.textContent = 'Other matches';
-
-        otherSection.appendChild(heading);
-
-        const matches = document.createElement('div');
-
-        matches.className = 'season-bracket-other-matches';
-
-        groups.other.forEach(matchData => {
-          const wrapper = document.createElement('div');
-
-          wrapper.className = 'season-bracket-other-match';
-
-          const round = document.createElement('div');
-
-          round.className = 'season-bracket-other-round';
-          round.textContent = matchData.round || 'Match';
-
-          wrapper.appendChild(round);
-          wrapper.appendChild(makeMatch(matchData));
-          matches.appendChild(wrapper);
-        });
-
-        otherSection.appendChild(matches);
-        bracket.appendChild(otherSection);
-      }
-
-      return bracket;
-    }
+  return bracket;
+}
 
     /* =========================================================
        SEASON MVP
@@ -869,64 +851,75 @@
        RENDER PAGE
        ========================================================= */
 
-    function renderTables() {
-      if (!currentData) return;
+function renderTables() {
+  if (!currentData) return;
 
-      seasonWinners = getPlayoffWinners(currentData.playoffs);
+  seasonWinners = getPlayoffWinners(currentData.playoffs);
+  root.replaceChildren();
 
-      root.replaceChildren();
+  // Main Season section.
+  const mainSection = document.createElement('section');
+  mainSection.className = 'season-record-section';
 
-      // Main Season standings.
-      const mainSection = document.createElement('section');
+  const mainHeading = document.createElement('h3');
+  mainHeading.textContent = 'Main Season';
+  mainSection.appendChild(mainHeading);
 
-      mainSection.className = 'season-record-section';
+  // Two-column layout: standings table and Season MVP.
+  const mainContent = document.createElement('div');
+  mainContent.className = 'season-main-content';
 
-      const mainHeading = document.createElement('h3');
+  const standings = document.createElement('div');
+  standings.className = 'season-standings';
 
-      mainHeading.textContent = 'Main Season';
+  renderRoleTabs(standings);
 
-      mainSection.appendChild(mainHeading);
-      renderRoleTabs(mainSection);
+  const mainData = currentData[activeRole];
 
-      const mainData = currentData[activeRole];
+  const mainTable = makeTable(
+    mainData.headers,
+    mainData.rows,
+    'season-main-table'
+  );
 
-      const mainTable = makeTable(
-        mainData.headers,
-        mainData.rows,
-        'season-main-table'
-      );
+  standings.appendChild(makeTableWrapper(mainTable));
+  mainContent.appendChild(standings);
 
-      mainSection.appendChild(makeTableWrapper(mainTable));
-      root.appendChild(mainSection);
+  const mvpContainer = renderSeasonMvp(currentData.mvp);
 
-      // Combined Coach/Battler Play Offs.
-      const playoffSection = document.createElement('section');
+  if (mvpContainer) {
+    const mvpAside = document.createElement('aside');
+    mvpAside.className = 'season-mvp-aside';
+    mvpAside.appendChild(mvpContainer);
+    mainContent.appendChild(mvpAside);
+  }
 
-      playoffSection.className = 'season-record-section';
+  mainSection.appendChild(mainContent);
+  root.appendChild(mainSection);
 
-      const playoffHeading = document.createElement('h3');
+  // Combined Coach/Battler Play Offs.
+  const playoffSection = document.createElement('section');
+  playoffSection.className = 'season-record-section';
 
-      playoffHeading.textContent = 'Play Offs';
+  const playoffHeading = document.createElement('h3');
+  playoffHeading.textContent = 'Play Offs';
+  playoffSection.appendChild(playoffHeading);
 
-      playoffSection.appendChild(playoffHeading);
+  const playoffRows = Array.isArray(currentData.playoffs)
+    ? currentData.playoffs
+    : [];
 
-      const playoffRows = Array.isArray(currentData.playoffs)
-        ? currentData.playoffs
-        : [];
+  if (playoffRows.length) {
+    playoffSection.appendChild(renderBracket(playoffRows));
+  } else {
+    const empty = document.createElement('p');
+    empty.className = 'season-record-empty';
+    empty.textContent = 'No Play Offs data available.';
+    playoffSection.appendChild(empty);
+  }
 
-      if (playoffRows.length) {
-        playoffSection.appendChild(renderBracket(playoffRows));
-      } else {
-        const empty = document.createElement('p');
-
-        empty.className = 'season-record-empty';
-        empty.textContent = 'No Play Offs data available.';
-
-        playoffSection.appendChild(empty);
-      }
-
-      root.appendChild(playoffSection);
-    }
+  root.appendChild(playoffSection);
+}
 
     /* =========================================================
        LOAD SELECTED SEASON
