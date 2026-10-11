@@ -514,10 +514,12 @@ body.page-individual #seasons td:first-child .season-expand-arrow {
   flex: 0 0 14px;
   width: 14px;
   margin-left: 8px;
-  color: #9aa0a8;
+  color: #8b004b;
   font-size: 15px;
+  font-weight: 900;
   line-height: 1;
   text-align: right;
+  -webkit-text-stroke: 0.6px #000;
   visibility: visible;
   opacity: 1;
   pointer-events: none;
@@ -526,7 +528,8 @@ body.page-individual #seasons td:first-child .season-expand-arrow {
 body.page-individual #seasons tr.season-row.expanded
 .season-expand-arrow {
   transform: rotate(180deg);
-  color: #6f7680;
+  color: #8b004b;
+  -webkit-text-stroke: 0.6px #000;
 }
 
 
