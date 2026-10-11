@@ -188,18 +188,22 @@ body.page-home .intro a:hover {
    04. GEN 9 STATS
    ============================================================ */
 
+/* Scrollable table with sticky headers */
+body.page-stats #root .wrap {
+  max-height: 70vh;
+  overflow: auto;
+}
 
-/* ------------------------------------------------------------
-   Stats page — sticky table headers
-   ------------------------------------------------------------ */
+body.page-stats #root table {
+  margin-top: 0;
+}
 
 body.page-stats #root table thead th {
   position: sticky;
   top: 0;
   z-index: 5;
-  background: var(--surface-2);
-  color: var(--text);
 }
+
 
 body.page-stats th:nth-child(1),
 body.page-stats th:nth-child(2) {
@@ -1607,8 +1611,6 @@ body.page-pokemon-lookup .pokemon-not-found p {
     width: 100%;
     max-width: 100%;
     margin-top: 1rem;
-    overflow-x: auto;
-    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
   }
 
