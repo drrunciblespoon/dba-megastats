@@ -90,48 +90,43 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
 }
 
 
-/* Site navigation */
+
+/* ---------- Navigation ---------- */
 .site-nav {
-  width: 1250px;
-  max-width: calc(100% - 2rem);
+  width: 100%;
   box-sizing: border-box;
-  margin: 0 auto 1.25rem;
-  padding: 0.65rem;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 10px 1rem 12px;
+  margin: 0 0 1.25rem;
 
-  background: var(--surface);
-  border: var(--container-border-width) solid var(--container-border);
-  border-radius: var(--radius);
+  background: var(--header-bg);
+  border-bottom: 2px solid var(--accent);
 }
 
-/* Individual navigation links */
+/* Individual links */
 .site-nav a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.55rem 0.85rem;
+  padding: 7px 12px;
 
-  color: var(--text);
+  color: var(--header-text);
   text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 500;
-
+  font-weight: 600;
   border: 1px solid transparent;
   border-radius: var(--radius);
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease,
-    color 0.15s ease;
+
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 /* Hover state */
 .site-nav a:hover {
   background: var(--surface-2);
-  border-color: var(--border);
+  color: var(--text);
 }
 
 /* Current page */
@@ -146,40 +141,39 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
 .site-nav .nav-home {
   flex-basis: 100%;
   width: fit-content;
-  margin: 0 auto 0.25rem;
-  background: var(--surface-2);
-  border-color: var(--border);
-  font-weight: 700;
+  margin-bottom: 2px;
+  padding: 6px 22px;
+  border-color: var(--header-text);
 }
 
-/* Keep the active Home link distinct */
+/* Active Home */
 .site-nav .nav-home.active {
   background: var(--accent);
   color: var(--header-text);
   border-color: var(--accent);
 }
 
-/* The existing break element starts the second row */
+/* Start the remaining links on the next row */
 .site-nav .nav-break {
   flex-basis: 100%;
   height: 0;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
-/* Small screens */
+/* Mobile */
 @media (max-width: 700px) {
   .site-nav {
-    max-width: calc(100% - 1rem);
-    padding: 0.5rem;
-    gap: 0.3rem;
+    gap: 5px;
+    padding: 8px 0.5rem 10px;
   }
 
   .site-nav a {
-    padding: 0.5rem 0.65rem;
+    padding: 6px 9px;
     font-size: 0.85rem;
   }
 }
+
 
 
 /* ---------- Controls ---------- */
