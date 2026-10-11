@@ -820,7 +820,8 @@ body.page-pokemon-lookup .pokemon-record-note {
 /* Shared trophy image sizing */
 .page-pokemon-lookup .pokemon-gold-trophy,
 .page-pokemon-lookup .pokemon-mvp-trophy,
-body.page-individual .pokemon-gold-trophy {
+body.page-individual .pokemon-gold-trophy,
+body.page-individual .pokemon-mvp-trophy {
   display: block;
   flex: 0 0 auto;
   width: auto;
