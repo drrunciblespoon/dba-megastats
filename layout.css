@@ -982,6 +982,11 @@ body.page-sheets td.season {
    12.0. Main Season Layout: Standings + MVP
    ------------------------------------------------------------ */
 
+body.page-season-records .season-record-section {
+  box-sizing: border-box;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 body.page-season-records .season-main-content {
   display: grid;
@@ -991,7 +996,6 @@ body.page-season-records .season-main-content {
   width: 100%;
   min-width: 0;
 }
-
 
 body.page-season-records .season-standings {
   width: 100%;
@@ -1867,9 +1871,6 @@ body.page-season-records .season-standings {
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  box-sizing: border-box;
-  padding-left: 8px;
-  padding-right: 8px;
 }
 
 
