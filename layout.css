@@ -35,14 +35,13 @@ body.page-individual .individual-draft-table,
   border-collapse: separate;
   border-spacing: 0;
 }
-```css
+
 /* ============================================================
    01.1 SITE HEADER: SUPPORT LINKS AND MOBILE LAYOUT
    ============================================================ */
 
 .site-header {
   position: relative;
-  /* Reserve equal space at either side so the title stays centred. */
   padding-left: 64px;
   padding-right: 64px;
 }
@@ -55,7 +54,7 @@ body.page-individual .individual-draft-table,
   display: none;
 }
 
-/* Support links, stacked at the far right of the header. */
+/* Keep both links inside the green header. */
 .header-support-links {
   position: absolute;
   top: 50%;
@@ -80,19 +79,19 @@ body.page-individual .individual-draft-table,
   text-decoration: none;
 }
 
-.header-trans-flag {
-  font-size: 30px;
-  line-height: 1;
-}
-
-.header-trans-football img {
+.header-support-link img {
   display: block;
-  width: 36px;
-  height: 36px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
-/* Compact header for mobile screens. */
+.header-trans-flag img {
+  width: 36px;
+  height: 36px;
+}
+
+/* Compact mobile header. */
 @media (max-width: 700px) {
   .site-header {
     padding: 10px 44px;
@@ -120,17 +119,17 @@ body.page-individual .individual-draft-table,
     gap: 2px;
   }
 
-  .header-support-link,
-  .header-trans-football img {
+  .header-support-link {
     width: 28px;
     height: 28px;
   }
 
-  .header-trans-flag {
-    font-size: 24px;
+  .header-trans-flag img {
+    width: 28px;
+    height: 28px;
   }
 }
-```
+
 
 /* ============================================================
    02. SHARED CENTRED PAGE LAYOUTS
