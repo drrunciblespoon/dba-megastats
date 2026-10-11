@@ -420,6 +420,7 @@ function toggleSeasonRow(row) {
         row.dataset.season = normaliseSeason(season);
 
         
+
 const seasonCell = document.createElement('td');
 
 const seasonLabel = division
@@ -428,18 +429,30 @@ const seasonLabel = division
 
 const seasonUrl = getSeasonRecordsUrl(season, division);
 
+const seasonContent = document.createElement('div');
+seasonContent.className = 'season-cell-content';
+
 if (seasonUrl) {
   const link = document.createElement('a');
   link.href = seasonUrl;
   link.textContent = seasonLabel;
-
-  // Keep the link confined to the text.
   link.style.display = 'inline';
-  seasonCell.appendChild(link);
+  seasonContent.appendChild(link);
 } else {
-  seasonCell.textContent = seasonLabel;
+  const label = document.createElement('span');
+  label.textContent = seasonLabel;
+  seasonContent.appendChild(label);
 }
 
+if (isCoach) {
+  const arrow = document.createElement('span');
+  arrow.className = 'season-expand-arrow';
+  arrow.textContent = '▾';
+  arrow.setAttribute('aria-hidden', 'true');
+  seasonContent.appendChild(arrow);
+}
+
+seasonCell.appendChild(seasonContent);
 row.appendChild(seasonCell);
         
         const pseudonymCell = document.createElement('td');
