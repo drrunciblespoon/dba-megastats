@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,36 +122,35 @@
       );
     }
 
- /* =========================================================
+    /* =========================================================
        ERROR PAGE
        ========================================================= */
 
-function showSeasonError(message) {
-  requestToken++;
-  currentData = null;
+    function showSeasonError(message) {
+      requestToken++;
+      currentData = null;
 
-  root.replaceChildren();
+      root.replaceChildren();
 
-  seasonSel.disabled = true;
-  divisionSel.disabled = true;
-  statusEl.textContent = '';
+      seasonSel.disabled = true;
+      divisionSel.disabled = true;
+      statusEl.textContent = '';
 
-  const error = document.createElement('div');
-  error.className = 'season-record-error';
+      const error = document.createElement('div');
+      error.className = 'season-record-error';
 
-  const image = document.createElement('img');
-  image.src =
-    'https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/oopspikachu.png';
-  image.alt = '';
+      const image = document.createElement('img');
+      image.src =
+        'https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/oopspikachu.png';
+      image.alt = '';
 
-  const text = document.createElement('p');
-  text.textContent = message;
+      const text = document.createElement('p');
+      text.textContent = message;
 
-  error.append(image, text);
-  root.appendChild(error);
-}
+      error.append(image, text);
+      root.appendChild(error);
+    }
 
-    
     /* =========================================================
        SELECTOR POPULATION
        ========================================================= */
@@ -304,7 +303,6 @@ function showSeasonError(message) {
       trophy.className = 'season-winner-trophy';
       trophy.textContent = '🏆';
 
-      // Keep the trophy beside the name with a 6px gap.
       trophy.style.cssText = [
         'display:inline-block',
         'margin-left:6px',
@@ -380,10 +378,6 @@ function showSeasonError(message) {
           const isPlayerColumn = hasRank && index === 0;
 
           if (isPlayerColumn && text.trim()) {
-            /*
-             * Keep the player name and trophy in the same
-             * non-wrapping inline group.
-             */
             const nameGroup = document.createElement('span');
 
             nameGroup.className = 'season-player-name-group';
@@ -559,7 +553,6 @@ function showSeasonError(message) {
         details.appendChild(line);
       }
 
-      // The Coach and Battler each get their own line.
       addPlayerLine(coachName, coachPseudonym);
       addPlayerLine(battlerName, battlerPseudonym);
 
@@ -616,7 +609,6 @@ function showSeasonError(message) {
         match.classList.add('season-bracket-incomplete');
       }
 
-      // First Coach/Battler pairing.
       match.appendChild(makePlayerCard(
         matchData.coach1,
         matchData.coachAlias1,
@@ -633,7 +625,6 @@ function showSeasonError(message) {
 
       match.appendChild(versus);
 
-      // Opposing Coach/Battler pairing.
       match.appendChild(makePlayerCard(
         matchData.coach2,
         matchData.coachAlias2,
@@ -708,23 +699,23 @@ function showSeasonError(message) {
         'No semi-final matches recorded.'
       ));
 
-     const finalColumn = makeBracketColumn(
-  'Final',
-  groups.final,
-  'No final recorded.'
-);
+      const finalColumn = makeBracketColumn(
+        'Final',
+        groups.final,
+        'No final recorded.'
+      );
 
-const mvpContainer = renderSeasonMvp(currentData.mvp);
+      const mvpContainer = renderSeasonMvp(currentData.mvp);
 
-if (mvpContainer) {
-  const finalMatches = finalColumn.querySelector(
-    '.season-bracket-matches'
-  );
+      if (mvpContainer) {
+        const finalMatches = finalColumn.querySelector(
+          '.season-bracket-matches'
+        );
 
-  finalMatches.appendChild(mvpContainer);
-}
+        finalMatches.appendChild(mvpContainer);
+      }
 
-bracket.appendChild(finalColumn);
+      bracket.appendChild(finalColumn);
 
       if (groups.other.length) {
         const otherSection = document.createElement('section');
@@ -763,85 +754,117 @@ bracket.appendChild(finalColumn);
       return bracket;
     }
 
-    
-/* =========================================================
-   SEASON MVP
-   ========================================================= */
+    /* =========================================================
+       SEASON MVP
+       ========================================================= */
 
-let pokemonLookupPromise = null;
+    let pokemonLookupPromise = null;
 
-function normalisePokemonName(name) {
-  return String(name || '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim()
-    .toLowerCase();
-}
-
-function getPokemonLookupData() {
-  if (!pokemonLookupPromise) {
-    pokemonLookupPromise = DBA.call('pokemonLookupGetAll')
-      .then(data =>
-        Array.isArray(data?.pokemon) ? data.pokemon : []
-      )
-      .catch(error => {
-        console.error('Unable to load Pokémon sprites:', error);
-        pokemonLookupPromise = null;
-        return [];
-      });
-  }
-
-  return pokemonLookupPromise;
-}
-
-function renderSeasonMvp(mvp) {
-  if (!mvp || !String(mvp.pokemon || '').trim()) {
-    return null;
-  }
-
-  const pokemon = String(mvp.pokemon).trim();
-  const player = String(mvp.player || '').trim();
-  const record = String(mvp.record || '').trim();
-
-  const container = document.createElement('div');
-  container.className = 'season-mvp coach-mvp';
-
-  const image = document.createElement('img');
-  image.alt = pokemon;
-  image.loading = 'lazy';
-  image.style.display = 'none';
-
-  container.appendChild(image);
-
-  const caption = document.createElement('p');
-
-  const details = [
-    player,
-    record ? `(${record})` : ''
-  ].filter(Boolean).join(' ');
-
-  caption.textContent = details
-    ? `Season MVP – ${pokemon} · ${details}`
-    : `Season MVP – ${pokemon}`;
-
-  container.appendChild(caption);
-
-  getPokemonLookupData().then(pokemonList => {
-    const wanted = normalisePokemonName(pokemon);
-
-    const match = pokemonList.find(item =>
-      normalisePokemonName(item.name) === wanted
-    );
-
-    if (match?.sprite) {
-      image.src = match.sprite;
-      image.style.display = 'block';
+    function normalisePokemonName(name) {
+      return String(name || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toLowerCase();
     }
-  });
 
-  return container;
-}
+    function getPokemonLookupData() {
+      if (!pokemonLookupPromise) {
+        pokemonLookupPromise = DBA.call('pokemonLookupGetAll')
+          .then(data =>
+            Array.isArray(data?.pokemon) ? data.pokemon : []
+          )
+          .catch(error => {
+            console.error(
+              'Unable to load Pokémon sprites:',
+              error
+            );
 
+            pokemonLookupPromise = null;
+            return [];
+          });
+      }
+
+      return pokemonLookupPromise;
+    }
+
+    function renderSeasonMvp(mvp) {
+      if (!mvp || !String(mvp.pokemon || '').trim()) {
+        return null;
+      }
+
+      const pokemon = String(mvp.pokemon).trim();
+      const player = String(mvp.player || '').trim();
+      const record = String(mvp.record || '').trim();
+
+      const container = document.createElement('div');
+
+      container.className = 'season-mvp coach-mvp';
+
+      // Heading appears above the Pokémon sprite.
+      const heading = document.createElement('p');
+
+      heading.className = 'season-mvp-heading';
+      heading.textContent = 'Season MVP';
+
+      container.appendChild(heading);
+
+      const image = document.createElement('img');
+
+      image.alt = pokemon;
+      image.loading = 'lazy';
+      image.style.display = 'none';
+
+      container.appendChild(image);
+
+      // Pokémon, player and record each occupy their own row.
+      const details = document.createElement('div');
+
+      details.className = 'season-mvp-details';
+
+      const pokemonName = document.createElement('p');
+
+      pokemonName.className = 'season-mvp-pokemon';
+      pokemonName.textContent = pokemon;
+
+      details.appendChild(pokemonName);
+
+      if (player) {
+        const playerName = document.createElement('p');
+
+        playerName.className = 'season-mvp-player';
+        playerName.textContent = player;
+
+        details.appendChild(playerName);
+      }
+
+      if (record) {
+        const playerRecord = document.createElement('p');
+
+        playerRecord.className = 'season-mvp-record';
+        playerRecord.textContent = record;
+
+        details.appendChild(playerRecord);
+      }
+
+      container.appendChild(details);
+
+      // Use the sprite URL supplied by the Pokémon Lookup API.
+      getPokemonLookupData().then(pokemonList => {
+        const wanted = normalisePokemonName(pokemon);
+
+        const match = pokemonList.find(item =>
+          normalisePokemonName(item.name) === wanted
+        );
+
+        if (match?.sprite) {
+          image.src = match.sprite;
+          image.style.display = 'block';
+        }
+      });
+
+      return container;
+    }
 
     /* =========================================================
        RENDER PAGE
@@ -892,20 +915,18 @@ function renderSeasonMvp(mvp) {
         ? currentData.playoffs
         : [];
 
-     
-if (playoffRows.length) {
-  playoffSection.appendChild(renderBracket(playoffRows));
-} else {
-  const empty = document.createElement('p');
+      if (playoffRows.length) {
+        playoffSection.appendChild(renderBracket(playoffRows));
+      } else {
+        const empty = document.createElement('p');
 
-  empty.className = 'season-record-empty';
-  empty.textContent = 'No Play Offs data available.';
+        empty.className = 'season-record-empty';
+        empty.textContent = 'No Play Offs data available.';
 
-  playoffSection.appendChild(empty);
-}
+        playoffSection.appendChild(empty);
+      }
 
-root.appendChild(playoffSection);
-
+      root.appendChild(playoffSection);
     }
 
     /* =========================================================
@@ -969,62 +990,59 @@ root.appendChild(playoffSection);
 
     divisionSel.addEventListener('change', loadSelected);
 
-/* =========================================================
-   INITIALISE
-   ========================================================= */
+    /* =========================================================
+       INITIALISE
+       ========================================================= */
 
-async function initialise() {
-  statusEl.textContent = 'Loading available seasons...';
+    async function initialise() {
+      statusEl.textContent = 'Loading available seasons...';
 
-  try {
-    options = await DBA.call('seasonRecordsGetOptions');
+      try {
+        options = await DBA.call('seasonRecordsGetOptions');
 
-    if (!options.length) {
-      seasonSel.replaceChildren();
-      divisionSel.replaceChildren();
+        if (!options.length) {
+          seasonSel.replaceChildren();
+          divisionSel.replaceChildren();
 
-      seasonSel.disabled = true;
-      divisionSel.disabled = true;
+          seasonSel.disabled = true;
+          divisionSel.disabled = true;
 
-      statusEl.textContent =
-        'No season records were found in SeasonInput.';
+          statusEl.textContent =
+            'No season records were found in SeasonInput.';
 
-      return;
+          return;
+        }
+
+        populateSeasons();
+
+        const params = new URLSearchParams(window.location.search);
+        const hasSeasonParam = params.has('season');
+        const requestedOption = getRequestedSeasonOption();
+
+        if (hasSeasonParam && !requestedOption) {
+          showSeasonError('Sorry, that season could not be found.');
+          return;
+        }
+
+        if (requestedOption) {
+          seasonSel.value = requestedOption.season;
+          populateDivisions(requestedOption.division);
+        } else {
+          populateDivisions();
+        }
+
+        seasonSel.disabled = false;
+
+        await loadSelected();
+
+      } catch (error) {
+        statusEl.textContent =
+          'Error loading seasons: ' + error.message;
+      }
     }
-
-    populateSeasons();
-
-    // Check whether a season was explicitly requested in the URL.
-    const params = new URLSearchParams(window.location.search);
-    const hasSeasonParam = params.has('season');
-    const requestedOption = getRequestedSeasonOption();
-
-    // If the URL specifies an invalid season, display the error image.
-    if (hasSeasonParam && !requestedOption) {
-      showSeasonError('Sorry, that season could not be found.');
-      return;
-    }
-
-    // Select the requested season and division, if valid.
-    if (requestedOption) {
-      seasonSel.value = requestedOption.season;
-      populateDivisions(requestedOption.division);
-    } else {
-      // No season parameter: use the default selection.
-      populateDivisions();
-    }
-
-    seasonSel.disabled = false;
-
-    await loadSelected();
-
-  } catch (error) {
-    statusEl.textContent =
-      'Error loading seasons: ' + error.message;
-  }
-}
 
     initialise();
   </script>
 </body>
 </html>
+```
