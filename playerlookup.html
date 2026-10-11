@@ -414,6 +414,7 @@ function toggleSeasonRow(row) {
 
         const row = document.createElement('tr');
         row.className = 'season-row';
+        const isSub = String(season).trim().toUpperCase().startsWith('SUB');
 
         row.dataset.player = normalisePlayerName(name);
         row.dataset.team = normaliseTeamName(pseudonym);
@@ -444,13 +445,15 @@ if (seasonUrl) {
   seasonContent.appendChild(label);
 }
 
-if (isCoach) {
+
+if (isCoach && !isSub) {
   const arrow = document.createElement('span');
   arrow.className = 'season-expand-arrow';
   arrow.textContent = '▾';
   arrow.setAttribute('aria-hidden', 'true');
   seasonContent.appendChild(arrow);
 }
+
 
 seasonCell.appendChild(seasonContent);
 row.appendChild(seasonCell);
@@ -473,13 +476,15 @@ row.appendChild(seasonCell);
         row.appendChild(playoffCell);
 
         
-if (isCoach) {
+
+if (isCoach && !isSub) {
   row.title = 'Click to show draft';
   row.addEventListener('click', event => {
     if (event.target.closest('a')) return;
     toggleSeasonRow(row);
   });
 }
+
 
 
         tbody.appendChild(row);
