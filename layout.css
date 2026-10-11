@@ -1453,6 +1453,56 @@ body.page-season-records .season-bracket-other-match
     column-gap: 16px;
   }
 }
+
+/* ------------------------------------------------------------
+   12.4. Season MVP Card
+   ------------------------------------------------------------ */
+
+body.page-season-records .season-mvp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  align-self: center;
+
+  margin: 0;
+  padding: 4px 6px;
+
+  background: #cbbce8;
+  border: var(--container-border-width) solid var(--container-border);
+  border-radius: var(--radius);
+
+  text-align: center;
+}
+
+body.page-season-records .season-mvp img {
+  display: block;
+  flex: 0 1 auto;
+  width: auto;
+  height: 110px;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+body.page-season-records .season-mvp p {
+  display: block;
+  margin: 5px 0 0;
+  padding: 0;
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
 /* ------------------------------------------------------------
    Season Records error
    ------------------------------------------------------------ */
