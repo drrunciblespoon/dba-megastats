@@ -431,12 +431,6 @@ body.page-individual #seasons .season-draft-row > td {
   overflow: visible;
 }
 
-body.page-individual #seasons .season-draft-wrapper {
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-}
 
 /* Nested draft table: use the shared table border and rounding. */
 
@@ -1785,6 +1779,32 @@ body.page-pokemon-lookup .pokemon-not-found p {
     transition: none;
   }
 
+}
+
+/* Player Look Up: mobile draft-table scrolling */
+@media (max-width: 700px) {
+  body.page-individual .season-draft-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.page-individual #seasons .individual-draft-table {
+    width: 800px;
+    min-width: 800px;
+    max-width: none;
+    table-layout: fixed;
+  }
+
+  body.page-individual #seasons .individual-draft-table th:first-child,
+  body.page-individual #seasons .individual-draft-table td:first-child {
+    width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 /* ============================================================
