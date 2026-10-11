@@ -751,6 +751,63 @@ function showSeasonError(message) {
       return bracket;
     }
 
+    
+/* =========================================================
+   SEASON MVP
+   ========================================================= */
+
+function renderSeasonMvp(mvp) {
+  const container = document.createElement('div');
+
+  container.className = 'coach-mvp season-mvp';
+
+  if (!mvp || !String(mvp.pokemon || '').trim()) {
+    return container;
+  }
+
+  const pokemon = String(mvp.pokemon).trim();
+  const player = String(mvp.player || '').trim();
+  const record = String(mvp.record || '').trim();
+
+  const image = document.createElement('img');
+  image.alt = pokemon;
+  image.loading = 'lazy';
+
+  // Use a Pokémon Showdown animated sprite.
+  const spriteName = pokemon
+    .toLowerCase()
+    .replace(/♀/g, '-f')
+    .replace(/♂/g, '-m')
+    .replace(/[^a-z0-9-]/g, '');
+
+  image.src =
+    'https://play.pokemonshowdown.com/sprites/ani/' +
+    spriteName + '.gif';
+
+  // Keep the MVP card if a particular sprite is unavailable.
+  image.addEventListener('error', () => {
+    image.style.display = 'none';
+  }, { once: true });
+
+  container.appendChild(image);
+
+  const caption = document.createElement('p');
+
+  const details = [
+    player,
+    record ? `(${record})` : ''
+  ].filter(Boolean).join(' ');
+
+  caption.textContent = details
+    ? `Season MVP – ${pokemon} · ${details}`
+    : `Season MVP – ${pokemon}`;
+
+  container.appendChild(caption);
+
+  return container;
+}
+
+
     /* =========================================================
        RENDER PAGE
        ========================================================= */
@@ -800,18 +857,27 @@ function showSeasonError(message) {
         ? currentData.playoffs
         : [];
 
-      if (playoffRows.length) {
-        playoffSection.appendChild(renderBracket(playoffRows));
-      } else {
-        const empty = document.createElement('p');
+     
+if (playoffRows.length) {
+  playoffSection.appendChild(renderBracket(playoffRows));
+} else {
+  const empty = document.createElement('p');
 
-        empty.className = 'season-record-empty';
-        empty.textContent = 'No Play Offs data available.';
+  empty.className = 'season-record-empty';
+  empty.textContent = 'No Play Offs data available.';
 
-        playoffSection.appendChild(empty);
-      }
+  playoffSection.appendChild(empty);
+}
 
-      root.appendChild(playoffSection);
+// Season MVP appears after the playoff bracket.
+const mvpContainer = renderSeasonMvp(currentData.mvp);
+
+if (mvpContainer.childElementCount > 0) {
+  playoffSection.appendChild(mvpContainer);
+}
+
+root.appendChild(playoffSection);
+
     }
 
     /* =========================================================
