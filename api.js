@@ -69,10 +69,10 @@ const DBA_NAV = [
   ['Gen 9 Stats', 'stats.html'],
   ['Player Look Up', 'playerlookup.html'],
   ['Pokémon Look Up', 'pokemonlookup.html'],
-  ['Pairing Records', 'pairingrecords.html'],
+  ['Season Look Up', 'seasonlookup.html'],
+  ['Pairing Look Up', 'pairinglookup.html'],
   ['Player Records', 'playerrecords.html'],
   ['Pokémon Records', 'pokemonrecords.html'],
-  ['Season Look Up', 'seasonlookup.html'],
   ['Hall of Fame', 'halloffame.html'],
   ['League Docs', 'seasonsheets.html']
 ];
