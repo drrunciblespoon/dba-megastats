@@ -939,13 +939,14 @@ body.page-sheets td.season {
 
 
 
+
 /* ------------------------------------------------------------
    12.0. Main Season Layout: Standings + MVP
    ------------------------------------------------------------ */
 
 body.page-season-records .season-main-content {
   display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+ grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
   align-items: center;
   gap: 18px;
   width: 100%;
@@ -953,6 +954,7 @@ body.page-season-records .season-main-content {
 }
 
 body.page-season-records .season-standings {
+  width: 100%;
   min-width: 0;
   max-width: 100%;
 }
@@ -973,41 +975,7 @@ body.page-season-records .season-mvp-aside .season-mvp {
 }
 
 /* ------------------------------------------------------------
-   12.1. Main Season Layout: Standings + MVP
-   ------------------------------------------------------------ */
-
-body.page-season-records .season-main-content {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: 18px 24px;
-  width: 100%;
-  min-width: 0;
-}
-
-body.page-season-records .season-standings {
-  min-width: 0;
-  max-width: 100%;
-}
-
-body.page-season-records .season-mvp-aside {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-width: 0;
-  max-width: 100%;
-}
-
-body.page-season-records .season-mvp-aside .season-mvp {
-  align-self: flex-start;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0;
-}
-
-
-/* ------------------------------------------------------------
-   12.2. Season Record Tabs
+   12.1. Season Record Tabs
    ------------------------------------------------------------ */
 
 body.page-season-records .season-record-tabs {
@@ -1324,7 +1292,7 @@ body.page-season-records .season-mvp {
 body.page-season-records .season-mvp-aside .season-mvp {
   width: fit-content;
   max-width: 100%;
-  align-self: flex-start;
+  align-self: center;
 }
 
 body.page-season-records .season-mvp img {
