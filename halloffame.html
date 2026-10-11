@@ -47,7 +47,47 @@
      * Load Hall of Fame data
      * ============================================================
      */
+function getSeasonLookupUrl(seasonText) {
+  const text = String(seasonText || '').trim();
 
+  const match = text.match(/^(\d+)(?:\s*\(([^)]+)\))?$/);
+
+  if (!match) return null;
+
+  const seasonNumber = match[1];
+
+  const seasonWords = {
+    1: 'one',
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+    6: 'six',
+    7: 'seven',
+    8: 'eight',
+    9: 'nine',
+    10: 'ten'
+  };
+
+  const seasonKey =
+    seasonWords[seasonNumber] || seasonNumber;
+
+  // Season 1 has no displayed division, but links to Frontier.
+  const division = match[2] || (
+    seasonNumber === '1' ? 'Frontier' : ''
+  );
+
+  if (!division) return null;
+
+  const divisionKey = division
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+
+  return 'seasonlookup.html?season='
+    + seasonKey
+    + divisionKey;
+}
+    
     DBA.call('hofGetData')
 
       .then(d => {
@@ -169,6 +209,23 @@ table.appendChild(colgroup);
 
   const td =
     tr.insertCell();
+
+  if (index === 0) {
+    const seasonText = cell.t || '';
+    const url = getSeasonLookupUrl(seasonText);
+
+    if (url) {
+      const link = document.createElement('a');
+      link.href = url;
+      link.textContent = seasonText;
+      link.style.display = 'inline';
+      td.appendChild(link);
+    } else {
+      td.textContent = seasonText;
+    }
+
+    return;
+  }
 
 
   /*
