@@ -697,22 +697,34 @@ function showSeasonError(message) {
       });
 
       bracket.appendChild(makeBracketColumn(
-        'Quarter-finals',
+        'Quarters',
         groups.quarters,
         'No quarter-final matches recorded.'
       ));
 
       bracket.appendChild(makeBracketColumn(
-        'Semi-finals',
+        'Semis',
         groups.semis,
         'No semi-final matches recorded.'
       ));
 
-      bracket.appendChild(makeBracketColumn(
-        'Final',
-        groups.final,
-        'No final recorded.'
-      ));
+     const finalColumn = makeBracketColumn(
+  'Final',
+  groups.final,
+  'No final recorded.'
+);
+
+const mvpContainer = renderSeasonMvp(currentData.mvp);
+
+if (mvpContainer) {
+  const finalMatches = finalColumn.querySelector(
+    '.season-bracket-matches'
+  );
+
+  finalMatches.appendChild(mvpContainer);
+}
+
+bracket.appendChild(finalColumn);
 
       if (groups.other.length) {
         const otherSection = document.createElement('section');
@@ -756,38 +768,48 @@ function showSeasonError(message) {
    SEASON MVP
    ========================================================= */
 
+let pokemonLookupPromise = null;
+
+function normalisePokemonName(name) {
+  return String(name || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase();
+}
+
+function getPokemonLookupData() {
+  if (!pokemonLookupPromise) {
+    pokemonLookupPromise = DBA.call('pokemonLookupGetAll')
+      .then(data =>
+        Array.isArray(data?.pokemon) ? data.pokemon : []
+      )
+      .catch(error => {
+        console.error('Unable to load Pokémon sprites:', error);
+        pokemonLookupPromise = null;
+        return [];
+      });
+  }
+
+  return pokemonLookupPromise;
+}
+
 function renderSeasonMvp(mvp) {
-  const container = document.createElement('div');
-
-  container.className = 'coach-mvp season-mvp';
-
   if (!mvp || !String(mvp.pokemon || '').trim()) {
-    return container;
+    return null;
   }
 
   const pokemon = String(mvp.pokemon).trim();
   const player = String(mvp.player || '').trim();
   const record = String(mvp.record || '').trim();
 
+  const container = document.createElement('div');
+  container.className = 'season-mvp coach-mvp';
+
   const image = document.createElement('img');
   image.alt = pokemon;
   image.loading = 'lazy';
-
-  // Use a Pokémon Showdown animated sprite.
-  const spriteName = pokemon
-    .toLowerCase()
-    .replace(/♀/g, '-f')
-    .replace(/♂/g, '-m')
-    .replace(/[^a-z0-9-]/g, '');
-
-  image.src =
-    'https://play.pokemonshowdown.com/sprites/ani/' +
-    spriteName + '.gif';
-
-  // Keep the MVP card if a particular sprite is unavailable.
-  image.addEventListener('error', () => {
-    image.style.display = 'none';
-  }, { once: true });
+  image.style.display = 'none';
 
   container.appendChild(image);
 
@@ -803,6 +825,19 @@ function renderSeasonMvp(mvp) {
     : `Season MVP – ${pokemon}`;
 
   container.appendChild(caption);
+
+  getPokemonLookupData().then(pokemonList => {
+    const wanted = normalisePokemonName(pokemon);
+
+    const match = pokemonList.find(item =>
+      normalisePokemonName(item.name) === wanted
+    );
+
+    if (match?.sprite) {
+      image.src = match.sprite;
+      image.style.display = 'block';
+    }
+  });
 
   return container;
 }
@@ -867,13 +902,6 @@ if (playoffRows.length) {
   empty.textContent = 'No Play Offs data available.';
 
   playoffSection.appendChild(empty);
-}
-
-// Season MVP appears after the playoff bracket.
-const mvpContainer = renderSeasonMvp(currentData.mvp);
-
-if (mvpContainer.childElementCount > 0) {
-  playoffSection.appendChild(mvpContainer);
 }
 
 root.appendChild(playoffSection);
