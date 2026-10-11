@@ -1292,13 +1292,81 @@ body.page-season-records .season-bracket-other-match
 /* Mobile: retain three columns with horizontal scrolling. */
 
 @media (max-width: 700px) {
+
+  /* Shared mobile scrolling behaviour */
+  body.page-pairing .wrap,
+  body.page-individual .totals-block,
+  body.page-individual #playerOverview,
+  body.page-individual .season-draft-wrapper,
+  body.page-player-records #root,
+  body.page-pokemon-lookup .pokemon-section .wrap,
+  body.page-pokemon #root .wrap,
+  body.page-season-records .season-record-table-wrap {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Keep scroll containers within the viewport */
+  body.page-pairing .wrap,
+  body.page-pokemon-lookup .pokemon-section .wrap,
+  body.page-pokemon #root .wrap,
+  body.page-season-records .season-record-table-wrap {
+    width: 100%;
+  }
+
+  /* Allow wide tables to retain their natural content width */
+  body.page-pairing .wrap table,
+  body.page-individual #totals,
+  body.page-individual #seasons,
+  body.page-individual #results,
+  body.page-individual #repeatDrafts,
+  body.page-individual .individual-draft-table,
+  body.page-player-records #root > table,
+  body.page-pokemon-lookup .pokemon-section .wrap > table,
+  body.page-pokemon #root .wrap > table,
+  body.page-season-records .season-record-table-wrap > table {
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+  }
+
+  /* Player Look Up: constrain the page's main containers */
+  body.page-individual .totals-block,
+  body.page-individual #playerOverview,
+  body.page-individual > .wrap {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* Player Records: constrain the generated layout */
+  body.page-player-records #root {
+    width: 100%;
+  }
+
+  /* Pokémon Records: constrain the generated layout */
+  body.page-pokemon #root,
+  body.page-pokemon #root > div {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* Season Records: allow the bracket to scroll */
+  body.page-season-records .season-bracket {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
   body.page-season-records .season-bracket {
     grid-template-columns: repeat(3, minmax(220px, 1fr));
     column-gap: 16px;
-    overflow-x: auto;
   }
 }
-
 /* ------------------------------------------------------------
    Season Records error
    ------------------------------------------------------------ */
@@ -1529,12 +1597,13 @@ body.page-pokemon-lookup .pokemon-not-found p {
      ---------------------------------------------------------- */
 
   body.page-hof .wrap {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
 
   body.page-hof table {
     width: 850px;
