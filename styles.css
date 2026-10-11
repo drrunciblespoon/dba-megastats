@@ -110,6 +110,7 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
 html,
 body {
   margin: 0;
+  padding: 0;
 }
 
 /* Individual links */
