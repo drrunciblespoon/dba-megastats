@@ -497,32 +497,38 @@ body.page-individual #seasons tr.season-row[title] {
 }
 
 
+
 /* Season cell: label and expand/collapse arrow. */
 
-body.page-individual #seasons .season-cell-content {
+body.page-individual #seasons td:first-child .season-cell-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-body.page-individual #seasons .season-expand-arrow {
-  flex: 0 0 auto;
+body.page-individual #seasons td:first-child .season-expand-arrow {
+  display: inline-block;
+  flex: 0 0 14px;
+  width: 14px;
+  margin-left: 8px;
   color: #9aa0a8;
   font-size: 15px;
   line-height: 1;
-  transition: transform 0.18s ease, color 0.18s ease;
+  text-align: right;
+  visibility: visible;
+  opacity: 1;
   pointer-events: none;
 }
-
-/* Rotate the arrow when the draft is expanded. */
 
 body.page-individual #seasons tr.season-row.expanded
 .season-expand-arrow {
   transform: rotate(180deg);
   color: #6f7680;
 }
+
 
 
 /* Keep header hover effects subtle. */
