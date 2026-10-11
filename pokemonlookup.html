@@ -874,11 +874,23 @@ function selectPokemonFromUrl() {
     const wanted =
     normaliseName(requestedName);
 
-  const index =
+  
+  let index =
     pokemonData.findIndex(
       pokemon =>
         normaliseName(pokemon.name) === wanted
     );
+
+  // If the base form isn't in the lookup data,
+  // try its (T) form instead.
+  if (index === -1) {
+    index =
+      pokemonData.findIndex(
+        pokemon =>
+          normaliseName(pokemon.name) === `${wanted} (t)`
+      );
+  }
+
 
     if (index === -1) {
 
