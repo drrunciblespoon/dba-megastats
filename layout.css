@@ -1526,12 +1526,16 @@ body.page-pokemon-lookup .pokemon-not-found p {
     min-width: 0;
   }
 
+ 
   select,
   .combo {
     width: 75%;
     max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
     box-sizing: border-box;
   }
+
 
 
   /* General centred pages and tables. */
