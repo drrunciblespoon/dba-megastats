@@ -817,6 +817,20 @@ body.page-pokemon-lookup .pokemon-record-note {
    07.5. Pokémon Trophies
    ------------------------------------------------------------ */
 
+/* Shared trophy image sizing */
+.page-pokemon-lookup .pokemon-gold-trophy,
+.page-pokemon-lookup .pokemon-mvp-trophy,
+body.page-individual .pokemon-gold-trophy {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  height: 3rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  object-fit: contain;
+}
+
 .page-pokemon-lookup .pokemon-trophies,
 body.page-individual .pokemon-championships {
   display: flex;
@@ -839,17 +853,6 @@ body.page-individual .pokemon-trophy-row {
 body.page-individual .pokemon-trophy {
   font-size: 3rem;
   line-height: 1;
-}
-
-.page-pokemon-lookup .pokemon-mvp-trophy {
-  display: block;
-  flex: 0 0 auto;
-  width: auto;
-  height: 3rem;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  object-fit: contain;
 }
 
 .page-pokemon-lookup .pokemon-winner-list,
