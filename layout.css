@@ -188,11 +188,12 @@ body.page-home .intro a:hover {
    04. GEN 9 STATS
    ============================================================ */
 
-
 /* Gen 9 Stats: scrollable table with sticky headers */
 body.page-stats #root .wrap {
   max-height: 70vh;
+  max-width: 100%;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 body.page-stats #root table {
@@ -205,6 +206,7 @@ body.page-stats #root table thead th {
   top: 0;
   z-index: 10;
 }
+
 
 
 
@@ -1610,25 +1612,35 @@ body.page-pokemon-lookup .pokemon-not-found p {
      Gen 9 Stats
      ---------------------------------------------------------- */
 
-  .page-stats #root {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 1rem;
-    -webkit-overflow-scrolling: touch;
-  }
+  
+.page-stats #root {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 1rem;
+  overflow: visible;
+}
 
-  .page-stats #root > div {
-    width: max-content;
-    min-width: 100%;
-    max-width: none;
-  }
+.page-stats #root > div {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
 
-  .page-stats #root table {
-    width: 1250px;
-    min-width: 1250px;
-    max-width: none;
-    table-layout: fixed;
-  }
+.page-stats #root .wrap {
+  width: 100%;
+  max-width: 100%;
+  max-height: 70vh;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-stats #root table {
+  width: 1250px;
+  min-width: 1250px;
+  max-width: none;
+  table-layout: fixed;
+}
+
 
   .page-stats #root table th:nth-child(3),
   .page-stats #root table td:nth-child(3) {
