@@ -1445,17 +1445,23 @@ body.page-pokemon-lookup .pokemon-not-found p {
 
   /* General tables. */
 
-  body.centered table {
-    width: 100%;
-    max-width: none;
-  }
-
   body.centered .wrap {
     width: 100%;
     max-width: 100%;
+    min-width: 0;
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+  }
+
+  body.centered .wrap > table {
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+  }
+
+  body.centered table {
+    max-width: 100%;
   }
 
   body.centered th,
