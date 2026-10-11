@@ -212,6 +212,10 @@ td a:focus-visible {
 
 .season-main-table th:first-child, .season-main-table td:first-child { width: 6%; text-align: center; }
 
+/* Season Look Up MVP */
+.season-mvp {
+  margin: 1.5rem auto 0;
+}
 
 /* ---------- Searchable select ---------- */
 .combo {
