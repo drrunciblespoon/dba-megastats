@@ -114,11 +114,6 @@ body.page-individual .individual-draft-table,
 /* Smaller positioning and sizing on mobile */
 @media (max-width: 700px) {
 
-   .site-header {
-  margin-left: -10px;
-  margin-right: -10px;
-}
-   
   .header-support-link {
     width: 28px;
     height: 28px;
@@ -1583,7 +1578,9 @@ body.page-pokemon-lookup .pokemon-not-found p {
     padding-right: 10px;
   }
 
-  .site-header {
+    .site-header {
+    margin-left: -10px;
+    margin-right: -10px;
     padding: 10px 44px;
     gap: 6px;
   }
