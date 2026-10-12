@@ -198,9 +198,11 @@
           else {
 
             const isPokemonColumn =
-              String(t.headers[i])
-                .trim()
-                .toLowerCase() === 'pokemon';
+  String(t.headers[i])
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase() === 'pokemon';
 
 
             if (isPokemonColumn && c.t) {
