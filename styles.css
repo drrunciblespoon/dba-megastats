@@ -53,12 +53,13 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
 
 /* ---------- Header ---------- */
 .site-header {
-  margin: 0 -24px;              /* full-width band, ignoring the body padding */
+  margin: 0;                    /* body has no horizontal padding */
   padding: 14px 24px;
   text-align: center;
   background: var(--header-bg);
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
+
 .site-title {
   margin: 0;
   font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif;
