@@ -431,6 +431,11 @@ function formatAccolade(text) {
           ? pokemon.creme
           : [];
 
+      const seasonRecords =
+        Array.isArray(pokemon.seasonRecords)
+          ? pokemon.seasonRecords
+          : [];
+
       const sloppers =
         Array.isArray(pokemon.sloppers)
           ? pokemon.sloppers
@@ -441,6 +446,7 @@ function formatAccolade(text) {
         mvps.length > 0 ||
         toppers.length > 0 ||
         creme.length > 0 ||
+        seasonRecords.length > 0 ||
         sloppers.length > 0;
 
       trophiesEl.style.display =
@@ -541,6 +547,24 @@ creme.forEach(title => {
   const caption = document.createElement('div');
   caption.className = 'pokemon-winner';
   caption.textContent = formatAccolade(title);
+
+  trophyList.appendChild(caption);
+});
+
+        // Season Records trophies
+seasonRecords.forEach(title => {
+
+  const trophy = document.createElement('img');
+  trophy.className = 'pokemon-season-record-trophy';
+  trophy.src =
+    'https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/seasonrecordtrophy.png';
+  trophy.alt = 'Season Record accolade';
+
+  trophyRow.appendChild(trophy);
+
+  const caption = document.createElement('div');
+  caption.className = 'pokemon-winner';
+  caption.textContent = title;
 
   trophyList.appendChild(caption);
 });
