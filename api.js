@@ -92,7 +92,9 @@ header.innerHTML =
       '<img src="https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/solidarity.png" alt="Support RootsDK">' +
     '</a>' +
     '<a class="header-support-link header-palestine" href="https://gmfriendsofpalestine.org/donate/" target="_blank" rel="noopener noreferrer" aria-label="Donate to GM Friends of Palestine" title="Donate to GM Friends of Palestine">' +
-      '<span role="img" aria-label="Palestine flag">🇵🇸</span>' +
+'<a class="header-support-link header-palestine" href="https://gmfriendsofpalestine.org/donate/" target="_blank" rel="noopener noreferrer" aria-label="Donate to GM Friends of Palestine" title="Donate to GM Friends of Palestine">' +
+  '<img src="https://flagcdn.com/w80/ps.png" alt="Palestine flag">' +
+'</a>' +
     '</a>' +
   '</div>' +
 
