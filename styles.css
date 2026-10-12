@@ -93,10 +93,10 @@ h2 { margin: 28px 0 10px; font-size: 22px; font-weight: 700; }
 
 .site-nav {
   position: relative;
-  left: 50%;
+  left: 0;
   width: 100%;
   max-width: none;
-  margin: 0 0 1.25rem -50%;
+  margin: 0 0 1.25rem;
   box-sizing: border-box;
 
   display: flex;
