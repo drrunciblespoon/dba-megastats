@@ -35,7 +35,6 @@ body.page-individual .individual-draft-table,
   border-spacing: 0;
 }
 
-
 /* ============================================================
    01.1 SITE HEADER
    ============================================================ */
@@ -83,19 +82,17 @@ body.page-individual .individual-draft-table,
   left: 40px;
 }
 
-/* Top-right: trans flag */
 .header-trans-flag {
   top: 8px;
-  right: 16px;
+  right: 40px;
 }
 
-/* Bottom-right: football */
 .header-trans-football {
   bottom: 8px;
-  right: 16px;
+  right: 40px;
 }
 
-/* Preserve existing image behaviour */
+/* Support icon images */
 .header-support-link img {
   display: block;
   width: 100%;
@@ -106,16 +103,12 @@ body.page-individual .individual-draft-table,
 .header-palestine img {
   width: 36px;
   height: auto;
+  border-radius: 3px;
 }
 
 .header-trans-flag img {
   width: 36px;
   height: 36px;
-}
-
-.header-palestine span {
-  font-size: 30px;
-  line-height: 1;
 }
 
 /* Smaller positioning and sizing on mobile */
@@ -125,12 +118,10 @@ body.page-individual .individual-draft-table,
     height: 28px;
   }
 
-@media (max-width: 700px) {
   .header-solidarity,
   .header-palestine {
     left: 32px;
   }
-}
 
   .header-trans-flag,
   .header-trans-football {
@@ -154,14 +145,22 @@ body.page-individual .individual-draft-table,
     height: 28px;
   }
 
-   .header-palestine img {
-  width: 28px;
-  height: auto;
+  .header-palestine img {
+    width: 28px;
+    height: auto;
+    border-radius: 3px;
+  }
 }
 
-  .header-palestine span {
-    font-size: 24px;
-  }
+/* ============================================================
+   01.2 NAV BAR
+   ============================================================ */
+
+.site-nav {
+  width: 100%;
+  box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 
