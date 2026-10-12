@@ -73,16 +73,14 @@ body.page-individual .individual-draft-table,
   z-index: 3;
 }
 
-/* Top-left: solidarity fist */
 .header-solidarity {
   top: 8px;
-  left: 16px;
+  left: 40px;
 }
 
-/* Bottom-left: Palestine flag */
 .header-palestine {
   bottom: 8px;
-  left: 16px;
+  left: 40px;
 }
 
 /* Top-right: trans flag */
@@ -123,10 +121,12 @@ body.page-individual .individual-draft-table,
     height: 28px;
   }
 
+@media (max-width: 700px) {
   .header-solidarity,
   .header-palestine {
-    left: 8px;
+    left: 32px;
   }
+}
 
   .header-trans-flag,
   .header-trans-football {
