@@ -103,12 +103,16 @@ body.page-individual .individual-draft-table,
   object-fit: contain;
 }
 
+.header-palestine img {
+  width: 36px;
+  height: auto;
+}
+
 .header-trans-flag img {
   width: 36px;
   height: 36px;
 }
 
-/* Palestine flag emoji */
 .header-palestine span {
   font-size: 30px;
   line-height: 1;
@@ -149,6 +153,11 @@ body.page-individual .individual-draft-table,
     width: 28px;
     height: 28px;
   }
+
+   .header-palestine img {
+  width: 28px;
+  height: auto;
+}
 
   .header-palestine span {
     font-size: 24px;
