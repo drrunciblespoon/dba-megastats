@@ -426,10 +426,16 @@ function formatAccolade(text) {
           ? pokemon.toppers
           : [];
 
+      const sloppers =
+        Array.isArray(pokemon.sloppers)
+          ? pokemon.sloppers
+          : [];
+
       const hasTrophies =
         championships.length > 0 ||
         mvps.length > 0 ||
-        toppers.length > 0;
+        toppers.length > 0 ||
+        sloppers.length > 0;
 
       trophiesEl.style.display =
         hasTrophies ? 'flex' : 'none';
@@ -514,6 +520,24 @@ function formatAccolade(text) {
 
           trophyList.appendChild(caption);
         });
+
+        // Sloppers wooden spoons
+sloppers.forEach(slopper => {
+
+  const spoon = document.createElement('img');
+  spoon.className = 'pokemon-slopper-spoon';
+  spoon.src =
+    'https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/wooden%20spoon.png';
+  spoon.alt = 'Slopper accolade';
+
+  trophyRow.appendChild(spoon);
+
+  const caption = document.createElement('div');
+  caption.className = 'pokemon-winner';
+  caption.textContent = formatAccolade(slopper);
+
+  trophyList.appendChild(caption);
+});
 
         trophiesEl.appendChild(trophyRow);
         trophiesEl.appendChild(trophyList);
