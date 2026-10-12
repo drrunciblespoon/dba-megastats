@@ -54,19 +54,13 @@ body.page-individual .individual-draft-table,
   display: none;
 }
 
+/* Header support links: position each icon independently */
 .header-support-links {
-  position: absolute;
-  top: 50%;
-  right: 36px;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  z-index: 2;
+  display: contents;
 }
 
 .header-support-link {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,8 +70,34 @@ body.page-individual .individual-draft-table,
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
+  z-index: 3;
 }
 
+/* Top-left: solidarity fist */
+.header-solidarity {
+  top: 8px;
+  left: 16px;
+}
+
+/* Bottom-left: Palestine flag */
+.header-palestine {
+  bottom: 8px;
+  left: 16px;
+}
+
+/* Top-right: trans flag */
+.header-trans-flag {
+  top: 8px;
+  right: 16px;
+}
+
+/* Bottom-right: football */
+.header-trans-football {
+  bottom: 8px;
+  right: 16px;
+}
+
+/* Preserve existing image behaviour */
 .header-support-link img {
   display: block;
   width: 100%;
@@ -88,6 +108,51 @@ body.page-individual .individual-draft-table,
 .header-trans-flag img {
   width: 36px;
   height: 36px;
+}
+
+/* Palestine flag emoji */
+.header-palestine span {
+  font-size: 30px;
+  line-height: 1;
+}
+
+/* Smaller positioning and sizing on mobile */
+@media (max-width: 700px) {
+  .header-support-link {
+    width: 28px;
+    height: 28px;
+  }
+
+  .header-solidarity,
+  .header-palestine {
+    left: 8px;
+  }
+
+  .header-trans-flag,
+  .header-trans-football {
+    right: 8px;
+  }
+
+  .header-solidarity,
+  .header-trans-flag {
+    top: 6px;
+    bottom: auto;
+  }
+
+  .header-palestine,
+  .header-trans-football {
+    bottom: 6px;
+    top: auto;
+  }
+
+  .header-trans-flag img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .header-palestine span {
+    font-size: 24px;
+  }
 }
 
 
