@@ -153,19 +153,6 @@ body.page-individual .individual-draft-table,
 }
 
 /* ============================================================
-   01.2 NAV BAR
-   ============================================================ */
-
-.site-nav {
-  position: relative;
-  left: 50%;
-  width: 100vw;
-  margin-left: -50vw;
-  margin-right: 0;
-  box-sizing: border-box;
-}
-
-/* ============================================================
    02. SHARED CENTRED PAGE LAYOUTS
    ============================================================ */
 
