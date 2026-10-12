@@ -1585,6 +1585,11 @@ body.page-pokemon-lookup .pokemon-not-found p {
     gap: 6px;
   }
 
+  .site-nav {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
   .site-title-desktop {
     display: none;
   }
