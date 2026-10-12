@@ -1584,12 +1584,12 @@ body.page-pokemon-lookup .pokemon-not-found p {
     padding: 10px 44px;
     gap: 6px;
   }
-
+   
   .site-nav {
-    width: 100%;
+    width: auto;
     margin-left: -10px;
     margin-right: -10px;
-    box-sizing: content-box;
+    box-sizing: border-box;
   }
 
   .site-title-desktop {
