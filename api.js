@@ -85,11 +85,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 header.innerHTML =
   '<img class="header-sprite header-sprite-left" src="' + SPRITE + '" alt="" aria-hidden="true">' +
+
+  // Left-hand support links
+  '<div class="header-support-links header-support-links-left">' +
+    '<a class="header-support-link header-solidarity" href="https://www.rootsdk.fr/donations-page" target="_blank" rel="noopener noreferrer" aria-label="Donate to RootsDK" title="Donate to RootsDK">' +
+      '<img src="https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/solidarity.png" alt="Support RootsDK">' +
+    '</a>' +
+    '<a class="header-support-link header-palestine" href="https://gmfriendsofpalestine.org/donate/" target="_blank" rel="noopener noreferrer" aria-label="Donate to GM Friends of Palestine" title="Donate to GM Friends of Palestine">' +
+      '<span role="img" aria-label="Palestine flag">🇵🇸</span>' +
+    '</a>' +
+  '</div>' +
+
   '<h1 class="site-title">' +
     '<span class="site-title-desktop">Draftholes Battle Association</span>' +
     '<span class="site-title-mobile">DBA</span>' +
   '</h1>' +
+
   '<img class="header-sprite header-sprite-right" src="' + SPRITE + '" alt="" aria-hidden="true">' +
+
+  // Existing right-hand support links
   '<div class="header-support-links">' +
     '<a class="header-support-link header-trans-flag" href="https://goodlawproject.org/campaign/trans-fighting-fund/" target="_blank" rel="noopener noreferrer" aria-label="Support the Trans Fighting Fund" title="Support the Trans Fighting Fund">' +
       '<img src="https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/transflagemoji.png" alt="Trans flag">' +
