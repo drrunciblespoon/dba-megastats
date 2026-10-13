@@ -165,6 +165,7 @@ playerLink(name) {
 
   // Multiple slash-separated names get individual links.
   const group = document.createElement('span');
+group.style.whiteSpace = 'nowrap';
 
   text.split('/')
     .map(player => player.trim())
