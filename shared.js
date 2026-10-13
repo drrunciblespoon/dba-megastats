@@ -164,30 +164,32 @@ playerLink(name) {
   }
 
   // Multiple slash-separated names get individual links.
-  const group = document.createElement('span');
-group.style.whiteSpace = 'nowrap';
+ const group = document.createElement('span');
 
-  text.split('/')
-    .map(player => player.trim())
-    .filter(Boolean)
-    .forEach((player, index) => {
-      if (index > 0) {
-        group.appendChild(
-          document.createTextNode(' / ')
-        );
-      }
+group.style.cssText =
+  'display:inline-block;' +
+  'white-space:nowrap;';
 
-      const url = this.playerUrl(player);
-      const a = document.createElement('a');
+text.split('/')
+  .map(player => player.trim())
+  .filter(Boolean)
+  .forEach((player, index) => {
+    if (index > 0) {
+      group.appendChild(
+        document.createTextNode(' / ')
+      );
+    }
 
-      a.href = url;
-      a.textContent = player;
+    const url = this.playerUrl(player);
+    const a = document.createElement('a');
 
-      group.appendChild(a);
-    });
+    a.href = url;
+    a.textContent = player;
 
-  return group;
-},
+    group.appendChild(a);
+  });
+
+return group;
 
 
   /* ============================================================
