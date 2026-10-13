@@ -47,6 +47,8 @@
     aria-label="Player championships"
     style="display:none"
   ></div>
+
+  
   
  <!-- Overall totals and Coach MVP -->
 <div id="playerOverview" class="player-overview">
@@ -162,6 +164,7 @@ const coachMvpCaption = DBA.$('coachMvpCaption');
     let repeatDrafts = {};
     let individualDrafts = {};
     let individualDraftsLoaded = false;
+    let playerRecordTrophies = {};
 
     let currentName = '';
     let currentRole = 'coach';
@@ -660,6 +663,7 @@ function renderPlayerChampionships(group) {
 
   const championships = [];
   const runnersUp = [];
+  const playerRecords = [];
 
   players.forEach(({ player, role }) => {
 
@@ -709,8 +713,28 @@ function renderPlayerChampionships(group) {
 
   });
 
+  
+  // Add Player Stats record trophies for this player.
+  const recordAwards =
+    playerRecordTrophies[normalisePlayerName(group.name)] || [];
+
+  recordAwards.forEach(({ title }) => {
+    if (!title) return;
+
+    playerRecords.push({
+      icon: 'playerrecordstrophy.png',
+      isPlayerRecord: true,
+      caption: title
+    });
+  });
+
+
   // Display all championships first, then all runner-ups.
-  const awards = [...championships, ...runnersUp];
+  const awards = [
+  ...championships,
+  ...runnersUp,
+  ...playerRecords
+];
 
   // Hide the section if there are no awards.
   if (awards.length === 0) {
@@ -724,42 +748,51 @@ function renderPlayerChampionships(group) {
   const trophyRow = document.createElement('div');
   trophyRow.className = 'pokemon-trophy-row';
 
+  
   // Display captions underneath the icons.
   const captionList = document.createElement('div');
   captionList.className = 'pokemon-winner-list';
 
-  
-awards.forEach(({ icon, isRunnerUp, caption }) => {
+  awards.forEach(({ icon, isRunnerUp, isPlayerRecord, caption }) => {
+    let trophy;
 
-  let trophy;
+    if (isPlayerRecord) {
+      // Player Stats record trophy.
+      trophy = document.createElement('img');
+      trophy.src =
+        'https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/playerrecordstrophy.png';
+      trophy.alt = caption;
+      trophy.title = caption;
+      trophy.className =
+        'pokemon-trophy pokemon-player-record-trophy';
 
-  if (icon === 'GoldTrophy.png') {
-    // Display the gold championship trophy image.
-    trophy = document.createElement('img');
-    trophy.src = icon;
-    trophy.alt = 'Champion';
-    trophy.className = 'pokemon-trophy pokemon-gold-trophy';
-  } else {
-    // Keep the existing runner-up medal emoji.
-    trophy = document.createElement('span');
-    trophy.className = isRunnerUp
-      ? 'pokemon-trophy pokemon-medal'
-      : 'pokemon-trophy';
-    trophy.textContent = icon;
-  }
+    } else if (icon === 'GoldTrophy.png') {
+      // Existing championship trophy.
+      trophy = document.createElement('img');
+      trophy.src = icon;
+      trophy.alt = 'Champion';
+      trophy.className = 'pokemon-trophy pokemon-gold-trophy';
 
-  trophyRow.appendChild(trophy);
+    } else {
+      // Existing runner-up medal.
+      trophy = document.createElement('span');
+      trophy.className = isRunnerUp
+        ? 'pokemon-trophy pokemon-medal'
+        : 'pokemon-trophy';
+      trophy.textContent = icon;
+    }
 
-  const captionEl = document.createElement('div');
-  captionEl.className = 'pokemon-winner';
-  captionEl.textContent = caption;
-  captionList.appendChild(captionEl);
+    trophyRow.appendChild(trophy);
 
-});
-
+    const captionEl = document.createElement('div');
+    captionEl.className = 'pokemon-winner';
+    captionEl.textContent = caption;
+    captionList.appendChild(captionEl);
+  });
 
   playerChampionships.appendChild(trophyRow);
   playerChampionships.appendChild(captionList);
+
 
 }
 
@@ -1036,6 +1069,28 @@ if (requestedPlayer) {
       .catch(error => {
         statusEl.textContent = 'Error: ' + error.message;
       });
+
+/* ============================================================
+ * Load Player Stats record trophies
+ * ============================================================ */
+
+DBA.call('playerRecordTrophiesGetAll')
+  .then(data => {
+    playerRecordTrophies =
+      data && data.players ? data.players : {};
+
+    // If a player is already displayed, refresh their awards.
+    if (currentName) {
+      const group = groups.get(currentName);
+
+      if (group) {
+        renderPlayerChampionships(group);
+      }
+    }
+  })
+  .catch(error => {
+    console.error('Player record trophies failed:', error);
+  });
 
 
     /* ============================================================
