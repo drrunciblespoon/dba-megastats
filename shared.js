@@ -148,28 +148,45 @@ pokemonLink(pokemon) {
    * playerUrl() handles the URL.
    */
 
-  playerLink(player) {
+playerLink(name) {
+  const text = String(name || '').trim();
+  if (!text) return null;
 
-    const originalName =
-      typeof player === 'string'
-        ? player
-        : player && player.name;
+  // A single name keeps the existing link behaviour.
+  if (!text.includes('/')) {
+    const url = this.playerUrl(text);
+    if (!url) return null;
 
-    if (!originalName) {
-      return null;
-    }
+    const a = document.createElement('a');
+    a.href = url;
+    a.textContent = text;
+    return a;
+  }
 
-    const link =
-      document.createElement('a');
+  // Multiple slash-separated names get individual links.
+  const group = document.createElement('span');
 
-    link.href =
-      DBA.playerUrl(originalName);
+  text.split('/')
+    .map(player => player.trim())
+    .filter(Boolean)
+    .forEach((player, index) => {
+      if (index > 0) {
+        group.appendChild(
+          document.createTextNode(' / ')
+        );
+      }
 
-    link.textContent =
-      String(originalName).trim();
+      const url = this.playerUrl(player);
+      const a = document.createElement('a');
 
-    return link;
-  },
+      a.href = url;
+      a.textContent = player;
+
+      group.appendChild(a);
+    });
+
+  return group;
+},
 
 
   /* ============================================================
