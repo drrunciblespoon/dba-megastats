@@ -158,40 +158,41 @@ playerLink(player) {
     return null;
   }
 
-  const text = String(originalName).trim();
-
-  const names = text
+  const names = String(originalName)
     .split('/')
     .map(name => name.trim())
     .filter(Boolean);
 
-  if (names.length === 0) {
+  if (!names.length) {
     return null;
   }
 
   if (names.length === 1) {
     const link = document.createElement('a');
-
     link.href = DBA.playerUrl(names[0]);
     link.textContent = names[0];
-
     return link;
   }
 
   const group = document.createElement('span');
+
+  group.style.display = 'inline-flex';
+  group.style.flexWrap = 'nowrap';
   group.style.whiteSpace = 'nowrap';
+  group.style.alignItems = 'baseline';
 
   names.forEach((name, index) => {
     if (index > 0) {
-      group.appendChild(
-        document.createTextNode(' / ')
-      );
+      const separator = document.createElement('span');
+      separator.textContent = ' / ';
+      separator.style.whiteSpace = 'pre';
+      group.appendChild(separator);
     }
 
     const link = document.createElement('a');
-
     link.href = DBA.playerUrl(name);
     link.textContent = name;
+    link.style.whiteSpace = 'nowrap';
 
     group.appendChild(link);
   });
