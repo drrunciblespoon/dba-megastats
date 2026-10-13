@@ -910,7 +910,8 @@ body.page-pokemon-lookup .pokemon-record-note {
 .page-pokemon-lookup .pokemon-season-record-trophy,
 body.page-individual .pokemon-gold-trophy,
 body.page-individual .pokemon-mvp-trophy,
-body.page-individual .pokemon-player-record-trophy {
+body.page-individual .pokemon-player-record-trophy,
+body.page-individual .pokemon-participation-leader-trophy {
   display: block;
   flex: 0 0 auto;
   width: auto;
