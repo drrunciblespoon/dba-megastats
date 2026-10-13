@@ -165,6 +165,7 @@ const coachMvpCaption = DBA.$('coachMvpCaption');
     let individualDrafts = {};
     let individualDraftsLoaded = false;
     let playerRecordTrophies = {};
+    let mostPlayerParticipationsTrophies = {};
 
     let currentName = '';
     let currentRole = 'coach';
@@ -664,6 +665,7 @@ function renderPlayerChampionships(group) {
   const championships = [];
   const runnersUp = [];
   const playerRecords = [];
+  const participationLeaders = [];
 
   players.forEach(({ player, role }) => {
 
@@ -728,12 +730,27 @@ function renderPlayerChampionships(group) {
     });
   });
 
+  // Add participation leader trophies for this player.
+const participationAwards =
+  mostPlayerParticipationsTrophies[normalisePlayerName(group.name)] || [];
+
+participationAwards.forEach(({ title }) => {
+  if (!title) return;
+
+  participationLeaders.push({
+    icon: 'numberonetrophy.png',
+    isParticipationLeader: true,
+    caption: title
+  });
+});
+
 
   // Display all championships first, then all runner-ups.
   const awards = [
   ...championships,
   ...runnersUp,
-  ...playerRecords
+  ...playerRecords,
+  ...participationLeaders
 ];
 
   // Hide the section if there are no awards.
@@ -753,7 +770,13 @@ function renderPlayerChampionships(group) {
   const captionList = document.createElement('div');
   captionList.className = 'pokemon-winner-list';
 
-  awards.forEach(({ icon, isRunnerUp, isPlayerRecord, caption }) => {
+  awards.forEach(({
+  icon,
+  isRunnerUp,
+  isPlayerRecord,
+  isParticipationLeader,
+  caption
+}) => {
     let trophy;
 
     if (isPlayerRecord) {
@@ -772,6 +795,16 @@ function renderPlayerChampionships(group) {
       trophy.src = icon;
       trophy.alt = 'Champion';
       trophy.className = 'pokemon-trophy pokemon-gold-trophy';
+
+    } else if (isParticipationLeader) {
+  // Player participation leader trophy.
+  trophy = document.createElement('img');
+  trophy.src =
+    'https://raw.githubusercontent.com/drrunciblespoon/dba-megastats/main/numberonetrophy.png';
+  trophy.alt = caption;
+  trophy.title = caption;
+  trophy.className =
+    'pokemon-trophy pokemon-participation-leader-trophy';
 
     } else {
       // Existing runner-up medal.
@@ -1090,6 +1123,20 @@ DBA.call('playerRecordTrophiesGetAll')
   })
   .catch(error => {
     console.error('Player record trophies failed:', error);
+  });
+
+    DBA.call('mostPlayerParticipations')
+  .then(data => {
+    mostPlayerParticipationsTrophies =
+      data && data.players ? data.players : {};
+
+    if (currentName) {
+      const group = groups.get(currentName);
+      if (group) renderPlayerChampionships(group);
+    }
+  })
+  .catch(error => {
+    console.error('Player participation trophies failed:', error);
   });
 
 
