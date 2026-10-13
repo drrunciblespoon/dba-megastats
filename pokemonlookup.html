@@ -133,9 +133,9 @@
 
         <h3>Overall Record</h3>
 
-        <p class="pokemon-record-note">
-          Gen 9 Season Stats
-        </p>
+        <p class="pokemon-record-note" id="recordNote">
+  Gen 9 Season Stats
+</p>
 
         <div class="wrap">
 
@@ -156,6 +156,14 @@
             >
               Tera
             </button>
+
+            <button
+  type="button"
+  id="gen8RecordTab"
+  class="pokemon-record-tab"
+>
+  Gen 8
+</button>
 
           </div>
 
@@ -204,8 +212,10 @@
     const recordBody = DBA.$('recordBody');
     const regularRecordTab = DBA.$('regularRecordTab');
     const teraRecordTab = DBA.$('teraRecordTab');
+    const gen8RecordTab = DBA.$('gen8RecordTab');
     const commonPartnersSection = DBA.$('commonPartnersSection');
     const commonPartnersBody = DBA.$('commonPartnersBody');
+    const recordNote = DBA.$('recordNote');
 
     /*
      * State
@@ -272,35 +282,49 @@
       addCell(row, record.sr, 'num');
     }
 
-    /*
-     * Update Overall Record Tab
-     */
+/*
+ * Update Overall Record Tab
+ */
 
-    function updateRecordTab() {
+function updateRecordTab() {
 
-      if (!selectedPokemon) {
-        recordBody.innerHTML = '';
-        return;
-      }
+  if (!selectedPokemon) {
+    recordBody.innerHTML = '';
+    return;
+  }
 
-      const record =
-        selectedRecordType === 'tera'
-          ? selectedPokemon.teraRecord
-          : selectedPokemon.record;
+  let record;
 
-      drawRecord(record);
+  if (selectedRecordType === 'tera') {
+    record = selectedPokemon.teraRecord;
+  } else if (selectedRecordType === 'gen8') {
+    record = selectedPokemon.gen8Record;
+  } else {
+    record = selectedPokemon.record;
+  }
 
-      regularRecordTab.classList.toggle(
-        'active',
-        selectedRecordType === 'regular'
-      );
+  drawRecord(record);
 
-      teraRecordTab.classList.toggle(
-        'active',
-        selectedRecordType === 'tera'
-      );
-    }
+  recordNote.textContent =
+  selectedRecordType === 'gen8'
+    ? 'Gen 8 Stats'
+    : 'Gen 9 Stats';
 
+  regularRecordTab.classList.toggle(
+    'active',
+    selectedRecordType === 'regular'
+  );
+
+  teraRecordTab.classList.toggle(
+    'active',
+    selectedRecordType === 'tera'
+  );
+
+  gen8RecordTab.classList.toggle(
+    'active',
+    selectedRecordType === 'gen8'
+  );
+}
     /*
      * Record Tab Buttons
      */
@@ -314,6 +338,11 @@
       selectedRecordType = 'tera';
       updateRecordTab();
     };
+
+    gen8RecordTab.onclick = () => {
+  selectedRecordType = 'gen8';
+  updateRecordTab();
+};
 
     /*
      * Name helpers
