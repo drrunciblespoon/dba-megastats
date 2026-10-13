@@ -148,48 +148,56 @@ pokemonLink(pokemon) {
    * playerUrl() handles the URL.
    */
 
-playerLink(name) {
-  const text = String(name || '').trim();
-  if (!text) return null;
+playerLink(player) {
+  const originalName =
+    typeof player === 'string'
+      ? player
+      : player && player.name;
 
-  // A single name keeps the existing link behaviour.
-  if (!text.includes('/')) {
-    const url = this.playerUrl(text);
-    if (!url) return null;
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.textContent = text;
-    return a;
+  if (!originalName) {
+    return null;
   }
 
-  // Multiple slash-separated names get individual links.
- const group = document.createElement('span');
+  const text = String(originalName).trim();
 
-group.style.cssText =
-  'display:inline-block;' +
-  'white-space:nowrap;';
+  const names = text
+    .split('/')
+    .map(name => name.trim())
+    .filter(Boolean);
 
-text.split('/')
-  .map(player => player.trim())
-  .filter(Boolean)
-  .forEach((player, index) => {
+  if (names.length === 0) {
+    return null;
+  }
+
+  if (names.length === 1) {
+    const link = document.createElement('a');
+
+    link.href = DBA.playerUrl(names[0]);
+    link.textContent = names[0];
+
+    return link;
+  }
+
+  const group = document.createElement('span');
+  group.style.whiteSpace = 'nowrap';
+
+  names.forEach((name, index) => {
     if (index > 0) {
       group.appendChild(
         document.createTextNode(' / ')
       );
     }
 
-    const url = this.playerUrl(player);
-    const a = document.createElement('a');
+    const link = document.createElement('a');
 
-    a.href = url;
-    a.textContent = player;
+    link.href = DBA.playerUrl(name);
+    link.textContent = name;
 
-    group.appendChild(a);
+    group.appendChild(link);
   });
 
-return group;
+  return group;
+},
 
 
   /* ============================================================
