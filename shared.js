@@ -108,7 +108,61 @@ pokemonLink(pokemon) {
   return link;
 },
 
-    /* ============================================================
+    /*
+   * Chooses a sprite for Pokémon with alternate sprites.
+   *
+   * The existing sprite URL is always included as an option, so
+   * changes to the default sprite in the Pokédex sheet are respected.
+   *
+   * pokemonName can be a string or a Pokémon object with a .name.
+   */
+
+  spriteUrl(pokemon, defaultUrl) {
+
+    const originalName =
+      typeof pokemon === 'string'
+        ? pokemon
+        : pokemon && pokemon.name;
+
+    const name =
+      String(originalName || '')
+        .replace(/\s*\(T\)\s*$/i, '')
+        .trim()
+        .toLowerCase();
+
+    const alternatives = {
+      'oricorio': [
+        'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0741/0001/Normal.png',
+        'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0741/0002/Normal.png',
+        'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0741/0003/Normal.png'
+      ],
+
+      'simi-all': [
+        'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0514/Normal.png',
+        'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0516/Normal.png'
+      ],
+
+      'pan-all': [
+        'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0515/Normal.png',
+        'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0513/Normal.png'
+      ]
+    };
+
+    const options = [
+      defaultUrl,
+      ...(alternatives[name] || [])
+    ].filter(Boolean);
+
+    if (!options.length) {
+      return '';
+    }
+
+    return options[
+      Math.floor(Math.random() * options.length)
+    ];
+  },
+  
+  /* ============================================================
    * Player URL / links
    * ============================================================ */
 
@@ -509,7 +563,8 @@ playerLink(player) {
             const im =
               document.createElement('img');
 
-            im.src = c.img;
+                       im.src = DBA.spriteUrl(c.t, c.img);
+            im.alt = c.t || '';
             im.loading = 'lazy';
 
             td.appendChild(im);
