@@ -172,21 +172,17 @@
 
           if (c.img) {
 
-            const im =
-              document.createElement('img');
+           
+if (c.img) {
+  const im = document.createElement('img');
+  const pokemonName = r[1] ? r[1].t : '';
 
-            im.src = c.img;
+  im.src = DBA.spriteUrl(pokemonName, c.img);
+  im.alt = pokemonName;
+  im.loading = 'lazy';
+  td.appendChild(im);
+}
 
-            im.alt =
-              r[1]
-                ? r[1].t
-                : '';
-
-            im.loading = 'lazy';
-
-            td.appendChild(im);
-
-          }
 
 
           /*
