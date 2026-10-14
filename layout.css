@@ -784,6 +784,7 @@ body.page-individual #seasons .season-draft-loading::before {
 }
 
 
+
 /* ------------------------------------------------------------
    07.1. Tabbed Tables
    ------------------------------------------------------------ */
@@ -808,11 +809,20 @@ body.page-season-records .season-main-table {
   overflow-wrap: anywhere;
 }
 
+
 /* ------------------------------------------------------------
    07.1.1. Cost Over Time: horizontal scrolling
    ------------------------------------------------------------ */
 
-body.page-pokemon-lookup .cost-over-time-wrap {
+body.page-pokemon-lookup #costOverTimeSection {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+body.page-pokemon-lookup #costOverTimeSection .cost-over-time-wrap {
   display: block;
   width: 100%;
   max-width: 100%;
@@ -823,13 +833,16 @@ body.page-pokemon-lookup .cost-over-time-wrap {
   -webkit-overflow-scrolling: touch;
 }
 
-body.page-pokemon-lookup .cost-over-time-wrap .pokemon-record-table {
-  width: max-content;
-  min-width: 100%;
+body.page-pokemon-lookup #costOverTimeSection .cost-over-time-table {
+  display: table;
+  width: 760px;
+  min-width: 760px;
   max-width: none;
   margin-left: 0;
   margin-right: 0;
+  table-layout: fixed;
 }
+
 
 
 
@@ -1868,14 +1881,6 @@ body.page-pokemon-lookup .pokemon-not-found p {
   .page-pokemon-lookup .pokemon-record-table {
     min-width: 760px;
     border-top-left-radius: 0 !important;
-  }
-
-     /* Cost Over Time: use a controlled width on mobile */
-  .page-pokemon-lookup .cost-over-time-table {
-    width: 760px;
-    min-width: 760px;
-    max-width: none;
-    table-layout: fixed;
   }
 
   .page-pokemon-lookup .pokemon-draft-table,
