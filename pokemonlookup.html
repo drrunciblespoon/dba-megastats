@@ -461,14 +461,13 @@ function updateCostTable() {
 
 
       if (
-        typeof (
-          selectedCostType === 'regular'
-            ? entry.cost
-            : entry.teraCost
-        ) === 'number'
-      ) {
-        cell.classList.add('num');
-      }
+  cell.textContent.trim() !== '' &&
+  !isNaN(Number(cell.textContent)) 
+) {
+  cell.classList.add('num');
+} else {
+  cell.classList.remove('num');
+}
     });
   }
 
