@@ -802,10 +802,35 @@ body.page-season-records .season-main-table {
   border-top-left-radius: 0;
 }
 
+
 #costBody td {
   white-space: normal;
   overflow-wrap: anywhere;
 }
+
+/* ------------------------------------------------------------
+   07.1.1. Cost Over Time: horizontal scrolling
+   ------------------------------------------------------------ */
+
+body.page-pokemon-lookup .cost-over-time-wrap {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.page-pokemon-lookup .cost-over-time-wrap .pokemon-record-table {
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
 
 
 /* ------------------------------------------------------------
