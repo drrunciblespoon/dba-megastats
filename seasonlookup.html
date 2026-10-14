@@ -831,19 +831,27 @@ function normalisePokemonName(name) {
 
       container.appendChild(details);
 
-      // Use the sprite URL supplied by the Pokémon Lookup API.
-      getPokemonLookupData().then(pokemonList => {
-        const wanted = normalisePokemonName(pokemon);
+     
+/*
+ * Randomise the Season MVP sprite while retaining the
+ * current API sprite as one of the possible choices.
+ */
+getPokemonLookupData().then(pokemonList => {
+  const wanted = normalisePokemonName(pokemon);
 
-        const match = pokemonList.find(item =>
-          normalisePokemonName(item.name) === wanted
-        );
+  const match = pokemonList.find(item =>
+    normalisePokemonName(item.name) === wanted
+  );
 
-        if (match?.sprite) {
-          image.src = match.sprite;
-          image.style.display = 'block';
-        }
-      });
+  if (match?.sprite) {
+    image.src = DBA.spriteUrl(
+      match.name,
+      match.sprite
+    );
+    image.style.display = 'block';
+  }
+});
+
 
       return container;
     }
