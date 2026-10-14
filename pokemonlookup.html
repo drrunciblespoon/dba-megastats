@@ -433,6 +433,7 @@ function updateCostTable() {
           cell.textContent = entry.cost;
         }
 
+      
       } else {
         // Tera cost
         if (entry.season <= 2) {
@@ -444,16 +445,20 @@ function updateCostTable() {
         } else if (entry.teraIncompatible) {
           cell.textContent = '–';
 
-        } else if (
-          entry.hasTeraTax &&
-          typeof entry.teraCost === 'number'
-        ) {
+        } else if (!entry.hasTeraTax) {
+          // No Tera tax: use the regular cost
+          cell.textContent = entry.banned
+            ? 'Banned'
+            : entry.cost ?? '–';
+
+        } else if (typeof entry.teraCost === 'number') {
           cell.textContent = entry.teraCost;
 
         } else {
           cell.textContent = '–';
         }
       }
+
 
       if (
         typeof (
