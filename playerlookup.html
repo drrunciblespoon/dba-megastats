@@ -318,13 +318,18 @@ playerChampionships.style.display = 'none';
         const spriteCell =
           tr.insertCell();
 
-        if (draft.sprite) {
-          const img = document.createElement('img');
-          img.src = draft.sprite;
-          img.alt = draft.pokemon || '';
-          img.loading = 'lazy';
-          spriteCell.appendChild(img);
-        }
+        const spriteUrl = DBA.spriteUrl(
+  draft.pokemon,
+  draft.sprite
+);
+
+if (spriteUrl) {
+  const img = document.createElement('img');
+  img.src = spriteUrl;
+  img.alt = draft.pokemon || '';
+  img.loading = 'lazy';
+  spriteCell.appendChild(img);
+}
 
         [
           text(draft.appearances, '–'),
@@ -538,13 +543,18 @@ if (isCoach && !isSub) {
         const spriteCell =
           tr.insertCell();
 
-        if (p.sprite) {
-          const img = document.createElement('img');
-          img.src = p.sprite;
-          img.alt = p.name;
-          img.loading = 'lazy';
-          spriteCell.appendChild(img);
-        }
+        const spriteUrl = DBA.spriteUrl(
+  p.name,
+  p.sprite
+);
+
+if (spriteUrl) {
+  const img = document.createElement('img');
+  img.src = spriteUrl;
+  img.alt = p.name;
+  img.loading = 'lazy';
+  spriteCell.appendChild(img);
+}
 
         const countCell = tr.insertCell();
         countCell.textContent = p.count;
@@ -634,11 +644,16 @@ function renderCoachMvp(name, coach) {
 
   const mvp = candidates[0];
 
-  if (mvp.sprite) {
-    coachMvpSprite.src = mvp.sprite;
-    coachMvpSprite.alt = mvp.name;
-    coachMvpSprite.style.display = '';
-  } else {
+const spriteUrl = DBA.spriteUrl(
+  mvp.name,
+  mvp.sprite
+);
+
+if (spriteUrl) {
+  coachMvpSprite.src = spriteUrl;
+  coachMvpSprite.alt = mvp.name;
+  coachMvpSprite.style.display = '';
+} else {
     coachMvpSprite.removeAttribute('src');
     coachMvpSprite.alt = '';
     coachMvpSprite.style.display = 'none';
