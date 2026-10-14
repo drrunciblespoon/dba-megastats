@@ -263,6 +263,8 @@ body.page-stats #root .wrap {
 
 body.page-stats #root table {
   margin-top: 0;
+  border: none;
+  border-radius: 0;
   overflow: visible;
 }
 
