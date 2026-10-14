@@ -67,7 +67,51 @@
   aria-label="Trophies"
 ></div>
 
-        
+              <!-- Cost Over Time -->
+      <section class="pokemon-section" id="costOverTimeSection">
+
+        <h3>Cost Over Time</h3>
+
+        <div class="wrap">
+
+          <div class="pokemon-record-tabs">
+
+            <button
+              type="button"
+              id="regularCostTab"
+              class="pokemon-record-tab active"
+            >
+              Regular
+            </button>
+
+            <button
+              type="button"
+              id="teraCostTab"
+              class="pokemon-record-tab"
+              hidden
+            >
+              Tera
+            </button>
+
+          </div>
+
+          <table class="nosort totals pokemon-record-table">
+            <thead id="costHead">
+              <tr>
+                <th>Season</th>
+              </tr>
+            </thead>
+
+            <tbody id="costBody">
+              <tr>
+                <th>Cost</th>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </section>
       </div>
 
       <!-- Draft History -->
