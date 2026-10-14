@@ -391,7 +391,7 @@ function updateCostTable() {
   costHead.innerHTML = '';
   costBody.innerHTML = '';
 
-  // Header row: Season | Season 1 | Season 2 | ...
+  // Header row
   const headerRow = costHead.insertRow();
   const seasonLabel = document.createElement('th');
 
@@ -413,14 +413,12 @@ function updateCostTable() {
 
   if (costs.length === 0) {
     const cell = costRow.insertCell();
-    cell.colSpan = 1;
     cell.textContent = 'No season cost data found.';
   } else {
     costs.forEach(entry => {
       const cell = costRow.insertCell();
 
       if (selectedCostType === 'regular') {
-        // Regular cost
         if (entry.banned) {
           cell.textContent = 'Banned';
         } else if (
@@ -432,47 +430,57 @@ function updateCostTable() {
         } else {
           cell.textContent = entry.cost;
         }
-
-      
       } else {
         // Tera cost
         if (entry.season <= 2) {
           cell.textContent = 'No Tera';
-
         } else if (entry.teraBanned) {
           cell.textContent = 'Banned';
-
         } else if (entry.teraIncompatible) {
           cell.textContent = '–';
-
         } else if (!entry.hasTeraTax) {
-          // No Tera tax: use the regular cost
           cell.textContent = entry.banned
             ? 'Banned'
             : entry.cost ?? '–';
-
         } else if (typeof entry.teraCost === 'number') {
           cell.textContent = entry.teraCost;
-
         } else {
           cell.textContent = '–';
         }
       }
 
-
       if (
-  cell.textContent.trim() !== '' &&
-  !isNaN(Number(cell.textContent)) 
-) {
-  cell.classList.add('num');
-} else {
-  cell.classList.remove('num');
-}
+        cell.textContent.trim() !== '' &&
+        !isNaN(Number(cell.textContent))
+      ) {
+        cell.classList.add('num');
+      }
     });
   }
 
-  // Only offer Tera when the Pokémon has at least one
-  // season with a Tera tax or a Tera ban marker.
+  // Complex Ban row: only show it if this Pokémon has a ban
+  // in at least one season.
+  const hasAnyComplexBan = costs.some(
+    entry => entry.hasComplexBan === true
+  );
+
+  if (hasAnyComplexBan) {
+    const complexRow = costBody.insertRow();
+    const complexLabel = document.createElement('th');
+
+    complexLabel.textContent = 'Complex';
+    complexRow.appendChild(complexLabel);
+
+    costs.forEach(entry => {
+      const cell = complexRow.insertCell();
+
+      cell.textContent = entry.hasComplexBan && entry.complexBan
+        ? entry.complexBan
+        : 'No Ban';
+    });
+  }
+
+  // Only offer Tera when the Pokémon has a Tera tax or ban marker.
   const hasTeraView = costs.some(entry =>
     entry.hasTeraTax === true ||
     entry.teraBanned === true
