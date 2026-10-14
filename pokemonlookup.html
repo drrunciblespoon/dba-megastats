@@ -596,10 +596,15 @@ updateCostTable();
 
       pokemonNameEl.textContent = pokemon.name;
 
-      pokemonSpriteEl.src = pokemon.sprite || '';
-      pokemonSpriteEl.alt = pokemon.name;
-      pokemonSpriteEl.style.display =
-        pokemon.sprite ? 'block' : 'none';
+      const spriteUrl = DBA.spriteUrl(
+  pokemon.name,
+  pokemon.sprite
+);
+
+pokemonSpriteEl.src = spriteUrl;
+pokemonSpriteEl.alt = pokemon.name;
+pokemonSpriteEl.style.display =
+  spriteUrl ? 'block' : 'none';
 
       /*
        * Legality
@@ -905,13 +910,18 @@ sloppers.forEach(slopper => {
           const spriteCell = row.insertCell();
           const sprite = document.createElement('img');
 
-          sprite.src = partner.sprite || '';
-          sprite.alt = partner.name;
-          sprite.loading = 'lazy';
+         const spriteUrl = DBA.spriteUrl(
+  partner.name,
+  partner.sprite
+);
 
-          if (!partner.sprite) {
-            sprite.style.display = 'none';
-          }
+sprite.src = spriteUrl;
+sprite.alt = partner.name;
+sprite.loading = 'lazy';
+
+if (!spriteUrl) {
+  sprite.style.display = 'none';
+}
 
           spriteCell.appendChild(sprite);
 
