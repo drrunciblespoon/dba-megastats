@@ -1870,6 +1870,14 @@ body.page-pokemon-lookup .pokemon-not-found p {
     border-top-left-radius: 0 !important;
   }
 
+     /* Cost Over Time: use a controlled width on mobile */
+  .page-pokemon-lookup .cost-over-time-table {
+    width: 760px;
+    min-width: 760px;
+    max-width: none;
+    table-layout: fixed;
+  }
+
   .page-pokemon-lookup .pokemon-draft-table,
   .page-pokemon-lookup .pokemon-partners-table {
     min-width: 650px;
