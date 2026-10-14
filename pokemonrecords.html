@@ -340,12 +340,13 @@
         const netChange = latest.cost - first.cost;
 
         return [{
-          name: pokemon.name,
-          first,
-          latest,
-          netChange,
-          absoluteChange: Math.abs(netChange)
-        }];
+  name: pokemon.name,
+  sprite: pokemon.sprite,
+  first,
+  latest,
+  netChange,
+  absoluteChange: Math.abs(netChange)
+}];
       });
 
       movers.sort((a, b) =>
@@ -360,28 +361,30 @@
           ? 'Top 10 Regular Movers'
           : 'Top 10 Tera Movers',
 
-        headers: [
-          'Pokémon',
-          'First Season',
-          'First Cost',
-          'Latest Season',
-          'Latest Cost',
-          'Net Change'
-        ],
+       headers: [
+  'Sprite',
+  'Pokémon',
+  'First Season',
+  'First Cost',
+  'Latest Season',
+  'Latest Cost',
+  'Net Change'
+],
 
         rows: topTen.length
           ? topTen.map(pokemon => [
-              { t: pokemon.name },
-              { t: String(pokemon.first.season) },
-              { t: String(pokemon.first.cost) },
-              { t: String(pokemon.latest.season) },
-              { t: String(pokemon.latest.cost) },
-              {
-                t: pokemon.netChange > 0
-                  ? `+${pokemon.netChange}`
-                  : String(pokemon.netChange)
-              }
-            ])
+  { img: pokemon.sprite || '' },
+  { t: pokemon.name },
+  { t: String(pokemon.first.season) },
+  { t: String(pokemon.first.cost) },
+  { t: String(pokemon.latest.season) },
+  { t: String(pokemon.latest.cost) },
+  {
+    t: pokemon.netChange > 0
+      ? `+${pokemon.netChange}`
+      : String(pokemon.netChange)
+  }
+])
           : [[
               { t: 'No eligible price histories found.' },
               { t: '' },
