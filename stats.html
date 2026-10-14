@@ -152,6 +152,18 @@
           const pokemonName =
             String(cell.t).trim();
 
+          /*
+ * Randomise the sprite using the Pokémon name from this row.
+ * Keep each cell's original API sprite as one of the options.
+ */
+row.forEach((item, cellIndex) => {
+  if (item && item.img) {
+    row[cellIndex] = {
+      ...item,
+      img: DBA.spriteUrl(pokemonName, item.img)
+    };
+  }
+});
 
           if (!pokemonName) {
             return row;
