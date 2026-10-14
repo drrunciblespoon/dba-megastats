@@ -105,7 +105,7 @@
             t.rows.every(
               r =>
                 r[i] &&
-                /^-?[\d.,]+%?$/.test(
+                /^[+-]?[\d.,]+%?$/.test(
                   r[i].t || ''
                 )
             )
@@ -253,6 +253,190 @@
 
     }
 
+    
+    /*
+     * ============================================================
+     * Price Movers
+     * ============================================================
+     */
+
+    let pokemonLookupPromise = null;
+
+    function getPokemonLookupData() {
+      if (!pokemonLookupPromise) {
+        pokemonLookupPromise = DBA.call('pokemonLookupGetAll');
+      }
+
+      return pokemonLookupPromise;
+    }
+
+    function getEligiblePrices(pokemon, type) {
+      const costs = Array.isArray(pokemon.seasonCosts)
+        ? [...pokemon.seasonCosts].sort(
+            (a, b) => a.season - b.season
+          )
+        : [];
+
+      return costs.flatMap(entry => {
+        const regularCost = entry.cost;
+
+        // A banned regular price is not a valid price.
+        if (
+          entry.banned ||
+          typeof regularCost !== 'number' ||
+          regularCost === 99
+        ) {
+          return [];
+        }
+
+        if (type === 'regular') {
+          return [{
+            season: entry.season,
+            cost: regularCost
+          }];
+        }
+
+        // Tera prices do not exist in Seasons 1–2.
+        if (entry.season <= 2) {
+          return [];
+        }
+
+        // Exclude Tera-banned and Tera-incompatible entries.
+        if (entry.teraBanned || entry.teraIncompatible) {
+          return [];
+        }
+
+        // No Tera tax means the regular cost applies.
+        if (!entry.hasTeraTax) {
+          return [{
+            season: entry.season,
+            cost: regularCost
+          }];
+        }
+
+        // Otherwise, use the calculated Tera cost.
+        if (typeof entry.teraCost === 'number') {
+          return [{
+            season: entry.season,
+            cost: entry.teraCost
+          }];
+        }
+
+        return [];
+      });
+    }
+
+    function buildMoversTable(pokemonList, type) {
+      const movers = pokemonList.flatMap(pokemon => {
+        const prices = getEligiblePrices(pokemon, type);
+
+        // At least two valid prices are needed for a comparison.
+        if (prices.length < 2) {
+          return [];
+        }
+
+        const first = prices[0];
+        const latest = prices[prices.length - 1];
+        const netChange = latest.cost - first.cost;
+
+        return [{
+          name: pokemon.name,
+          first,
+          latest,
+          netChange,
+          absoluteChange: Math.abs(netChange)
+        }];
+      });
+
+      movers.sort((a, b) =>
+        b.absoluteChange - a.absoluteChange ||
+        a.name.localeCompare(b.name)
+      );
+
+      const topTen = movers.slice(0, 10);
+
+      return {
+        title: type === 'regular'
+          ? 'Top 10 Regular Movers'
+          : 'Top 10 Tera Movers',
+
+        headers: [
+          'Pokémon',
+          'First Season',
+          'First Cost',
+          'Latest Season',
+          'Latest Cost',
+          'Net Change'
+        ],
+
+        rows: topTen.length
+          ? topTen.map(pokemon => [
+              { t: pokemon.name },
+              { t: String(pokemon.first.season) },
+              { t: String(pokemon.first.cost) },
+              { t: String(pokemon.latest.season) },
+              { t: String(pokemon.latest.cost) },
+              {
+                t: pokemon.netChange > 0
+                  ? `+${pokemon.netChange}`
+                  : String(pokemon.netChange)
+              }
+            ])
+          : [[
+              { t: 'No eligible price histories found.' },
+              { t: '' },
+              { t: '' },
+              { t: '' },
+              { t: '' },
+              { t: '' }
+            ]]
+      };
+    }
+
+    function showMovers(type, sectionIndex) {
+      root.innerHTML = '';
+      statusEl.textContent = 'Loading price data...';
+
+      getPokemonLookupData()
+        .then(data => {
+          // Ignore results if the user has selected another section.
+          if (Number(sel.value) !== sectionIndex) {
+            return;
+          }
+
+          const pokemonList =
+            data && Array.isArray(data.pokemon)
+              ? data.pokemon
+              : [];
+
+          const table = buildMoversTable(pokemonList, type);
+
+          const flex = document.createElement('div');
+          flex.style.cssText =
+            'display:flex;' +
+            'flex-wrap:wrap;' +
+            'gap:8px 32px;' +
+            'align-items:flex-start;' +
+            'margin-top:16px';
+
+          const col = document.createElement('div');
+          col.appendChild(buildTable(table));
+          flex.appendChild(col);
+          root.appendChild(flex);
+
+          statusEl.textContent = '';
+        })
+        .catch(error => {
+          if (Number(sel.value) !== sectionIndex) {
+            return;
+          }
+
+          statusEl.textContent =
+            'Error loading price movers: ' + error.message;
+        });
+    }
+
+
 
     /*
      * ============================================================
@@ -260,9 +444,17 @@
      * ============================================================
      */
 
-    function show(i) {
+   
+function show(i) {
+  root.innerHTML = '';
 
-      root.innerHTML = '';
+  const section = sections[i];
+
+  if (section.moverType) {
+    showMovers(section.moverType, i);
+    return;
+  }
+
 
 
       const flex =
@@ -311,7 +503,18 @@
 
       .then(data => {
 
-        sections = data;
+        sections = [...data];
+
+// Add the two calculated views to the existing Records dropdown.
+sections.push({
+  title: 'Regular Movers',
+  moverType: 'regular'
+});
+
+sections.push({
+  title: 'Tera Movers',
+  moverType: 'tera'
+});
 
 
         /*
