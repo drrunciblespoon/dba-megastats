@@ -224,6 +224,10 @@
             } else {
 
               td.textContent = c.t;
+              if (c.color) {
+  td.style.color = c.color;
+  td.style.fontWeight = 'bold';
+}
 
             }
 
@@ -379,11 +383,18 @@
   { t: String(pokemon.first.cost) },
   { t: String(pokemon.latest.season) },
   { t: String(pokemon.latest.cost) },
-  {
-    t: pokemon.netChange > 0
-      ? `+${pokemon.netChange}`
-      : String(pokemon.netChange)
-  }
+ {
+  t: pokemon.netChange > 0
+    ? `↑ +${pokemon.netChange}`
+    : pokemon.netChange < 0
+      ? `↓ ${pokemon.netChange}`
+      : '–',
+  color: pokemon.netChange > 0
+    ? 'green'
+    : pokemon.netChange < 0
+      ? 'red'
+      : ''
+}
 ])
           : [[
               { t: 'No eligible price histories found.' },
