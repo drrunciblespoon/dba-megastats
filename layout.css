@@ -544,6 +544,10 @@ body.page-individual #repeatDrafts td:nth-child(2) img {
   margin: 0 auto;
 }
 
+body.page-individual #repeatDrafts {
+  margin-bottom: 20px;
+}
+
 body.page-individual #repeatDrafts td:nth-child(4) {
   white-space: normal;
   overflow: visible;
