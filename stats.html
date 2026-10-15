@@ -306,10 +306,10 @@ row.forEach((item, cellIndex) => {
            * Build the searchable / sortable table.
            */
 
-          const generatedTable =
-            DBA.sortableTable(
-              preparedTable
-            );
+         const generatedTable = DBA.sortableTable(
+  preparedTable,
+  { pokemonFilters: true }
+);
 
 
           root.appendChild(
