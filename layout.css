@@ -329,6 +329,7 @@ body.page-stats #root .table-filter-clear {
 
 body.page-stats #root .table-filter-toggle {
   margin-top: 8px;
+  margin-bottom: 16px;
 }
 
 body.page-stats #root .table-filter-clear {
@@ -939,13 +940,10 @@ body.page-pokemon-lookup #costOverTimeSection .cost-over-time-table {
   width: 760px;
   min-width: 760px;
   max-width: none;
-  margin-left: 0;
-  margin-right: 0;
+  margin-left: auto;
+  margin-right: auto;
   table-layout: fixed;
 }
-
-
-
 
 /* ------------------------------------------------------------
    07.2. Gen 9 Season Stats Note
