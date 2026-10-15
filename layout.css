@@ -352,7 +352,43 @@ body.page-stats #root .table-filter-clear:active {
   background: #9fc5e8;
 }
 
+/*
+* Filter panel
+/* 
 
+
+body.page-stats #root .table-filter-panel {
+  margin: 10px auto;
+  padding: 16px;
+  border: 1px solid #d5d8e2;
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: center;
+}
+
+body.page-stats #root .table-filter-panel > div {
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+body.page-stats #root .table-filter-panel label {
+  align-items: center;
+  text-align: center;
+}
+
+body.page-stats #root .table-filter-panel select {
+  width: auto;
+  min-width: 150px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+body.page-stats #root .table-filter-clear {
+  margin-top: 12px;
+}
 
 
 
