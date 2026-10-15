@@ -627,7 +627,7 @@ playerLink(player) {
 
     return box;
   }
-
+};
 
 /* ============================================================
  * Searchable select
