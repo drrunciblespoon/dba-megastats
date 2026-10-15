@@ -412,15 +412,11 @@ playerLink(player) {
         filterToggle.type = 'button';
         filterToggle.textContent = 'Filter by +';
         filterToggle.setAttribute('aria-expanded', 'false');
-        filterToggle.style.display = 'block';
-        filterToggle.style.marginTop = '8px';
+        filterToggle.className = 'table-filter-toggle';
 
         filterPanel = document.createElement('div');
         filterPanel.hidden = true;
-        filterPanel.style.margin = '10px 0';
-        filterPanel.style.padding = '12px';
-        filterPanel.style.border = '1px solid var(--border, #ccc)';
-        filterPanel.style.borderRadius = '6px';
+        filterPanel.className = 'table-filter-panel';
 
         const filterHeading = document.createElement('div');
         filterHeading.textContent = 'Filter by Pokémon type';
@@ -471,7 +467,7 @@ typeFields.appendChild(label);
         const clearButton = document.createElement('button');
         clearButton.type = 'button';
         clearButton.textContent = 'Clear filters';
-        clearButton.style.marginTop = '12px';
+        clearButton.className = 'table-filter-clear';
 
         clearButton.addEventListener('click', () => {
           search.value = '';
