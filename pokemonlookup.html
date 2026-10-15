@@ -403,12 +403,13 @@ function mergeConsecutiveCells(row) {
     }
 
     if (span > 1) {
-      cell.colSpan = span;
+  cell.colSpan = span;
+  cell.style.textAlign = 'center';
 
-      for (let j = 1; j < span; j++) {
-        cells[i + j].remove();
-      }
-    }
+  for (let j = 1; j < span; j++) {
+    cells[i + j].remove();
+  }
+}
 
     i += span;
   }
