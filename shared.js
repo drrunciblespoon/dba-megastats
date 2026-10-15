@@ -418,12 +418,6 @@ playerLink(player) {
         filterPanel.hidden = true;
         filterPanel.className = 'table-filter-panel';
 
-        const filterHeading = document.createElement('div');
-        filterHeading.textContent = 'Filter by Pokémon type';
-        filterHeading.style.fontWeight = '600';
-        filterHeading.style.marginBottom = '8px';
-        filterPanel.appendChild(filterHeading);
-
 const typeFields = document.createElement('div');
 typeFields.style.display = 'flex';
 typeFields.style.flexWrap = 'wrap';
