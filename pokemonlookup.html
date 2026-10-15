@@ -385,6 +385,7 @@ function updateRecordTab() {
  */
 
 
+
 /*
  * Merge consecutive identical cells in a table row.
  */
@@ -403,17 +404,17 @@ function mergeConsecutiveCells(row) {
     }
 
     if (span > 1) {
-  cell.colSpan = span;
-  cell.style.textAlign = 'center';
+      cell.colSpan = span;
 
-  for (let j = 1; j < span; j++) {
-    cells[i + j].remove();
-  }
-}
+      for (let j = 1; j < span; j++) {
+        cells[i + j].remove();
+      }
+    }
 
     i += span;
   }
 }
+
 
     
 function updateCostTable() {
@@ -538,12 +539,19 @@ function updateCostTable() {
     selectedCostType === 'tera'
   );
   
-  // Merge repeated values in the Cost and Complex rows.
+  
+  // Centre all cost and ban values, leaving labels untouched.
   Array.from(costBody.rows).forEach(row => {
-    if (row.cells.length > 1) {
+    Array.from(row.cells).slice(1).forEach(cell => {
+      cell.style.textAlign = 'center';
+    });
+
+    // Merge consecutive identical values, preserving the side label.
+    if (row.cells.length > 2) {
       mergeConsecutiveCells(row);
     }
   });
+
 
 }
 
