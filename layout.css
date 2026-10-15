@@ -356,18 +356,23 @@ body.page-stats #root .table-filter-clear:active {
 * Filter panel
 */
 
-
-
 body.page-stats #root .table-filter-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: fit-content;
+  max-width: calc(100% - 32px);
   margin: 10px auto 16px;
   padding: 16px;
   border: 1px solid #d5d8e2;
   border-radius: var(--radius);
   background: var(--surface);
   text-align: center;
+  box-sizing: border-box;
+}
+
+body.page-stats #root .table-filter-panel[hidden] {
+  display: none !important;
 }
 
 body.page-stats #root .table-filter-panel > div {
