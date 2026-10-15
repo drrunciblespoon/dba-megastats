@@ -384,6 +384,37 @@ function updateRecordTab() {
  * Draw Cost Over Time
  */
 
+
+/*
+ * Merge consecutive identical cells in a table row.
+ */
+function mergeConsecutiveCells(row) {
+  const cells = Array.from(row.cells);
+
+  for (let i = 0; i < cells.length;) {
+    const cell = cells[i];
+    let span = 1;
+
+    while (
+      i + span < cells.length &&
+      cells[i + span].textContent.trim() === cell.textContent.trim()
+    ) {
+      span++;
+    }
+
+    if (span > 1) {
+      cell.colSpan = span;
+
+      for (let j = 1; j < span; j++) {
+        cells[i + j].remove();
+      }
+    }
+
+    i += span;
+  }
+}
+
+    
 function updateCostTable() {
   const costs = selectedPokemon &&
     Array.isArray(selectedPokemon.seasonCosts)
@@ -505,6 +536,14 @@ function updateCostTable() {
     'active',
     selectedCostType === 'tera'
   );
+  
+  // Merge repeated values in the Cost and Complex rows.
+  Array.from(costBody.rows).forEach(row => {
+    if (row.cells.length > 1) {
+      mergeConsecutiveCells(row);
+    }
+  });
+
 }
 
 /*
