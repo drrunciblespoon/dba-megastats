@@ -347,6 +347,15 @@ td a:focus-visible {
 
 .combo-list li.combo-empty:hover { background: none; }
 
+/* ============================================================
+   GLOBAL PAGE BOTTOM SPACING
+   Keep the final content clear of the bottom edge of the page.
+   ============================================================ */
+
+body {
+  padding-bottom: 32px;
+}
+
 @media (max-width: 700px) {
   .combo { display: block; width: 100%; }
   .combo-input { font-size: 16px; }   /* stops iOS zooming in on focus */
