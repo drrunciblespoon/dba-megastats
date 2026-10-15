@@ -450,25 +450,9 @@ any.value = '';
 any.textContent = 'Any';
 typeSelect.appendChild(any);
 
-const types = new Set();
-
-t.rows.forEach(row => {
-  const pokemonCell = row.find(
-    cell => cell && cell.pokemonMetadata
-  );
-
-  const metadata = pokemonCell
-    ? pokemonCell.pokemonMetadata
-    : {};
-
-  ['type 1', 'type 2'].forEach(field => {
-    const value = String(metadata[field] || '').trim();
-
-    if (value && !/^none$/i.test(value)) {
-      types.add(value);
-    }
-  });
-});
+const types = new Set(
+  Array.isArray(t.pokemonTypes) ? t.pokemonTypes : []
+);
 
 Array.from(types)
   .sort((a, b) => a.localeCompare(b))
