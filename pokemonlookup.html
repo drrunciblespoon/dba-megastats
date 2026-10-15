@@ -1026,25 +1026,41 @@ if (!spriteUrl) {
         });
       }
 
-      /*
-       * Tera Record Tab
-       *
-       * Only show the Tera tab when this Pokémon has actually
-       * been drafted as a Tera Pokémon.
+           /*
+       * Overall Record Tabs
        */
 
+      // Gen 8 is available if drafted in either Season 1 or Season 2.
+      const hasGen8Draft = drafts.some(draft =>
+        Number(draft.season) === 1 ||
+        Number(draft.season) === 2
+      );
+
+      // Gen 9 tabs are available if drafted in any Season 3 onwards.
+      const hasGen9Draft = drafts.some(draft =>
+        Number(draft.season) >= 3
+      );
+
+      // Tera is only available to eligible Pokémon selected as Tera captains.
       const hasTeraDraft =
+        hasGen9Draft &&
+        !pokemon.name.includes('-Mega') &&
         drafts.some(draft => draft.tera === true);
 
-      teraRecordTab.style.display =
-        hasTeraDraft ? '' : 'none';
+      gen8RecordTab.hidden = !hasGen8Draft;
 
-      /*
-       * Overall Record
-       */
+      regularRecordTab.hidden = !hasGen9Draft;
+      teraRecordTab.hidden = !hasTeraDraft;
 
-      updateRecordTab();
-    }
+      // If the currently selected tab is no longer available,
+      // switch to an available tab.
+      if (
+        (selectedRecordType === 'gen8' && !hasGen8Draft) ||
+        (selectedRecordType === 'regular' && !hasGen9Draft) ||
+        (selectedRecordType === 'tera' && !hasTeraDraft)
+      ) {
+        selectedRecordType = hasGen9Draft ? 'regular' : 'gen8';
+      }
 
     /*
      * Select Pokémon from URL parameter
