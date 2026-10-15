@@ -945,6 +945,14 @@ body.page-pokemon-lookup #costOverTimeSection .cost-over-time-table {
   table-layout: fixed;
 }
 
+body.page-pokemon-lookup #costOverTimeSection .pokemon-record-tabs {
+  width: 760px;
+  min-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
 /* ------------------------------------------------------------
    07.2. Gen 9 Season Stats Note
    ------------------------------------------------------------ */
