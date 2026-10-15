@@ -1054,6 +1054,7 @@ if (!spriteUrl) {
 
       // If the currently selected tab is no longer available,
       // switch to an available tab.
+      
       if (
         (selectedRecordType === 'gen8' && !hasGen8Draft) ||
         (selectedRecordType === 'regular' && !hasGen9Draft) ||
@@ -1061,7 +1062,11 @@ if (!spriteUrl) {
       ) {
         selectedRecordType = hasGen9Draft ? 'regular' : 'gen8';
       }
+
+      // Draw the correct record immediately for this Pokémon.
+      updateRecordTab();
     }
+
     /*
      * Select Pokémon from URL parameter
      */
