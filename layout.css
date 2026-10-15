@@ -913,7 +913,7 @@ body.page-season-records .season-main-table {
 
 
 /* ------------------------------------------------------------
-   07.1.1. Cost Over Time: horizontal scrolling
+   07.1.1. Cost Over Time: full width, scrolls if too many seasons
    ------------------------------------------------------------ */
 
 body.page-pokemon-lookup #costOverTimeSection {
@@ -926,8 +926,6 @@ body.page-pokemon-lookup #costOverTimeSection {
 
 body.page-pokemon-lookup #costOverTimeSection .cost-over-time-wrap {
   display: block;
-  width: 100%;
-  max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
   overflow-x: auto;
@@ -935,22 +933,28 @@ body.page-pokemon-lookup #costOverTimeSection .cost-over-time-wrap {
   -webkit-overflow-scrolling: touch;
 }
 
-body.page-pokemon-lookup #costOverTimeSection .cost-over-time-table {
-  display: table;
-  width: 760px;
-  min-width: 760px;
-  max-width: none;
-  margin-left: auto;
-  margin-right: auto;
-  table-layout: fixed;
+body.page-pokemon-lookup #costOverTimeSection .pokemon-record-tabs {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
 }
 
-body.page-pokemon-lookup #costOverTimeSection .pokemon-record-tabs {
-  width: 760px;
-  min-width: 760px;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
+body.page-pokemon-lookup #costOverTimeSection .cost-over-time-table {
+  display: table;
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  table-layout: auto;
+}
+
+body.page-pokemon-lookup #costOverTimeSection .cost-over-time-table th,
+body.page-pokemon-lookup #costOverTimeSection .cost-over-time-table td {
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 /* ------------------------------------------------------------
