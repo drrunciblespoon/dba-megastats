@@ -379,241 +379,254 @@ playerLink(player) {
 
   },
 
-
-  /* ============================================================
+/* ============================================================
    * Searchable / sortable table
    * ============================================================ */
-
-  // Builds a searchable, click-to-sort table from:
-  // {headers, rows}
-
+  
   sortableTable(t, opts) {
-
-    const box =
-      document.createElement('div');
-
+    const box = document.createElement('div');
     box.style.marginTop = '20px';
 
+    const filterable = !!(opts && opts.pokemonFilters);
 
-    const search =
-      document.createElement('input');
+    const search = document.createElement('input');
+    search.placeholder = 'Search...';
+    search.setAttribute('aria-label', 'Search table');
 
-    search.placeholder =
-      'Search...';
-
-
-    const wrap =
-      document.createElement('div');
-
+    const wrap = document.createElement('div');
     wrap.className = 'wrap';
 
-
-    const table =
-      document.createElement('table');
-
+    const table = document.createElement('table');
     wrap.appendChild(table);
 
+    let type1Select;
+    let type2Select;
+    let filterPanel;
 
     if (opts && opts.search === false) {
-
       box.append(wrap);
-
     } else {
+      box.appendChild(search);
 
-      box.append(
-        search,
-        wrap
-      );
+      if (filterable) {
+        const filterToggle = document.createElement('button');
+        filterToggle.type = 'button';
+        filterToggle.textContent = 'Filter by +';
+        filterToggle.setAttribute('aria-expanded', 'false');
+        filterToggle.style.display = 'block';
+        filterToggle.style.marginTop = '8px';
 
+        filterPanel = document.createElement('div');
+        filterPanel.hidden = true;
+        filterPanel.style.margin = '10px 0';
+        filterPanel.style.padding = '12px';
+        filterPanel.style.border = '1px solid var(--border, #ccc)';
+        filterPanel.style.borderRadius = '6px';
+
+        const filterHeading = document.createElement('div');
+        filterHeading.textContent = 'Filter by Pokémon type';
+        filterHeading.style.fontWeight = '600';
+        filterHeading.style.marginBottom = '8px';
+        filterPanel.appendChild(filterHeading);
+
+        const typeFields = document.createElement('div');
+        typeFields.style.display = 'flex';
+        typeFields.style.flexWrap = 'wrap';
+        typeFields.style.gap = '12px';
+
+        function makeTypeSelect(labelText, field) {
+          const label = document.createElement('label');
+          label.style.display = 'flex';
+          label.style.flexDirection = 'column';
+          label.style.gap = '4px';
+
+          const caption = document.createElement('span');
+          caption.textContent = labelText;
+
+          const select = document.createElement('select');
+          select.dataset.plain = '';
+          select.style.minWidth = '150px';
+
+          const any = document.createElement('option');
+          any.value = '';
+          any.textContent = 'Any';
+          select.appendChild(any);
+
+          const types = new Set();
+
+          t.rows.forEach(row => {
+            const metadata = row._pokemonMetadata || {};
+            const value = String(metadata[field] || '').trim();
+
+            if (value && !/^none$/i.test(value)) {
+              types.add(value);
+            }
+          });
+
+          Array.from(types)
+            .sort((a, b) => a.localeCompare(b))
+            .forEach(type => {
+              const option = document.createElement('option');
+              option.value = type;
+              option.textContent = type;
+              select.appendChild(option);
+            });
+
+          label.append(caption, select);
+          typeFields.appendChild(label);
+
+          return select;
+        }
+
+        type1Select = makeTypeSelect('Type 1', 'type 1');
+        type2Select = makeTypeSelect('Type 2', 'type 2');
+
+        filterPanel.appendChild(typeFields);
+
+        const clearButton = document.createElement('button');
+        clearButton.type = 'button';
+        clearButton.textContent = 'Clear filters';
+        clearButton.style.marginTop = '12px';
+
+        clearButton.addEventListener('click', () => {
+          search.value = '';
+          type1Select.value = '';
+          type2Select.value = '';
+          draw();
+        });
+
+        filterPanel.appendChild(clearButton);
+
+        filterToggle.addEventListener('click', () => {
+          const opening = filterPanel.hidden;
+          filterPanel.hidden = !opening;
+          filterToggle.textContent = opening ? 'Filter by −' : 'Filter by +';
+          filterToggle.setAttribute('aria-expanded', String(opening));
+        });
+
+        box.append(filterToggle, filterPanel);
+      }
+
+      box.appendChild(wrap);
     }
 
-
-    const rows =
-      t.rows.slice();
-
+    const rows = t.rows.slice();
 
     let sortCol = -1;
     let asc = true;
 
-
     const isNum = c =>
-      c.n !== null &&
-      c.n !== undefined;
-
+      c && c.n !== null && c.n !== undefined;
 
     function sortRows() {
-
       rows.sort((a, b) => {
+        const x = a[sortCol] || {};
+        const y = b[sortCol] || {};
 
-        const x = a[sortCol];
-        const y = b[sortCol];
-
-        const r =
+        const result =
           isNum(x) && isNum(y)
-
             ? x.n - y.n
-
-            : (x.t || '').localeCompare(
-                y.t || '',
+            : String(x.t || '').localeCompare(
+                String(y.t || ''),
                 undefined,
-                {
-                  numeric: true
-                }
+                { numeric: true }
               );
 
-        return asc
-          ? r
-          : -r;
-
+        return asc ? result : -result;
       });
-
     }
 
-
     function draw() {
+      const q = search.value.trim().toLowerCase();
+      const selectedType1 = type1Select ? type1Select.value : '';
+      const selectedType2 = type2Select ? type2Select.value : '';
 
-      const q =
-        search.value.toLowerCase();
+      const shown = rows.filter(row => {
+        const matchesSearch =
+          !q ||
+          row.some(cell =>
+            cell && cell.t &&
+            String(cell.t).toLowerCase().includes(q)
+          );
 
+        if (!matchesSearch) return false;
 
-      const shown =
-        rows.filter(
-          r =>
-            !q ||
-            r.some(
-              c =>
-                c.t &&
-                c.t
-                  .toLowerCase()
-                  .includes(q)
-            )
-        );
+        if (!filterable) return true;
 
+        const metadata = row._pokemonMetadata || {};
+        const type1 = String(metadata['type 1'] || '').trim();
+        const type2 = String(metadata['type 2'] || '').trim();
+
+        return (!selectedType1 || type1 === selectedType1) &&
+               (!selectedType2 || type2 === selectedType2);
+      });
 
       table.innerHTML = '';
 
+      const head = table.createTHead().insertRow();
 
-      const head =
-        table
-          .createTHead()
-          .insertRow();
+      t.headers.forEach((name, i) => {
+        const th = document.createElement('th');
 
+        th.textContent = name + (
+          i === sortCol ? (asc ? ' ▲' : ' ▼') : ''
+        );
 
-      t.headers.forEach(
-        (name, i) => {
-
-          const th =
-            document.createElement('th');
-
-
-          th.textContent =
-            name +
-            (
-              i === sortCol
-                ? asc
-                  ? ' ▲'
-                  : ' ▼'
-                : ''
-            );
-
-
-          th.onclick = () => {
-
-            if (sortCol === i) {
-
-              asc = !asc;
-
-            } else {
-
-              sortCol = i;
-              asc = true;
-
-            }
-
-            sortRows();
-            draw();
-
-          };
-
-
-          head.appendChild(th);
-
-        }
-      );
-
-
-      const body =
-        table.createTBody();
-
-
-      shown.forEach(r => {
-
-        const tr =
-          body.insertRow();
-
-
-        r.forEach(c => {
-
-          const td =
-            tr.insertCell();
-
-
-          if (c.img) {
-
-            const im =
-              document.createElement('img');
-
-                       im.src = DBA.spriteUrl(c.t, c.img);
-            im.alt = c.t || '';
-            im.loading = 'lazy';
-
-            td.appendChild(im);
-
+        th.onclick = () => {
+          if (sortCol === i) {
+            asc = !asc;
           } else {
+            sortCol = i;
+            asc = true;
+          }
 
-  if (c.pokemonLink) {
+          sortRows();
+          draw();
+        };
 
-    const link =
-      document.createElement('a');
-
-    link.href =
-      c.pokemonLink;
-
-    link.textContent =
-      c.t;
-
-    td.appendChild(link);
-
-  } else {
-
-    td.textContent =
-      c.t;
-
-  }
-
-  if (isNum(c)) {
-    td.className = 'num';
-  }
-
-}
-
-
-        });
-
+        head.appendChild(th);
       });
 
+      const body = table.createTBody();
+
+      shown.forEach(row => {
+        const tr = body.insertRow();
+
+        row.forEach(cell => {
+          const c = cell || {};
+          const td = tr.insertCell();
+
+          if (c.img) {
+            const im = document.createElement('img');
+            im.src = DBA.spriteUrl(c.t, c.img);
+            im.alt = c.t || '';
+            im.loading = 'lazy';
+            td.appendChild(im);
+          } else if (c.pokemonLink) {
+            const link = document.createElement('a');
+            link.href = c.pokemonLink;
+            link.textContent = c.t || '';
+            td.appendChild(link);
+          } else {
+            td.textContent = c.t || '';
+          }
+
+          if (isNum(c)) {
+            td.className = 'num';
+          }
+        });
+      });
     }
 
-
     search.oninput = draw;
+
+    if (type1Select) type1Select.addEventListener('change', draw);
+    if (type2Select) type2Select.addEventListener('change', draw);
 
     draw();
 
     return box;
-
   }
-
-};
 
 
 /* ============================================================
