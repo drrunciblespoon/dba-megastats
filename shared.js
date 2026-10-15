@@ -399,8 +399,7 @@ playerLink(player) {
     const table = document.createElement('table');
     wrap.appendChild(table);
 
-    let type1Select;
-    let type2Select;
+    let typeSelect;
     let filterPanel;
 
     if (opts && opts.search === false) {
@@ -429,57 +428,59 @@ playerLink(player) {
         filterHeading.style.marginBottom = '8px';
         filterPanel.appendChild(filterHeading);
 
-        const typeFields = document.createElement('div');
-        typeFields.style.display = 'flex';
-        typeFields.style.flexWrap = 'wrap';
-        typeFields.style.gap = '12px';
+const typeFields = document.createElement('div');
+typeFields.style.display = 'flex';
+typeFields.style.flexWrap = 'wrap';
+typeFields.style.gap = '12px';
 
-        function makeTypeSelect(labelText, field) {
-          const label = document.createElement('label');
-          label.style.display = 'flex';
-          label.style.flexDirection = 'column';
-          label.style.gap = '4px';
+const label = document.createElement('label');
+label.style.display = 'flex';
+label.style.flexDirection = 'column';
+label.style.gap = '4px';
 
-          const caption = document.createElement('span');
-          caption.textContent = labelText;
+const caption = document.createElement('span');
+caption.textContent = 'Type';
 
-          const select = document.createElement('select');
-          select.dataset.plain = '';
-          select.style.minWidth = '150px';
+typeSelect = document.createElement('select');
+typeSelect.dataset.plain = '';
+typeSelect.style.minWidth = '150px';
 
-          const any = document.createElement('option');
-          any.value = '';
-          any.textContent = 'Any';
-          select.appendChild(any);
+const any = document.createElement('option');
+any.value = '';
+any.textContent = 'Any';
+typeSelect.appendChild(any);
 
-          const types = new Set();
+const types = new Set();
 
-          t.rows.forEach(row => {
-            const metadata = row._pokemonMetadata || {};
-            const value = String(metadata[field] || '').trim();
+t.rows.forEach(row => {
+  const pokemonCell = row.find(
+    cell => cell && cell.pokemonMetadata
+  );
 
-            if (value && !/^none$/i.test(value)) {
-              types.add(value);
-            }
-          });
+  const metadata = pokemonCell
+    ? pokemonCell.pokemonMetadata
+    : {};
 
-          Array.from(types)
-            .sort((a, b) => a.localeCompare(b))
-            .forEach(type => {
-              const option = document.createElement('option');
-              option.value = type;
-              option.textContent = type;
-              select.appendChild(option);
-            });
+  ['type 1', 'type 2'].forEach(field => {
+    const value = String(metadata[field] || '').trim();
 
-          label.append(caption, select);
-          typeFields.appendChild(label);
+    if (value && !/^none$/i.test(value)) {
+      types.add(value);
+    }
+  });
+});
 
-          return select;
-        }
+Array.from(types)
+  .sort((a, b) => a.localeCompare(b))
+  .forEach(type => {
+    const option = document.createElement('option');
+    option.value = type;
+    option.textContent = type;
+    typeSelect.appendChild(option);
+  });
 
-        type1Select = makeTypeSelect('Type 1', 'type 1');
-        type2Select = makeTypeSelect('Type 2', 'type 2');
+label.append(caption, typeSelect);
+typeFields.appendChild(label);
 
         filterPanel.appendChild(typeFields);
 
@@ -490,8 +491,7 @@ playerLink(player) {
 
         clearButton.addEventListener('click', () => {
           search.value = '';
-          type1Select.value = '';
-          type2Select.value = '';
+          typeSelect.value = '';
           draw();
         });
 
@@ -538,8 +538,7 @@ playerLink(player) {
 
     function draw() {
       const q = search.value.trim().toLowerCase();
-      const selectedType1 = type1Select ? type1Select.value : '';
-      const selectedType2 = type2Select ? type2Select.value : '';
+      const selectedType = typeSelect ? typeSelect.value : '';
 
       const shown = rows.filter(row => {
         const matchesSearch =
@@ -553,12 +552,20 @@ playerLink(player) {
 
         if (!filterable) return true;
 
-        const metadata = row._pokemonMetadata || {};
-        const type1 = String(metadata['type 1'] || '').trim();
-        const type2 = String(metadata['type 2'] || '').trim();
+        const pokemonCell = row.find(
+  cell => cell && cell.pokemonMetadata
+);
 
-        return (!selectedType1 || type1 === selectedType1) &&
-               (!selectedType2 || type2 === selectedType2);
+const metadata = pokemonCell
+  ? pokemonCell.pokemonMetadata
+  : {};
+
+const type1 = String(metadata['type 1'] || '').trim();
+const type2 = String(metadata['type 2'] || '').trim();
+
+return !selectedType ||
+       type1 === selectedType ||
+       type2 === selectedType;
       });
 
       table.innerHTML = '';
@@ -620,8 +627,7 @@ playerLink(player) {
 
     search.oninput = draw;
 
-    if (type1Select) type1Select.addEventListener('change', draw);
-    if (type2Select) type2Select.addEventListener('change', draw);
+   if (typeSelect) typeSelect.addEventListener('change', draw);
 
     draw();
 
